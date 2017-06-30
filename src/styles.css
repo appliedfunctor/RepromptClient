@@ -1,1 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
+.loader {
+    border: 8px solid #f3f3f3; 
+    border-top: 8px solid #25282d; 
+    border-bottom: 8px solid #fcc000; 
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;    
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+}
+
+.loader-text {
+    animation: dotdotdot 2s linear infinite;
+}
+
+.loader-inner {
+    animation: reverse-spin 2s linear infinite;
+}
+
+.centered {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200;
+    height: 200;
+    margin: auto;
+}
+
+@keyframes dotdotdot {
+    0%   { color: #fcc000; }
+    50%  { color: #223c68; }
+    100% { color: #fcc000; }
+}
+
+@keyframes reverse-spin {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(-90deg); }
+    50%  { transform: rotate(-180deg); }
+    75%  { transform: rotate(-270deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+@keyframes spin {
+    0%   { transform: rotate(0deg); 
+           border-top: 8px solid #223c68; 
+           border-bottom: 8px solid #fcc000; 
+         }
+    25%  { transform: rotate(90deg); 
+           border-top: 8px solid #223c68; 
+           border-bottom: 8px solid #fcc000; 
+         }
+    50%  { transform: rotate(180deg); 
+           border-top: 8px solid #223c68; 
+           border-bottom: 8px solid #fcc000; 
+         }
+    75%  { transform: rotate(270deg); 
+           border-top: 8px solid #223c68; 
+           border-bottom: 8px solid #fcc000; 
+         }
+    100% { transform: rotate(360deg); 
+           border-top: 8px solid #223c68; 
+           border-bottom: 8px solid #fcc000; 
+         }
+}
