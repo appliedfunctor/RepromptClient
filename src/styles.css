@@ -16,6 +16,7 @@
 
 .loader-inner {
     animation: reverse-spin 2s linear infinite;
+    margin-top: 14px;
 }
 
 .center {
