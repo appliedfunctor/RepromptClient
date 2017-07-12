@@ -70,3 +70,60 @@
            border-bottom: 8px solid #fcc000; 
          }
 }
+
+.form-signin {
+  margin-top: 25px;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+  border: 1px solid #223c68;
+  border-radius: 5px;
+  background: white;
+}
+
+.form-signin .checkbox {
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-signin-heading {
+  background: #223c68;
+  color: white;
+  margin: -15px;
+  margin-bottom: 25px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-size: 16px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.topbar {
+    background: #fcc000;
+    padding: 5px;
+}

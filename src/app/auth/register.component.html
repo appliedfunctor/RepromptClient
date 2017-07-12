@@ -1,0 +1,13 @@
+<div class="container">
+    <form class="form-register">
+    <div class="form-register-heading">Sign in</div>
+    <label for="inputUsername" class="sr-only">Email address</label>
+    <input type="text" id="inputUsername" 
+        class="form-control" 
+        placeholder="Email address" autofocus
+    required minlength="4" maxlength="24">
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <button [disabled]="disabled" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
