@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
+import { ErrorMessage } from "app/_models/error.model";
 
 @Component({
     selector: 'auth',
@@ -10,21 +11,29 @@ import { AuthService } from '../_services/auth.service'
 })
 export class LoginComponent {
     public error: Boolean = false
-    public email: String = "a@b";
-    public password: String = "1";
-    public response: Object = {}
+    public errorMessage: String = "There has been an error attempting to authenticate you."
+    public email: String = "t-worton@ilford-school.co.uk";
+    public password: String = "reprompt";
+    public response;
 
     constructor(private router: Router, private service: AuthService) {
     }
 
     submit() {
-        //console.log("email: " + this.email + ", pw: " + this.password)
-        this.service.login(this.email, this.password).subscribe(data => this.response = data);
-        if(Object.keys(this.response).length !== 0) {
-            this.router.navigate(['/']);
-        } else {
-            this.error = true
-        }
+        this.service.login(this.email, this.password).subscribe(data => {
+
+            this.response = data
+            this.errorMessage = data.hasOwnProperty('error') ? data.error : "There has been an error attempting to authenticate you."            
+
+            if(data.hasOwnProperty("id")) {
+                this.error = false
+                this.router.navigate(['/']);
+            } else {
+                this.error = true
+            }
+            
+        });
+        
     }
 
     redirect(location: String) {

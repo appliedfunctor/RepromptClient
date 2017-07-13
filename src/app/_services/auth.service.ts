@@ -29,9 +29,9 @@ export class AuthService {
         return false
     }
 
-    login(email: String, password: String): Observable<UserModel> {
+    login(email: String, password: String){
 
-        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        let headers = new Headers({ 'Content-Type': 'application/json', 'X-Auth-Token': '' });
 		let options = new RequestOptions({ headers: headers });
 
         let sendData = JSON.stringify({email: email, password: password });
@@ -52,19 +52,25 @@ export class AuthService {
         localStorage.removeItem('loginInfo')
     }
 
-    private handleData(res: Response) {
-        let body = res.json();
+    private handleData(res: Response) {        
+        let jwtToken = res && res.headers && res.headers.get('X-Auth-Token')
         
-        let jwtToken = body && body.headers && body.headers.get('X-Auth-Token')
+        let body = res.json()
 
-        console.log(body)
+        // console.log(body)
+        // console.log(res.headers)
+
+        // console.log(res)
         
-        console.log(jwtToken ? jwtToken : "No jwtToken")
+        // console.log(jwtToken ? jwtToken : "No jwtToken")
 
         if(jwtToken && jwtToken != "") {
             this.jwtToken = jwtToken
+            console.log("starting parse")
+            let userParsed = new UserModel(body)
+            console.log("finished parse")
             localStorage.setItem('loginInfo', JSON.stringify({   
-                user: new UserModel(JSON.parse(body)),
+                user: userParsed,
                 token: jwtToken
             }))
             console.log("login success")
@@ -72,7 +78,7 @@ export class AuthService {
             console.log("login failure")
         }
 
-        return body.data || { };
+        return body;
     }
 
     private handleError (error: Response | any) {
@@ -84,6 +90,7 @@ export class AuthService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
+
     return Observable.throw(errMsg);
   }
 }

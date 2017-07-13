@@ -14,7 +14,7 @@
     <button md-button type="submit" (click)="submit()" [disabled]="!loginForm.valid">Sign in</button>
     <button type="button" class="right" (click)="redirect('register')" md-button>Register a new account</button>
     <br>
-    <div [hidden]="!error" class="alert alert-danger mt-5">There has been an internal error attempting to authenticate you.</div>
+    <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
 </form>
 
 
