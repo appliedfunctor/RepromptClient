@@ -1,6 +1,6 @@
 export class Paths {
     secure = false;
-    base = "www.reprompt.com"
+    base = "127.0.0.1:9000"
     http = "http://"
     https = "https://"
 
