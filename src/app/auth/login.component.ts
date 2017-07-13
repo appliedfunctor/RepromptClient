@@ -12,8 +12,8 @@ import { ErrorMessage } from "app/_models/error.model";
 export class LoginComponent {
     public error: Boolean = false
     public errorMessage: String = "There has been an error attempting to authenticate you."
-    public email: String = "t-worton@ilford-school.co.uk";
-    public password: String = "reprompt";
+    public email: String = "";
+    public password: String = "";
     public response;
 
     constructor(private router: Router, private service: AuthService) {

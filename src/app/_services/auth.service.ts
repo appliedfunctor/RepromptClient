@@ -1,6 +1,9 @@
 /**
  * Following code influenced by http://jasonwatmore.com/post/2016/08/16/angular-2-jwt-authentication-example-tutorial
  * Accessed 11/07/2016
+ * 
+ * Also Angular.io http guide: https://angular.io/guide/http
+ * accessed 13/07/2017
  */
 import { Injectable } from "@angular/core"
 import { Http, Response, RequestOptions, Headers } from "@angular/http"
@@ -22,14 +25,13 @@ export class AuthService {
         //load existing JWT token from storage
         var loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
         this.jwtToken = loginInfo && loginInfo.jwtToken
-        console.log(loginInfo ? loginInfo : "No loginInfo")
     }
 
     register(firstName: String, surName: String, email: String, password: String) {
         return false
     }
 
-    login(email: String, password: String){
+    login(email: String, password: String) {
 
         let headers = new Headers({ 'Content-Type': 'application/json', 'X-Auth-Token': '' });
 		let options = new RequestOptions({ headers: headers });
@@ -52,30 +54,22 @@ export class AuthService {
         localStorage.removeItem('loginInfo')
     }
 
+    isAuthenticated(): boolean {
+        return this.jwtToken ? true : false
+    }
+
     private handleData(res: Response) {        
         let jwtToken = res && res.headers && res.headers.get('X-Auth-Token')
         
         let body = res.json()
 
-        // console.log(body)
-        // console.log(res.headers)
-
-        // console.log(res)
-        
-        // console.log(jwtToken ? jwtToken : "No jwtToken")
-
         if(jwtToken && jwtToken != "") {
             this.jwtToken = jwtToken
-            console.log("starting parse")
             let userParsed = new UserModel(body)
-            console.log("finished parse")
             localStorage.setItem('loginInfo', JSON.stringify({   
                 user: userParsed,
                 token: jwtToken
             }))
-            console.log("login success")
-        } else {
-            console.log("login failure")
         }
 
         return body;
@@ -90,7 +84,8 @@ export class AuthService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-
     return Observable.throw(errMsg);
   }
+
+  
 }
