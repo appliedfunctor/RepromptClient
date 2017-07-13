@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
     public disabled: Boolean
+    public email: String
+    public password: String
 
     contructor() {
         this.disabled = true;

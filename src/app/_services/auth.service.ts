@@ -7,6 +7,7 @@ import { Injectable } from "@angular/core"
 import { Http, Response} from "@angular/http"
 import { Observable } from "rxjs/Observable"
 import { UserModel } from "../_models/user.model"
+import { ErrorMessage } from "../_models/error.model"
 import { Paths } from "../app.paths"
 import 'rxjs/add/operator/map'
 
@@ -14,6 +15,7 @@ import 'rxjs/add/operator/map'
 export class AuthService {
     public jwtToken;
     private registerPath = "/api/auth/register"
+    private loginPath = "/api/auth/login"
     private path = new Paths
 
     constructor(private http: Http) {
@@ -42,13 +44,37 @@ export class AuthService {
                 }))
                 return true
             } else {
+                let json = JSON.parse(response.json())
+                let error = new ErrorMessage(json)
+                console.log(error)
                 return false
             }
         }) 
     }
 
     login(email: String, password: String) {
+        //send request to endpoint
+        var response = this.http.put(this.path.getUrl(this.loginPath), 
+                        JSON.stringify({email: email, 
+                                        password: password
+                                        }))
+        
+        response.map((response: Response) => {
+            let jwtToken = response.json() && response.json().headers.get('X-Auth-Token')
 
+            if(jwtToken) {
+                this.jwtToken = jwtToken
+                localStorage.setItem('loginInfo', JSON.stringify({   
+                    user: new UserModel(JSON.parse(response.json())),
+                    token: response.headers.get('X-Auth-Token')
+                }))
+                return true
+            } 
+            let json = JSON.parse(response.json())
+            let error = new ErrorMessage(json)
+            console.log(error)
+            return false
+        }) 
     }
 
     logout(): void {

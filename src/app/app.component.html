@@ -1,12 +1,29 @@
 <!--The whole content below can be removed with the new code.-->
-<div class="topbar">
-      <h1>>Reprompt</h1>     
-      <h6>The e-learning application</h6>
+<md-sidenav-container>
+  <md-sidenav mode="cover" opened="false" #sidenav>
+    <!-- sidenav content -->
+    <sidemenu></sidemenu>
+  </md-sidenav>
+
+  <!-- primary content -->
+  <div class="topbar">
+    <div class="row">
+        <div class="col">
+            <i class="fa fa-bars fa-2x" aria-hidden="true" (click)="sidenav.open()"></i>
+        </div>
+        <div class="col text-right">
+            <h1>>Reprompt</h1>     
+            <h6>The e-learning application</h6>
+        </div>
+    </div>  
 </div>
-<div class="container">
-  <br>
-        <router-outlet></router-outlet>
-</div>
+    <br>
+  <div class="container-fluid full-height">
+    <header></header>
+    <router-outlet></router-outlet>
+  </div>
+  
+</md-sidenav-container>
 
 
 <!-- <div class="loader">

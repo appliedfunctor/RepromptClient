@@ -1,11 +1,16 @@
-<form class="form-signin">
-<h2 class="form-signin-heading">Sign in</h2>
-<label for="inputUsername" class="sr-only">Email address</label>
-<input type="text" id="inputUsername" 
-    class="form-control" 
-    placeholder="Email address" autofocus required minlength="4" maxlength="24">
-    <br>
-<label for="inputPassword" class="sr-only">Password</label>
-<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-<button [disabled]="disabled" class="btn btn-primary" type="submit">Sign in</button>
+<form class="material-form">
+    <p>
+        <md-input-container class="full-width">
+            <input type="email" mdInput placeholder="Email" required >
+        </md-input-container>
+    </p>
+
+    <p>
+        <md-input-container class="full-width">
+            <input type="password" mdInput placeholder="Password" required >
+        </md-input-container>
+    </p>
+
+    <button md-button type="submit">Sign in</button>
+    <a href="register" md-button>Register a new account</a>
 </form>
