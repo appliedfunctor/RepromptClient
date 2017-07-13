@@ -32,8 +32,7 @@ export class LoginComponent {
                 this.error = true
             }
             
-        });
-        
+        });        
     }
 
     redirect(location: String) {

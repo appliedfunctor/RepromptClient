@@ -5,18 +5,22 @@ import { AuthService } from './auth.service';
 import { JsonpModule, Jsonp, BaseRequestOptions, ResponseOptions, Response, Http } from "@angular/http";
 import { tick } from "@angular/core/testing";
 import { fakeAsync } from "@angular/core/testing";
+import { UserModel } from "app/_models/user.model";
 
 describe('AuthService', () => {
 
-    let service: AuthService;
-    let server: MockBackend;   
-    let validResponse: Object; 
-    let invalidResponse: Object;
-    let token: String;
+    let service: AuthService
+    let server: MockBackend
+    let loginValidResponse: Object
+    let loginInvalidResponse: Object
+    let registerValidResponse: Object
+    let registerInvalidResponse: Object
+    let token: String
+    let registerUser: UserModel
 
-    this.token = "fake-jwt-token";
+    this.token = "fake-jwt-token"
    
-    this.validResponse = {
+    this.loginValidResponse = {
         "id": 63,
         "firstName": "Terry",
         "surName": "Phillips",
@@ -26,9 +30,30 @@ describe('AuthService', () => {
         "isAdministrator": false
     };
 
-    this.invalidResponse = {
-        "error": "Authentication required"
+    this.loginInvalidResponse = {
+        "error": "No Such User Found"
     };
+
+    this.registerValidResponse = {
+        "id": 79,
+        "firstName": "Fake",
+        "surName": "User",
+        "email": "fake@user.com",
+        "isEmailVerified": false,
+        "isEducator": false,
+        "isAdministrator": false
+    }
+
+    this.registerInvalidResponse = {
+        "error": "Credentials Already Registered"
+    }
+
+    this.registerUser = new UserModel({
+        "firstName": "Fake",
+        "surName": "User",
+        "email": "fake@user.com",
+        "password": "faked"
+    })
 
     //configure the tesbed
     beforeEach( () => {
@@ -56,12 +81,12 @@ describe('AuthService', () => {
 
     it('should handle a valid response to a login', fakeAsync( () => {
 
-        let headerData = new Headers({ 'Content-Type': 'application/json', 'X-Auth-Token': this.token });
+        let headerData = new Headers({ 'Content-Type': 'application/json' });
 
         //configure the mock server response
         server.connections.subscribe(connection => { 
             connection.mockRespond(new Response(new ResponseOptions({
-                body: JSON.stringify(this.validResponse),
+                body: JSON.stringify(this.loginValidResponse),
                 status: 200,
                 headers: headerData
             })));
@@ -70,9 +95,74 @@ describe('AuthService', () => {
         service.login("Someone@anaddress.co.uk", "pass").subscribe(data => {
             console.log(data)
             expect(data.hasOwnProperty('error')).toBeFalsy            
-            expect(data.hasOwnProperty('id')).toBeTruthy         
+            expect(data.hasOwnProperty('id')).toBeTruthy
             expect(data.id).toEqual(63);
             expect(service.isAuthenticated).toBeTruthy
         })
     }))
+
+    it('should handle an invalid response to a login', fakeAsync( () => {
+
+        let headerData = new Headers({ 'Content-Type': 'application/json', 'X-Auth-Token': this.token });
+
+        //configure the mock server response
+        server.connections.subscribe(connection => { 
+            connection.mockRespond(new Response(new ResponseOptions({
+                body: JSON.stringify(this.loginInvalidResponse),
+                status: 200,
+                headers: headerData
+            })));
+        });
+
+        service.login("Someone@anaddress.co.uk", "pass").subscribe(data => {
+            console.log(data)
+            expect(data.hasOwnProperty('error')).toBeTruthy
+            expect(data.error).toEqual("No Such User Found")
+            expect(service.isAuthenticated).toBeFalsy
+        })
+    }))
+
+    it('should handle a valid response to a registration', fakeAsync( () => {
+
+        let headerData = new Headers({ 'Content-Type': 'application/json' });
+
+        //configure the mock server response
+        server.connections.subscribe(connection => { 
+            connection.mockRespond(new Response(new ResponseOptions({
+                body: JSON.stringify(this.registerValidResponse),
+                status: 200,
+                headers: headerData
+            })));
+        });
+
+        service.register(this.registerUser).subscribe(data => {
+            console.log(data)
+            expect(data.hasOwnProperty('error')).toBeFalsy            
+            expect(data.hasOwnProperty('id')).toBeTruthy
+            expect(data.id).toEqual(79);
+            expect(service.isAuthenticated).toBeTruthy
+        })
+    }))
+
+    it('should handle an invalid response to a registration', fakeAsync( () => {
+
+        let headerData = new Headers({ 'Content-Type': 'application/json' });
+
+        //configure the mock server response
+        server.connections.subscribe(connection => { 
+            connection.mockRespond(new Response(new ResponseOptions({
+                body: JSON.stringify(this.registerInvalidResponse),
+                status: 200,
+                headers: headerData
+            })));
+        });
+
+        service.register(this.registerUser).subscribe(data => {
+            console.log(data)
+            expect(data.hasOwnProperty('error')).toBeTruthy
+            expect(data.error).toEqual("Credentials Already Registered")
+            expect(service.isAuthenticated).toBeFalsy
+        })
+    }))
+
 })

@@ -146,3 +146,7 @@
 }
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.font-large {
+    font-size: 1.2em;
+}

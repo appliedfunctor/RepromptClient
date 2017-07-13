@@ -16,32 +16,39 @@ import { Paths } from "../app.paths"
 
 @Injectable()
 export class AuthService {
-    public jwtToken;
+    public jwtToken
+    private user: UserModel
     private registerPath = "/api/auth/register"
     private loginPath = "/api/auth/login"
     private path = new Paths
+    private headers = new Headers({ 'Content-Type': 'application/json' });
 
     constructor(private http: Http) {
         //load existing JWT token from storage
         var loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
-        this.jwtToken = loginInfo && loginInfo.jwtToken
+        this.jwtToken = loginInfo && loginInfo.token
+        this.user = loginInfo && loginInfo.user
     }
 
-    register(firstName: String, surName: String, email: String, password: String) {
-        return false
+    register(user: UserModel): Observable<any> {        
+        let options = new RequestOptions({ headers: this.headers });
+        let sendData = JSON.stringify(user);
+
+        //send request to endpoint
+        return this.http.put(this.path.getUrl(this.registerPath), sendData, options)
+                    .map(this.handleData)
+                    .catch(this.handleError);
     }
 
-    login(email: String, password: String) {
+    login(email: String, password: String): Observable<any> {
 
-        let headers = new Headers({ 'Content-Type': 'application/json', 'X-Auth-Token': '' });
-		let options = new RequestOptions({ headers: headers });
-
+        // if (this.isAuthenticated()) {
+        //     return new Observable(JSON.parse(localStorage.getItem('loginInfo')))
+        // }
+        
+		let options = new RequestOptions({ headers: this.headers });
         let sendData = JSON.stringify({email: email, password: password });
-
-        console.log(sendData)
-
-        console.log("Executing login: " + this.path.getUrl(this.loginPath))
-
+        
         //send request to endpoint
         return this.http.post(this.path.getUrl(this.loginPath), sendData, options)
                     .map(this.handleData)
@@ -51,21 +58,33 @@ export class AuthService {
 
     logout(): void {
         this.jwtToken = null
+        this.user = null
         localStorage.removeItem('loginInfo')
     }
 
     isAuthenticated(): boolean {
-        return this.jwtToken ? true : false
+        return this.jwtToken ? true : false   
+    }
+
+    getCurrentUser(): UserModel {
+        if ( this.isAuthenticated() ) {
+            return this.user
+        } else {
+            let noUser = new UserModel({
+                firstName: "Unauthenticated",
+                lastName: "User"
+            })
+        }
     }
 
     private handleData(res: Response) {        
         let jwtToken = res && res.headers && res.headers.get('X-Auth-Token')
-        
         let body = res.json()
 
         if(jwtToken && jwtToken != "") {
             this.jwtToken = jwtToken
             let userParsed = new UserModel(body)
+            this.user = userParsed
             localStorage.setItem('loginInfo', JSON.stringify({   
                 user: userParsed,
                 token: jwtToken

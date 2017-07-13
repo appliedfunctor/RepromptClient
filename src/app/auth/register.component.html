@@ -1,13 +1,31 @@
-<div class="container">
-    <form class="form-register">
-    <div class="form-register-heading">Sign in</div>
-    <label for="inputUsername" class="sr-only">Email address</label>
-    <input type="text" id="inputUsername" 
-        class="form-control" 
-        placeholder="Email address" autofocus
-    required minlength="4" maxlength="24">
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <button [disabled]="disabled" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
-</div>
+<form class="material-form" #registerForm="ngForm" (ngSubmit)="submit()">
+    <p>
+        <md-input-container class="full-width">
+            <input name="firstName" [(ngModel)]="firstName"  type="text" mdInput placeholder="First name" required>
+        </md-input-container>
+    </p>
+
+    <p>
+        <md-input-container class="full-width">
+            <input name="surName" [(ngModel)]="surName"  type="text" mdInput placeholder="Last name" required>
+        </md-input-container>
+    </p>
+
+    <p>
+        <md-input-container class="full-width">
+            <input name="email" [(ngModel)]="email"  type="email" mdInput placeholder="Email" required email>
+        </md-input-container>
+    </p>
+
+    <p>
+        <md-input-container class="full-width">
+            <input name="passsword" [(ngModel)]="password"  type="password" mdInput placeholder="Password" required password>
+        </md-input-container>
+    </p>
+
+    <button md-button type="submit" [disabled]="!registerForm.valid">Create account</button>
+    <br>
+    <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
+</form>
+
+

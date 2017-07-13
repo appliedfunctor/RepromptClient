@@ -1,15 +1,14 @@
-<!--The whole content below can be removed with the new code.-->
 <md-sidenav-container>
   <md-sidenav mode="cover" opened="false" #sidenav>
     <!-- sidenav content -->
-    <sidemenu></sidemenu>
+    <sidemenu [authenticated]="auth" [user]="user" (logout)="logout()"></sidemenu>
   </md-sidenav>
 
   <!-- primary content -->
   <div class="topbar">
     <div class="row">
         <div class="col">
-            <i class="fa fa-bars fa-2x" aria-hidden="true" (click)="sidenav.open()"></i>
+            <i class="fa fa-bars fa-2x" aria-hidden="true" (click)="sidenav.open()"></i> <div class="font-large">{{ firstName }} {{  surName }}</div>
         </div>
         <div class="col text-right">
             <h1>>Reprompt</h1>     

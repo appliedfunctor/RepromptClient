@@ -1,9 +1,12 @@
-<md-nav-list>
+<md-nav-list [ngSwitch]="authenticated">
     <h3 md-subheader>Account</h3>
-  <md-list-item>    
-    <a md-line href="login"><i class="fa fa-sign-in"></i> Login</a>
+  <md-list-item *ngSwitchCase="false">    
+    <a md-line href="login" ><i class="fa fa-sign-in"></i> Login</a>
   </md-list-item>
-  <md-list-item>    
+  <md-list-item *ngSwitchCase="true">    
+    <a md-line href="" (click)="signOut()"><i class="fa fa-sign-out"></i> Logout</a>
+  </md-list-item>
+  <md-list-item *ngSwitchCase="false">    
     <a md-line href="register"><i class="fa fa-user-circle"></i> Register</a>
   </md-list-item>
   <h3 md-subheader>Navigation</h3>
