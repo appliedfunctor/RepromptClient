@@ -145,8 +145,26 @@
   width: 100%;
 }
 
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
 .font-large {
     font-size: 1.2em;
+}
+
+.font-xlarge {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
+.avatar-sm {
+    height: 50px;
+    width: 50px;
+}
+
+.spacer {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
 }

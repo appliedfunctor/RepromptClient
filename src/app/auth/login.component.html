@@ -2,17 +2,19 @@
     <p>
         <md-input-container class="full-width">
             <input name="email " [(ngModel)]="email"  type="email" mdInput placeholder="Email" required email>
+        <md-error>This field is required</md-error>
         </md-input-container>
     </p>
 
     <p>
         <md-input-container class="full-width">
             <input name="passsword " [(ngModel)]="password"  type="password" mdInput placeholder="Password" required password>
+            <md-error>This field is required</md-error>
         </md-input-container>
     </p>
 
-    <button md-button type="submit" (click)="submit()" [disabled]="!loginForm.valid">Sign in</button>
-    <button type="button" class="right" (click)="redirect('register')" md-button>Register a new account</button>
+    <button md-raised-button type="submit" (click)="submit()" [disabled]="!loginForm.valid">Sign in</button>
+    <button type="button" class="right" (click)="switchTab()" md-button>Register a new account</button>
     <br>
     <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
 </form>

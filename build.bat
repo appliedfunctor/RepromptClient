@@ -1,1 +1,1 @@
-ng build --prod --aot && rm -r ../RepromptServer/public && cp -r dist ../RepromptServer/public
+ng build --prod --aot && rm -r ../RepromptServer/public && cp -r dist ../RepromptServer/public && git --git-dir=C:/Users/kesom/IdeaProjects/reprompt/RepromptServer/.git add C:/Users/kesom/IdeaProjects/reprompt/RepromptServer/.

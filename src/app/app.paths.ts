@@ -5,8 +5,9 @@ export class Paths {
     http = "http://"
     https = "https://"
 
-    getUrl(append: String) {
+    getUrl(append: string) {
         let start = this.secure ? this.https : this.http
         return start + this.base + append
+        //return append
     }
 }

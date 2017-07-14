@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-
 import { UserModel } from "../_models/user.model";
 
 @Injectable()

@@ -1,0 +1,4 @@
+ <md-tab-group [selectedIndex]="selectedTab">
+  <md-tab label="Login"><login-form (tab)="toggleTab()"></login-form></md-tab>
+  <md-tab label="Register"><register (tab)="toggleTab()"></register></md-tab>
+</md-tab-group> 

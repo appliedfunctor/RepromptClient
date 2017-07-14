@@ -1,22 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core'
 import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
-import { ErrorMessage } from "app/_models/error.model";
+import { ErrorMessage } from "app/_models/error.model"
+import { AuthMenuTabs } from 'app/menus/tabs.component'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { EqualValidator } from "app/validators/equal-validator.directive"
 
 @Component({
-    selector: 'auth',
+    selector: 'login-form',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
     providers: [AuthService]
 })
 export class LoginComponent {
-    public error: Boolean = false
-    public errorMessage: String = "There has been an error attempting to authenticate you."
-    public email: String = "";
-    public password: String = "";
-    public response;
+    loginForm: FormGroup
+    error: Boolean = false
+    errorMessage: String = "There has been an error attempting to authenticate you."
+    email: String = ""
+    password: String = ""
+    response;
+    @Output() tab = new EventEmitter<boolean>();
 
-    constructor(private router: Router, private service: AuthService) {
+    constructor(private fb: FormBuilder, private router: Router, private service: AuthService) {
+        this.loginForm = fb.group({
+            'email' : [null, Validators.compose(
+                [
+                    Validators.required,
+                    Validators.email
+                ]
+            )],
+            'password' : [null, Validators.compose(
+                [
+                    Validators.required, 
+                    Validators.minLength(30), 
+                    Validators.maxLength(500)
+                ]
+            )]
+        });
+    
     }
 
     submit() {
@@ -35,8 +56,12 @@ export class LoginComponent {
         });        
     }
 
-    redirect(location: String) {
-        let link = [location];
-        this.router.navigate(link);
+    // redirect(location: String) {
+    //     let link = [location];
+    //     this.router.navigate(link);
+    // }
+
+    switchTab() {
+        this.tab.emit(true);
     }
 }

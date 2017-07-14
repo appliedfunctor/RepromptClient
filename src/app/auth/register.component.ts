@@ -1,7 +1,9 @@
-import { Component, ViewChild } from "@angular/core"
+import { Component, ViewChild, Output, EventEmitter } from "@angular/core"
 import { AuthService } from "../_services/auth.service"
 import { Router } from "@angular/router"
-import { UserModel } from "app/_models/user.model";
+import { UserModel } from "app/_models/user.model"
+import { EqualValidator } from "app/validators/equal-validator.directive"
+
 
 @Component({
     selector: "register",
@@ -21,6 +23,7 @@ export class RegisterComponent {
     public errorMessage: String = "There has been an error attempting to authenticate you."
     public response;
     public error: Boolean = false
+    @Output() tab = new EventEmitter<boolean>();
 
     constructor(private router: Router, private service: AuthService) {
     }
@@ -46,6 +49,10 @@ export class RegisterComponent {
             }
             
         });  
+    }
+
+    switchTab() {
+        this.tab.emit(true);
     }
 
 }

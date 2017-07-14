@@ -1,31 +1,49 @@
 <form class="material-form" #registerForm="ngForm" (ngSubmit)="submit()">
     <p>
         <md-input-container class="full-width">
-            <input name="firstName" [(ngModel)]="firstName"  type="text" mdInput placeholder="First name" required>
+            <input name="firstName" [(ngModel)]="firstName" id="firstName" type="text" mdInput placeholder="First name" required>
+            <md-error>This field is required</md-error>
         </md-input-container>
+        
     </p>
 
     <p>
         <md-input-container class="full-width">
             <input name="surName" [(ngModel)]="surName"  type="text" mdInput placeholder="Last name" required>
+            <md-error>This field is required</md-error>
+        </md-input-container>        
+    </p>
+
+    <p>
+        <md-input-container class="full-width">
+            <input name="email" [(ngModel)]="email"  type="email" mdInput placeholder="Email" required email validateEqual="emailVerify" reverse="true">
+            <md-error>Must be a valid email</md-error>
         </md-input-container>
     </p>
 
     <p>
         <md-input-container class="full-width">
-            <input name="email" [(ngModel)]="email"  type="email" mdInput placeholder="Email" required email>
+            <input name="emailVerify" [(ngModel)]="emailVerify"  type="email" mdInput placeholder="Verify Email" email validateEqual="email">
+            <md-error>Emails must match</md-error>
         </md-input-container>
     </p>
 
     <p>
         <md-input-container class="full-width">
-            <input name="passsword" [(ngModel)]="password"  type="password" mdInput placeholder="Password" required password>
+            <input name="password" [(ngModel)]="password"  type="password" mdInput placeholder="Password" required password validateEqual="passwordVerify" reverse="true">
+            <md-error>This field is required</md-error>
         </md-input-container>
     </p>
 
-    <button md-button type="submit" [disabled]="!registerForm.valid">Create account</button>
+    <p>
+        <md-input-container class="full-width">
+            <input name="passwordVerify" [(ngModel)]="passwordVerify"  type="password" mdInput placeholder="Verify Password" password validateEqual="password">
+            <md-error>Passwords must match</md-error>
+        </md-input-container>
+    </p>
+
+    <button md-raised-button type="submit" [disabled]="!registerForm.valid">Create account</button>
+    <button type="button" class="right" (click)="switchTab()" md-button>Login to existing account</button>
     <br>
     <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
 </form>
-
-

@@ -1,0 +1,51 @@
+<md-nav-list [ngSwitch]="authenticated">
+    <h3 md-subheader>Account</h3>
+    <md-list-item *ngSwitchCase="false">    
+        <a md-line href="login" ><i class="fa fa-sign-in"></i> Login</a>
+    </md-list-item>
+    <md-list-item *ngSwitchCase="true">    
+        <a md-line href="" (click)="signOut()"><i class="fa fa-sign-out"></i> Logout</a>
+    </md-list-item>
+    <md-list-item *ngSwitchCase="false">    
+        <a md-line href="register"><i class="fa fa-user-circle"></i> Register</a>
+    </md-list-item>
+
+    <md-divider></md-divider>  
+
+    <div  *ngSwitchCase="true">
+        <h3 md-subheader>Navigation</h3>    
+        <md-list-item >    
+            <a md-line href="home"><i class="fa fa-home"></i> Home</a>
+        </md-list-item>
+        <md-divider></md-divider> 
+    </div> 
+
+    <div *ngIf="!user.isEducator"> 
+        <div *ngSwitchCase="true">
+            <h3 md-subheader>Study</h3>
+            <md-list-item>    
+                <a md-line href="home"><i class="fa fa-home"></i> Learn</a>
+            </md-list-item>
+            <md-list-item>    
+                <a md-line href="home"><i class="fa fa-home"></i> Test</a>
+            </md-list-item>
+            <md-divider></md-divider>  
+        </div>
+    </div>
+
+    <div *ngIf="user.isEducator">         
+        <div *ngSwitchCase="true">
+            <h3 md-subheader>Manage</h3>
+            <md-list-item>    
+                <a md-line href="home"><i class="fa fa-home"></i> Cohorts</a>
+            </md-list-item>
+            <md-list-item>    
+                <a md-line href="home"><i class="fa fa-home"></i> Content</a>
+            </md-list-item>
+            <md-list-item>    
+                <a md-line href="home"><i class="fa fa-home"></i> Users</a>
+            </md-list-item>
+            <md-divider></md-divider>  
+        </div>
+    </div>
+</md-nav-list>

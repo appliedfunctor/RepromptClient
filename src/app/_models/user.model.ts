@@ -1,3 +1,5 @@
+import { UserRoles } from "app/enums/user.roles.enum";
+
 export class UserModel {
     id: Number;
     firstName: String;
@@ -11,13 +13,26 @@ export class UserModel {
 
     constructor(userData) {
         this.id = userData.id ? userData.id : null;
-        this.firstName = userData.firstName ? userData.firstName : null;
-        this.surName = userData.surName ? userData.surName : null;
-        this.email = userData.email ? userData.email : null;
-        this.password = userData.password ? userData.password : null;
-        this.isEmailVerified = userData.isEmailVerified ? userData.isEmailVerified : null;
-        this.isEducator = userData.isEducator ? userData.isEducator : null;
-        this.isAdministrator = userData.isAdministrator ? userData.isAdministrator : null;
-        this.avatarUrl = userData.avatarUrl ? userData.avatarUrl : null;
+        this.firstName = userData.firstName ? userData.firstName : "";
+        this.surName = userData.surName ? userData.surName : "";
+        this.email = userData.email ? userData.email : "";
+        this.password = userData.password ? userData.password : "";
+        this.isEmailVerified = userData.isEmailVerified ? userData.isEmailVerified : "";
+        this.isEducator = userData.isEducator ? userData.isEducator : "";
+        this.isAdministrator = userData.isAdministrator ? userData.isAdministrator : "";
+        this.avatarUrl = userData.avatarUrl ? userData.avatarUrl : "assets/blankProfile.png";
     }
+
+    getRole(): String {
+        let roles = new UserRoles   
+        if (this.isAdministrator) {
+            return roles.Administrator
+        }
+        
+        if (this.isEducator) {
+            return roles.Educator
+        }
+        return roles.Student
+    }
+    
 }

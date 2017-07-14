@@ -45,7 +45,7 @@ export class AuthService {
         // if (this.isAuthenticated()) {
         //     return new Observable(JSON.parse(localStorage.getItem('loginInfo')))
         // }
-        
+        console.log(this.path.getUrl(this.loginPath))
 		let options = new RequestOptions({ headers: this.headers });
         let sendData = JSON.stringify({email: email, password: password });
         
@@ -71,8 +71,9 @@ export class AuthService {
             return this.user
         } else {
             let noUser = new UserModel({
-                firstName: "Unauthenticated",
-                lastName: "User"
+                firstName: "Guest",
+                lastName: "",
+                avatarUrl: "assets/blankProfile.png"
             })
         }
     }
