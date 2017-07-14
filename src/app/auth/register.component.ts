@@ -23,7 +23,7 @@ export class RegisterComponent {
     public errorMessage: String = "There has been an error attempting to authenticate you."
     public response;
     public error: Boolean = false
-    @Output() tab = new EventEmitter<boolean>();
+    @Output() tab = new EventEmitter<number>();
 
     constructor(private router: Router, private service: AuthService) {
     }
@@ -52,7 +52,7 @@ export class RegisterComponent {
     }
 
     switchTab() {
-        this.tab.emit(true);
+        this.tab.emit(0);
     }
 
 }

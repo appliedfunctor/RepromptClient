@@ -9,10 +9,13 @@ import { RegisterComponent } from 'app/auth/register.component'
     templateUrl: './auth.component.html'
 })
 export class AuthComponent {
-    selectedTab = 0
+    selectedTab: number = 0
 
     toggleTab() {
-        console.log("selected: " + this.selectedTab + " new: " + Math.abs(1 - this.selectedTab))
-        this.selectedTab = Math.abs(1 - this.selectedTab)        
+        this.selectedTab = Math.abs(1 - this.selectedTab)
+    }
+
+    onSelectChange = ($event: any): void => {
+        this.selectedTab = $event.index
     }
 }

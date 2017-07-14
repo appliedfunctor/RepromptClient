@@ -19,7 +19,7 @@ export class LoginComponent {
     email: String = ""
     password: String = ""
     response;
-    @Output() tab = new EventEmitter<boolean>();
+    @Output() tab = new EventEmitter<number>()
 
     constructor(private fb: FormBuilder, private router: Router, private service: AuthService) {
         this.loginForm = fb.group({
@@ -62,6 +62,6 @@ export class LoginComponent {
     // }
 
     switchTab() {
-        this.tab.emit(true);
+        this.tab.emit(1);
     }
 }
