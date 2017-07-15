@@ -1,51 +1,22 @@
-<md-sidenav-container>
+<!-- <md-sidenav-container>
   <md-sidenav mode="cover" opened="false" #sidenav>
-    <!-- sidenav content -->
-    <sidemenu [authenticated]="auth" [user]="user" (logout)="logout()"></sidemenu>
-  </md-sidenav>
+     sidenav content -->
+    <!-- <sidemenu [authenticated]="auth" [user]="user" (logout)="logout()"></sidemenu>
+  </md-sidenav> -->
 
   <!-- primary content -->
-  <md-toolbar color="primary">
+<md-toolbar color="primary">
 
-    <span>>Reprompt</span>
-    <span class="spacer"></span>
-    <button md-button [mdMenuTriggerFor]="appMenu"> <md-icon>menu</md-icon> Menu</button>
-    
-  </md-toolbar>
-
-  <md-menu #appMenu="mdMenu">
-    <menu-content></menu-content>
-  </md-menu>
-
-  <!-- <br>
-  <div class="topbar">
-    <div class="row">
-        <div class="col-7">
-            <div class="ml-2 mr-2 d-inline"><i class="fa fa-bars fa-2x" aria-hidden="true" (click)="sidenav.open()"></i> </div>            
-            <div class="d-inline ml-2 mr-2 font-xlarge">>Reprompt</div>
-          </div>
-        <div class="col-5 text-right">
-          <div *ngIf="auth">
-            <div class="d-inline font-large align-middle">{{ firstName }} {{  surName }} (Student)</div>
-            <div class="d-inline ml-2 mr-2 align-middle"><img src="{{ user.avatarUrl }}" class="avatar avatar-sm" alt="Avatar"></div>     
-          </div>       
-        </div>
-    </div>  
-</div> -->
-    <br>
-  <div class="container-fluid full-height">
-    <header></header>
-    <router-outlet></router-outlet>
-  </div>
+  <span>>Reprompt</span>
+  <span class="spacer"></span>
+  <button md-button><img src="{{ user.avatarUrl }}" class="avatar avatar-sm" alt="Avatar"> {{ user.firstName }} {{ user.surName }}</button>
+  <button md-button [mdMenuTriggerFor]="appMenu"> <md-icon>menu</md-icon> Menu</button>
   
-</md-sidenav-container>
+</md-toolbar>
 
+<router-outlet></router-outlet>
 
-<!-- <div class="loader">
-      <i class="fa fa-mortar-board loader-inner" aria-hidden="true"></i>
-      </div>
-    <div class="loader-text">In development...</div>
-    <br>
-
-    <auth></auth> -->
-
+ 
+  <md-menu #appMenu="mdMenu">
+    <menu-content (logout)="logout()"></menu-content>
+  </md-menu> 

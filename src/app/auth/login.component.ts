@@ -1,27 +1,25 @@
 import { Component, Output, EventEmitter } from '@angular/core'
-import { Router } from '@angular/router';
 import { AuthService } from '../_services/auth.service'
 import { ErrorMessage } from "app/_models/error.model"
-import { AuthMenuTabs } from 'app/menus/tabs.component'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { EqualValidator } from "app/validators/equal-validator.directive"
+import { UserModel } from "app/_models/user.model";
 
 @Component({
     selector: 'login-form',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
-    providers: [AuthService]
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
     loginForm: FormGroup
     error: Boolean = false
     errorMessage: String = "There has been an error attempting to authenticate you."
-    email: String = ""
-    password: String = ""
+    email: String = "kesomir@btinternet.com"
+    password: String = "d3m0n1c"
     response;
-    @Output() tab = new EventEmitter<number>()
+    @Output() tab = new EventEmitter<number>()    
 
-    constructor(private fb: FormBuilder, private router: Router, private service: AuthService) {
+    constructor(private fb: FormBuilder, private service: AuthService) {
         this.loginForm = fb.group({
             'email' : [null, Validators.compose(
                 [
@@ -48,18 +46,12 @@ export class LoginComponent {
 
             if(data.hasOwnProperty("id")) {
                 this.error = false
-                this.router.navigate(['/']);
             } else {
                 this.error = true
             }
             
         });        
     }
-
-    // redirect(location: String) {
-    //     let link = [location];
-    //     this.router.navigate(link);
-    // }
 
     switchTab() {
         this.tab.emit(1);

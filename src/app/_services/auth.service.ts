@@ -5,29 +5,40 @@
  * Also Angular.io http guide: https://angular.io/guide/http
  * accessed 13/07/2017
  */
-import { Injectable } from "@angular/core"
+import { Injectable, Output, EventEmitter } from "@angular/core"
 import { Http, Response, RequestOptions, Headers } from "@angular/http"
 import {Observable} from 'rxjs/Rx'
 import { UserModel } from "../_models/user.model"
 import { ErrorMessage } from "../_models/error.model"
 import { Paths } from "../app.paths"
+import { AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
 
 //import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthService {
-    public jwtToken
-    private user: UserModel
+    public jwtToken: string
+    private user: UserModel = new UserModel({})
     private registerPath = "/api/auth/register"
     private loginPath = "/api/auth/login"
     private path = new Paths
-    private headers = new Headers({ 'Content-Type': 'application/json' });
+    private headers = new Headers({ 'Content-Type': 'application/json' })
+    @Output() userChange = new EventEmitter<UserModel>()
+    private jwtHelper: JwtHelper = new JwtHelper();
 
     constructor(private http: Http) {
+        this.loadDataFromStorage()
+    }
+
+    loadDataFromStorage() {
         //load existing JWT token from storage
         var loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
         this.jwtToken = loginInfo && loginInfo.token
-        this.user = loginInfo && loginInfo.user
+        //load existing user from storage
+        if(loginInfo != null && loginInfo.user != null){
+            this.user = new UserModel(loginInfo.user)
+        }
+        //this.onUserChange()
     }
 
     register(user: UserModel): Observable<any> {        
@@ -41,54 +52,65 @@ export class AuthService {
     }
 
     login(email: String, password: String): Observable<any> {
-
-        // if (this.isAuthenticated()) {
-        //     return new Observable(JSON.parse(localStorage.getItem('loginInfo')))
-        // }
         console.log(this.path.getUrl(this.loginPath))
 		let options = new RequestOptions({ headers: this.headers });
         let sendData = JSON.stringify({email: email, password: password });
         
         //send request to endpoint
-        return this.http.post(this.path.getUrl(this.loginPath), sendData, options)
+        let response = this.http.post(this.path.getUrl(this.loginPath), sendData, options)
                     .map(this.handleData)
                     .catch(this.handleError);
+
+        response.subscribe(res => {
+
+            //handle token
+            this.loadDataFromStorage()
+
+            //handle user
+            if(res.hasOwnProperty("id")) {
+                this.user = new UserModel(res)
+                this.onUserChange()
+            }
+
+            console.log("token" + this.jwtToken)
+        })
         
+        return response.share()
     }
 
     logout(): void {
         this.jwtToken = null
-        this.user = null
+        this.user = new UserModel({})
         localStorage.removeItem('loginInfo')
+        this.onUserChange()
     }
 
     isAuthenticated(): boolean {
-        return this.jwtToken ? true : false   
+        //console.log("token valid: " + (this.isTokenValid()))
+        return this.isTokenValid() ? true : false   
+    }
+
+    isTokenValid() {
+        //console.log("token null: " + (this.jwtToken == null))
+        if(this.jwtToken != null) {
+        //console.log("token expired: " + this.jwtHelper.isTokenExpired(this.jwtToken))
+        }
+        return (this.jwtToken != null && !this.jwtHelper.isTokenExpired(this.jwtToken))
     }
 
     getCurrentUser(): UserModel {
-        if ( this.isAuthenticated() ) {
-            return this.user
-        } else {
-            let noUser = new UserModel({
-                firstName: "Guest",
-                lastName: "",
-                avatarUrl: "assets/blankProfile.png"
-            })
-        }
+        return this.user
     }
 
-    private handleData(res: Response) {        
-        let jwtToken = res && res.headers && res.headers.get('X-Auth-Token')
+    private handleData(res: Response) {   
+        let token = res && res.headers && res.headers.get('X-Auth-Token')
         let body = res.json()
 
-        if(jwtToken && jwtToken != "") {
-            this.jwtToken = jwtToken
+        if(token && token != "") {
             let userParsed = new UserModel(body)
-            this.user = userParsed
             localStorage.setItem('loginInfo', JSON.stringify({   
                 user: userParsed,
-                token: jwtToken
+                token: token
             }))
         }
 
@@ -105,6 +127,10 @@ export class AuthService {
       errMsg = error.message ? error.message : error.toString();
     }
     return Observable.throw(errMsg);
+  }
+
+  onUserChange() {
+    this.userChange.emit(this.user)
   }
 
   

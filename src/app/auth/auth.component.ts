@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdTabsModule } from '@angular/material';
 import { LoginComponent } from 'app/auth/login.component'
 import { RegisterComponent } from 'app/auth/register.component'
+import { UserModel } from "app/_models/user.model";
 
 @Component({
     selector: 'auth',
@@ -10,12 +11,17 @@ import { RegisterComponent } from 'app/auth/register.component'
 })
 export class AuthComponent {
     selectedTab: number = 0
+    //@Output() userChange = new EventEmitter<UserModel>()
 
     toggleTab() {
         this.selectedTab = Math.abs(1 - this.selectedTab)
     }
 
-    onSelectChange = ($event: any): void => {
-        this.selectedTab = $event.index
+    onSelectChange = (event: any): void => {
+        this.selectedTab = event.index
     }
+
+    // onUserChange(user: UserModel) {
+    //     console.log(user)
+    // }
 }

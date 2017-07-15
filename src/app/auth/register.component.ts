@@ -8,8 +8,7 @@ import { EqualValidator } from "app/validators/equal-validator.directive"
 @Component({
     selector: "register",
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css'],
-    providers: [AuthService]
+    styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
      @ViewChild('registerForm') registerForm: HTMLFormElement;
@@ -23,7 +22,8 @@ export class RegisterComponent {
     public errorMessage: String = "There has been an error attempting to authenticate you."
     public response;
     public error: Boolean = false
-    @Output() tab = new EventEmitter<number>();
+    @Output() tab = new EventEmitter<number>()
+    //@Output() userChange = new EventEmitter<UserModel>()
 
     constructor(private router: Router, private service: AuthService) {
     }
@@ -42,7 +42,8 @@ export class RegisterComponent {
             this.errorMessage = data.hasOwnProperty('error') ? data.error : "There has been an error attempting to register you."            
 
             if(data.hasOwnProperty("id")) {
-                this.error = false
+                this.error = false                
+                //this.userChange.emit(data)
                 this.router.navigate(['/']);
             } else {
                 this.error = true

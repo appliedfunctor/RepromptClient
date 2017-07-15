@@ -5,7 +5,6 @@ export class UserModel {
     firstName: String;
     surName: String;
     email: String;
-    password: String;
     isEmailVerified: Boolean;
     isEducator: Boolean;
     isAdministrator: Boolean;
@@ -16,10 +15,9 @@ export class UserModel {
         this.firstName = userData.firstName ? userData.firstName : "";
         this.surName = userData.surName ? userData.surName : "";
         this.email = userData.email ? userData.email : "";
-        this.password = userData.password ? userData.password : "";
-        this.isEmailVerified = userData.isEmailVerified ? userData.isEmailVerified : "";
-        this.isEducator = userData.isEducator ? userData.isEducator : "";
-        this.isAdministrator = userData.isAdministrator ? userData.isAdministrator : "";
+        this.isEmailVerified = userData.isEmailVerified ? userData.isEmailVerified : false;
+        this.isEducator = userData.isEducator ? userData.isEducator : false;
+        this.isAdministrator = userData.isAdministrator ? userData.isAdministrator : false;
         this.avatarUrl = userData.avatarUrl ? userData.avatarUrl : "assets/blankProfile.png";
     }
 

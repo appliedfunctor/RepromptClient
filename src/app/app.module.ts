@@ -19,7 +19,6 @@ import { AuthGuard } from './_guards/auth.guard'
 import { routing } from './app.routing'
 import { AuthService } from "./_services/auth.service"
 import { SideMenu } from "./menus/sidemenu.component"
-import { AuthMenuTabs } from "./menus/tabs.component"
 import { EqualValidator } from "./validators/equal-validator.directive"
 
 @NgModule({
@@ -31,7 +30,6 @@ import { EqualValidator } from "./validators/equal-validator.directive"
     RegisterComponent,
     MenuContent,
     SideMenu,
-    AuthMenuTabs,
     EqualValidator
   ],
   imports: [
