@@ -1,11 +1,12 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router'
+import { Component } from '@angular/core'
  
-//import { LoginComponent } from './login/index';
-import { HomeComponent } from './home/home.component';
-import { AuthComponent } from './auth/auth.component';
-import { AuthGuard } from './_guards/auth.guard';
-import { CohortsComponent } from "app/cohorts/cohorts.component";
-import { EducatorGuard } from "app/_guards/educator.guard";
+//import { LoginComponent } from './login/index'
+import { HomeComponent } from './home/home.component'
+import { AuthComponent } from './auth/auth.component'
+import { AuthGuard } from './_guards/auth.guard'
+import { EducatorGuard } from "app/_guards/educator.guard"
+import { CohortsComponent } from "app/cohorts/cohorts.component"
 
 const appRoutes: Routes = [
     { path: 'auth', component: AuthComponent },

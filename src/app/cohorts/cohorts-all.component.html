@@ -1,3 +1,5 @@
 <div class="panel-container">
-    <div *ngFor="let cohort of cohorts">{{ cohort.name }}</div>
+    <md-list>
+        <md-list-item *ngFor="let cohort of cohorts"><i class="fa fa-folder mr-2"></i>  {{ cohort.name }}</md-list-item>
+    </md-list>
 </div>
