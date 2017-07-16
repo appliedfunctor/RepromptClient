@@ -42,7 +42,16 @@
         </md-input-container>
     </p>
 
-    <button md-raised-button type="submit" [disabled]="!registerForm.valid">Create account</button>
+    <p>
+        
+        <md-radio-group name="isEducator" [(ngModel)]="isEducator">    
+            <div>I am a </div>        
+            <md-radio-button class="md-radio-button" value="false">Student</md-radio-button>
+            <md-radio-button class="md-radio-button" value="true">Educator</md-radio-button>
+        </md-radio-group>
+    </p>
+
+    <button md-raised-button color="accent" type="submit" [disabled]="!registerForm.valid">Create account</button>
     <button type="button" class="right" (click)="switchTab()" md-button>Login to existing account</button>
     <br>
     <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>

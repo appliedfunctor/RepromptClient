@@ -1,0 +1,6 @@
+ <md-tab-group [selectedIndex]="selectedTab" (selectChange)="onSelectChange($event)">
+  <md-tab label="All"><cohorts-all (tab)="toggleTab()"></cohorts-all></md-tab>
+  <md-tab label="Create"><cohorts-create (tab)="toggleTab()"></cohorts-create></md-tab>
+  <md-tab label="View"><cohorts-view (tab)="toggleTab()"></cohorts-view></md-tab>
+  <md-tab label="Populate"><cohorts-populate (tab)="toggleTab()"></cohorts-populate></md-tab>
+</md-tab-group> 

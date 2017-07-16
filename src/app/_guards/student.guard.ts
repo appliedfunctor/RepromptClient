@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { UserModel } from "../_models/user.model";
+import { AuthService } from "app/_services/auth.service";
 
 @Injectable()
 export class StudentGuard implements CanActivate {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private auth: AuthService) { }
 
     canActivate() {
-        let loginInfo = new UserModel(JSON.parse(localStorage.getItem('loginInfo')))
-        if (loginInfo && loginInfo.isEducator && loginInfo.isEducator === true) {
+        let user = this.auth.getCurrentUser()
+        if (this.auth.isAuthenticated() && !user.isEducator) {
             return true;
         }
 
-        if(!loginInfo) {
-            this.router.navigate(['/login']);
-        }
+        this.router.navigate(['/']);
         return false;
     }
 }

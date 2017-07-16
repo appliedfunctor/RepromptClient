@@ -15,7 +15,7 @@ export class AppComponent {
   user: UserModel = new UserModel({})
   firstName: String = "Guest"
   surName: String = ""
-  auth: boolean = false
+  authenticated: boolean = false
 
   constructor(private service: AuthService, private router: Router) {    
     service.userChange.subscribe(user => {
@@ -23,24 +23,24 @@ export class AppComponent {
       this.onUserChange()
     })
     this.user = service.getCurrentUser()
-    this.auth = this.service.isAuthenticated()
+    this.authenticated = this.service.isAuthenticated()
   }
 
   logout() {
     this.service.logout()
-    this.auth = false
+    this.authenticated = false
     this.router.navigate(['/auth']);
   }
 
   onUserChange() {
     this.firstName = this.user.firstName
     this.surName = this.user.surName
-    this.auth = this.service.isAuthenticated()
+    this.authenticated = this.service.isAuthenticated()
     
-    if(this.auth) {
-      this.router.navigate(['/']);
+    if(this.authenticated) {
+      this.router.navigate(['/'])
     }
-    console.log("Auth "+ this.auth + " User: " + this.user)
+    console.log("Auth "+ this.authenticated + " User: " + this.user)
   }
 
 }

@@ -12,18 +12,18 @@ import { EqualValidator } from "app/validators/equal-validator.directive"
 })
 export class RegisterComponent {
      @ViewChild('registerForm') registerForm: HTMLFormElement;
-    public disabled: Boolean = true;
-    public firstName: String = ""
-    public surName: String = ""
-    public email: String = ""
-    public emailVerify: String = ""
-    public password: String = ""
-    public passwordVerify: String = ""
-    public errorMessage: String = "There has been an error attempting to authenticate you."
-    public response;
-    public error: Boolean = false
+    disabled: boolean = true;
+    firstName: string = ""
+    surName: string = ""
+    email: string = ""
+    emailVerify: string = ""
+    password: string = ""
+    passwordVerify: string = ""
+    errorMessage: string = "There has been an error attempting to authenticate you."
+    response
+    error: boolean = false
+    isEducator: string = "false"
     @Output() tab = new EventEmitter<number>()
-    //@Output() userChange = new EventEmitter<UserModel>()
 
     constructor(private router: Router, private service: AuthService) {
     }
@@ -33,7 +33,8 @@ export class RegisterComponent {
             firstName: this.firstName,
             surName: this.surName,
             email: this.email,
-            password: this.password
+            password: this.password,
+            isEducator: this.isEducator
         })
 
         this.service.register(user).subscribe(data => {
@@ -42,12 +43,12 @@ export class RegisterComponent {
             this.errorMessage = data.hasOwnProperty('error') ? data.error : "There has been an error attempting to register you."            
 
             if(data.hasOwnProperty("id")) {
-                this.error = false                
-                //this.userChange.emit(data)
-                this.router.navigate(['/']);
+                this.error = false
             } else {
                 this.error = true
             }
+
+            console.log(data)
             
         });  
     }

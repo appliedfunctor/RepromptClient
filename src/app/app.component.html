@@ -1,22 +1,22 @@
-<!-- <md-sidenav-container>
-  <md-sidenav mode="cover" opened="false" #sidenav>
-     sidenav content -->
-    <!-- <sidemenu [authenticated]="auth" [user]="user" (logout)="logout()"></sidemenu>
-  </md-sidenav> -->
-
-  <!-- primary content -->
 <md-toolbar color="primary">
 
   <span>>Reprompt</span>
   <span class="spacer"></span>
-  <button md-button><img src="{{ user.avatarUrl }}" class="avatar avatar-sm" alt="Avatar"> {{ user.firstName }} {{ user.surName }}</button>
+  <button *ngIf="authenticated" md-button [mdMenuTriggerFor]="userMenu"><img src="{{ user.avatarUrl }}" class="avatar avatar-sm" alt="Avatar"> {{ user.firstName }} {{ user.surName }}</button>
   <button md-button [mdMenuTriggerFor]="appMenu"> <md-icon>menu</md-icon> Menu</button>
   
 </md-toolbar>
 
 <router-outlet></router-outlet>
 
+<md-menu #userMenu="mdMenu" >
+  <div *ngIf="authenticated">
+    <button md-menu-item (click)="logout()"><i class="fa fa-sign-out"></i> Logout </button>
+  </div>
+</md-menu> 
+
+<md-menu #appMenu="mdMenu">
+  <menu-content (logout)="logout()"></menu-content>
+</md-menu> 
  
-  <md-menu #appMenu="mdMenu">
-    <menu-content (logout)="logout()"></menu-content>
-  </md-menu> 
+

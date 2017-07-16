@@ -14,8 +14,8 @@ export class LoginComponent {
     loginForm: FormGroup
     error: Boolean = false
     errorMessage: String = "There has been an error attempting to authenticate you."
-    email: String = "kesomir@btinternet.com"
-    password: String = "d3m0n1c"
+    email: String = ""
+    password: String = ""
     response;
     @Output() tab = new EventEmitter<number>()    
 

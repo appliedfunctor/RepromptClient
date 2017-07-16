@@ -7,7 +7,7 @@
  */
 import { Injectable, Output, EventEmitter } from "@angular/core"
 import { Http, Response, RequestOptions, Headers } from "@angular/http"
-import {Observable} from 'rxjs/Rx'
+import { Observable } from 'rxjs/Rx'
 import { UserModel } from "../_models/user.model"
 import { ErrorMessage } from "../_models/error.model"
 import { Paths } from "../app.paths"
@@ -46,20 +46,10 @@ export class AuthService {
         let sendData = JSON.stringify(user);
 
         //send request to endpoint
-        return this.http.put(this.path.getUrl(this.registerPath), sendData, options)
-                    .map(this.handleData)
-                    .catch(this.handleError);
-    }
-
-    login(email: String, password: String): Observable<any> {
-        console.log(this.path.getUrl(this.loginPath))
-		let options = new RequestOptions({ headers: this.headers });
-        let sendData = JSON.stringify({email: email, password: password });
-        
-        //send request to endpoint
-        let response = this.http.post(this.path.getUrl(this.loginPath), sendData, options)
-                    .map(this.handleData)
-                    .catch(this.handleError);
+        let response = this.http.post(this.path.getUrl(this.registerPath), sendData, options)
+                        .map(this.handleData)
+                        .catch(this.handleError)
+                        .share()
 
         response.subscribe(res => {
 
@@ -71,8 +61,32 @@ export class AuthService {
                 this.user = new UserModel(res)
                 this.onUserChange()
             }
+        })
+        
+        return response
+    }
 
-            console.log("token" + this.jwtToken)
+    login(email: String, password: String): Observable<any> {
+        console.log(this.path.getUrl(this.loginPath))
+		let options = new RequestOptions({ headers: this.headers });
+        let sendData = JSON.stringify({email: email, password: password });
+        
+        //send request to endpoint
+        let response = this.http.post(this.path.getUrl(this.loginPath), sendData, options)
+                        .map(this.handleData)
+                        .catch(this.handleError)
+                        .share()
+
+        response.share().subscribe(res => {
+
+            //handle token
+            this.loadDataFromStorage()
+
+            //handle user
+            if(res.hasOwnProperty("id")) {
+                this.user = new UserModel(res)
+                this.onUserChange()
+            }
         })
         
         return response.share()
@@ -118,20 +132,20 @@ export class AuthService {
     }
 
     private handleError (error: Response | any) {
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
+        let errMsg: string;
+        if (error instanceof Response) {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+        } else {
+        errMsg = error.message ? error.message : error.toString();
+        }
+        return Observable.throw(errMsg);
     }
-    return Observable.throw(errMsg);
-  }
 
-  onUserChange() {
-    this.userChange.emit(this.user)
-  }
+    onUserChange() {
+        this.userChange.emit(this.user)
+    }
 
   
 }
