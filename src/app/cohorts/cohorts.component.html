@@ -1,6 +1,34 @@
- <md-tab-group [selectedIndex]="selectedTab" (selectChange)="onSelectChange($event)">
-  <md-tab label="All"><cohorts-all (tab)="toggleTab()"></cohorts-all></md-tab>
-  <md-tab label="Create"><cohorts-create (tab)="toggleTab()"></cohorts-create></md-tab>
-  <md-tab label="View"><cohorts-view (tab)="toggleTab()"></cohorts-view></md-tab>
-  <md-tab label="Populate"><cohorts-populate (tab)="toggleTab()"></cohorts-populate></md-tab>
-</md-tab-group> 
+
+<div class="panel-container">
+    <md-spinner *ngIf="loading"></md-spinner>
+
+    <md-list *ngIf="!loading">
+        <md-list-item>
+            <md-icon class="mr-2 pointer" (click)='resetNavigation()'>keyboard_arrow_right</md-icon> {{ path }} <span class="spacer"></span> 
+            <md-icon class="pointer" (click)="confirmDelete(currentParent)" *ngIf="path != '/'">delete</md-icon>
+        </md-list-item>
+        <md-list-item >
+            <md-icon class="mr-2 pointer" (click)="navigateBack()">keyboard_backspace</md-icon>
+            <span class="spacer"></span > <span class="align-middle pointer" (click)="toggleSave()"><md-icon class="mr-2">create_new_folder</md-icon> Create new</span>
+        </md-list-item>
+        <form *ngIf="saving" class="material-form" #createCohortForm="ngForm">
+        <div class="row">  
+            <div class="col-9">   
+                <md-input-container class="full-width">
+                    <input mdInput name="name" [(ngModel)]="name" type="text" placeholder="Cohort name" required>
+                    <md-error>Name is required</md-error>
+                </md-input-container>
+            </div>
+            <div class="col-3"> 
+                <span class="spacer"></span >
+                <button md-raised-button class="mt-2" color="accent" type="submit" (click)="createNewCohort()" [disabled]="!createCohortForm.valid">Create</button> 
+            </div>
+        </div>       
+        <br>
+        <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
+    </form>
+        <md-list-item class="pointer" *ngFor="let cohort of displayCohortData" (click)="navigate(cohort)">
+            <md-icon class="mr-2" >folder</md-icon>  {{ cohort.name }}
+        </md-list-item>
+    </md-list>
+</div>

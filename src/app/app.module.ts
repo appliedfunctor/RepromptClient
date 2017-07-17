@@ -5,19 +5,16 @@ import { HttpModule, JsonpModule } from '@angular/http'
 
 //md imports
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
-import {MdButtonModule, MdCheckboxModule} from '@angular/material'
 import 'hammerjs';
-import { MdSidenavModule, MdInputModule, MdListModule, MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule } from '@angular/material'
+import {  MdButtonModule, MdCheckboxModule, MdSidenavModule, MdInputModule, MdListModule, 
+          MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule, 
+          MdProgressSpinnerModule, MdDialogModule} from '@angular/material'
 
 import { AppComponent } from './app.component'
 import { HomeComponent } from './home/home.component'
 import { LoginComponent } from './auth/login.component'
 import { RegisterComponent } from './auth/register.component'
-import { CohortsComponent } from 'app/cohorts/cohorts.component'
-import { CohortsAllComponent }  from "app/cohorts/cohorts-all.component"
-import { CohortsCreateComponent }  from "app/cohorts/cohorts-create.component"
-import { CohortsPopulateComponent }  from "app/cohorts/cohorts-populate.component"
-import { CohortsViewComponent }  from "app/cohorts/cohorts-view.component"
+import { CohortsComponent, DeleteConfirmDialog } from 'app/cohorts/cohorts.component'
 
 
 import { AuthComponent } from './auth/auth.component'
@@ -32,6 +29,7 @@ import { SideMenu } from "./menus/sidemenu.component"
 import { EqualValidator } from "./validators/equal-validator.directive"
 import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
+import { ContentComponent } from "app/content/content.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -54,10 +52,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     AuthComponent,
     CohortsComponent,
-    CohortsAllComponent,
-    CohortsCreateComponent,
-    CohortsPopulateComponent,
-    CohortsViewComponent,
+    ContentComponent,
+    DeleteConfirmDialog,
     RegisterComponent,
     MenuContent,
     SideMenu,
@@ -78,6 +74,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MdTabsModule,
     MdRadioModule,
     MdToolbarModule,
+    MdProgressSpinnerModule,
+    MdDialogModule,
     HttpModule,
     JsonpModule,
     routing
@@ -96,6 +94,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
+  ],
+  entryComponents: [
+    DeleteConfirmDialog
   ],
   bootstrap: [AppComponent]
 })

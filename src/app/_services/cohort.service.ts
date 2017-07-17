@@ -29,13 +29,13 @@ export class CohortService {
     }
 
     save(cohort: CohortModel) {
-        return this.authHttp.post(this.path.getUrl(this.cohortGetAllPath), cohort)
+        return this.authHttp.post(this.path.getUrl(this.cohortSavePath), cohort)
                             .map(res => res.json())
                             .catch(this.handleError)
     }
 
     delete(cohortId: number) {
-        return this.authHttp.delete(this.path.getUrl(this.cohortGetAllPath))
+        return this.authHttp.delete(this.path.getUrl(this.cohortDeletePath) + cohortId)
                             .map(res => res.json())
                             .catch(this.handleError)
     }
