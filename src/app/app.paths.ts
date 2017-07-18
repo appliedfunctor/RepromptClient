@@ -7,7 +7,7 @@ export class Paths {
 
     getUrl(append: string) {
         let start = this.secure ? this.https : this.http
-        //return start + this.base + append
-        return append
+        return start + this.base + append
+        //return append
     }
 }

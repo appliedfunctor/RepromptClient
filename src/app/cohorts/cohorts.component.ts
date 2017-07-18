@@ -21,6 +21,8 @@ export class CohortsComponent{
     currentParent: number = null
     breadcumbs: CohortModel[] = []
     saving: boolean = false;
+    updating: boolean = false;
+    editText: string = 'Save'
     error: Boolean = false
     errorMessage: string = "There has been an error attempting to authenticate you."
     name: string = ""
@@ -30,7 +32,48 @@ export class CohortsComponent{
     }
 
     toggleSave() {
+        this.editText = 'Save'
+        this.name = ''
         this.saving = !this.saving 
+        if(this.updating) {
+            this.updating = false
+        }
+    }
+
+    toggleUpdate() {
+        this.editText = 'Edit'
+        this.name = this.getCurrentName()
+        this.updating = !this.updating
+        if(this.saving) {
+            this.saving = false
+        }
+    }
+
+    submitData() {
+        this.loading = true
+        if(this.updating && this.currentParent != null) {
+            this.updateCohort()
+        } else {
+            this.createNewCohort()
+        }
+    }
+
+    updateCohort() {
+        let data = this.getCurrentCohort()
+        data.name = this.name
+        this.service.save(data).subscribe(res => {
+            if(res.hasOwnProperty('error')) {
+                this.error = res.error
+            } else {
+                this.cohortData.map(e => { if(e.id == res.id) e.name = res.name })
+                this.cohortData.sort((a, b) => this.sortByName(a, b))
+                this.displayCohortData.map(e => { if(e.id == res.id) e.name = res.name })
+                this.displayCohortData.sort((a, b) => this.sortByName(a, b))
+                this.resetForm()
+                this.updateNavigation()
+                this.loading = false
+            }
+        })
     }
 
     createNewCohort() {
@@ -44,8 +87,21 @@ export class CohortsComponent{
                 this.displayCohortData.push(res)
                 this.displayCohortData.sort((a, b) => this.sortByName(a, b))
                 this.resetForm()
+                this.loading = false
             }
         })
+    }
+
+    getCurrentCohort(): CohortModel {
+        let current = this.breadcumbs.pop()
+        this.breadcumbs.push(current)
+        return current
+    }
+
+    getCurrentName(): string {
+        let current = this.breadcumbs.pop()
+        this.breadcumbs.push(current)
+        return current.name
     }
 
     sortByName(a: CohortModel, b: CohortModel) {
@@ -55,8 +111,9 @@ export class CohortsComponent{
     }
 
     resetForm() {
-        this.name = ""
+        this.name = ""        
         this.saving = false
+        this.updating = false
     }
 
     loadData() {

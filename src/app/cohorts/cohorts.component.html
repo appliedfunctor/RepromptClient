@@ -1,7 +1,5 @@
 
 <div class="panel-container">
-    <md-spinner *ngIf="loading"></md-spinner>
-
     <md-list *ngIf="!loading">
         <md-list-item>
             <md-icon class="mr-2 pointer" (click)='resetNavigation()'>keyboard_arrow_right</md-icon> {{ path }} <span class="spacer"></span> 
@@ -9,9 +7,12 @@
         </md-list-item>
         <md-list-item >
             <md-icon class="mr-2 pointer" (click)="navigateBack()">keyboard_backspace</md-icon>
-            <span class="spacer"></span > <span class="align-middle pointer" (click)="toggleSave()"><md-icon class="mr-2">create_new_folder</md-icon> Create new</span>
+            <span class="spacer"></span >                 
+                <md-icon (click)="toggleUpdate()" class="mr-2 pointer" *ngIf="path != '/'">edit</md-icon>
+                <md-icon (click)="toggleSave()" class="mr-2 pointer">create_new_folder</md-icon>
         </md-list-item>
-        <form *ngIf="saving" class="material-form" #createCohortForm="ngForm">
+
+        <form *ngIf="saving || updating" class="material-form" #createCohortForm="ngForm">
         <div class="row">  
             <div class="col-9">   
                 <md-input-container class="full-width">
@@ -21,7 +22,7 @@
             </div>
             <div class="col-3"> 
                 <span class="spacer"></span >
-                <button md-raised-button class="mt-2" color="accent" type="submit" (click)="createNewCohort()" [disabled]="!createCohortForm.valid">Create</button> 
+                <button md-raised-button class="mt-2" color="accent" type="button" (click)="submitData()" [disabled]="!createCohortForm.valid">{{ editText }}</button> 
             </div>
         </div>       
         <br>
@@ -32,3 +33,6 @@
         </md-list-item>
     </md-list>
 </div>
+
+
+<md-spinner class="dead-center" *ngIf="loading"></md-spinner>

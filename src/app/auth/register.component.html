@@ -56,3 +56,5 @@
     <br>
     <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
 </form>
+
+<md-spinner class="dead-center" *ngIf="loading"></md-spinner>

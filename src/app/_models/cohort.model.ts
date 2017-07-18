@@ -2,7 +2,7 @@ export class CohortModel {
     id: number
     parentId: number
     ownerId: number
-    name: String
+    name: string
 
     constructor(cohortData){
         this.id = cohortData.id ? cohortData.id : null;

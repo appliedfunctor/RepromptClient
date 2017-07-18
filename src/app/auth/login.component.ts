@@ -16,7 +16,8 @@ export class LoginComponent {
     errorMessage: String = "There has been an error attempting to authenticate you."
     email: String = ""
     password: String = ""
-    response;
+    response;    
+    loading: boolean = false;
     @Output() tab = new EventEmitter<number>()    
 
     constructor(private fb: FormBuilder, private service: AuthService) {
@@ -39,6 +40,7 @@ export class LoginComponent {
     }
 
     submit() {
+        this.loading = true
         this.service.login(this.email, this.password).subscribe(data => {
 
             this.response = data
@@ -49,6 +51,7 @@ export class LoginComponent {
             } else {
                 this.error = true
             }
+            this.loading = false
             
         });        
     }

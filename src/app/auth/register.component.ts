@@ -23,12 +23,14 @@ export class RegisterComponent {
     response
     error: boolean = false
     isEducator: string = "false"
+    loading: boolean = false;
     @Output() tab = new EventEmitter<number>()
 
     constructor(private router: Router, private service: AuthService) {
     }
 
     submit() {
+        this.loading = true
         let user: UserModel = new UserModel({
             firstName: this.firstName,
             surName: this.surName,
@@ -49,6 +51,7 @@ export class RegisterComponent {
             }
 
             console.log(data)
+            this.loading = false
             
         });  
     }
