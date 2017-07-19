@@ -167,7 +167,14 @@ export class CohortsComponent{
 
     buildPath() {
         this.path = '/'
-        this.breadcumbs.forEach(c => this.path += c.name + '/')
+        if(this.breadcumbs.length > 2) {
+            this.path = '.../'
+        }
+        this.breadcumbs.slice(-2).forEach(c => this.path += c.name + '/')
+    }
+
+    populate() {
+        console.log('Populate! (implement this)')
     }
 
     confirmDelete(selectedCohortId: number) {

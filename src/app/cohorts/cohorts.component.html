@@ -1,16 +1,18 @@
 
 <div class="panel-container">
-    <md-list *ngIf="!loading">
-        <md-list-item>
-            <md-icon class="mr-2 pointer" (click)='resetNavigation()'>keyboard_arrow_right</md-icon> {{ path }} <span class="spacer"></span> 
-            <md-icon class="pointer" (click)="confirmDelete(currentParent)" *ngIf="path != '/'">delete</md-icon>
-        </md-list-item>
-        <md-list-item >
-            <md-icon class="mr-2 pointer" (click)="navigateBack()">keyboard_backspace</md-icon>
-            <span class="spacer"></span >                 
-                <md-icon (click)="toggleUpdate()" class="mr-2 pointer" *ngIf="path != '/'">edit</md-icon>
-                <md-icon (click)="toggleSave()" class="mr-2 pointer">create_new_folder</md-icon>
-        </md-list-item>
+    <div class="file-container" *ngIf="!loading">
+        <div class="file-item middle">
+            <md-icon class="mr-2 pointer" (click)="navigateBack()" alt="Back">keyboard_backspace</md-icon>
+            <span class="spacer"></span> 
+            <md-icon (click)="toggleUpdate()" class="mr-2 pointer" *ngIf="path != '/'" alt="Edit">edit</md-icon>
+            <md-icon class="pointer" (click)="confirmDelete(currentParent)" *ngIf="path != '/'" alt="Delete">delete</md-icon>
+        </div>
+        <div class="file-item" >
+            <md-icon class="pointer" (click)='resetNavigation()'>keyboard_arrow_right</md-icon> {{ path }}            
+            <span class="spacer"></span >   
+            <md-icon (click)="populate()" class="pointer mr-2" alt="Populate" *ngIf="path != '/'">person_add</md-icon>             
+            <md-icon (click)="toggleSave()" class="pointer" alt="New">create_new_folder</md-icon>
+        </div>
 
         <form *ngIf="saving || updating" class="material-form" #createCohortForm="ngForm">
         <div class="row">  
@@ -28,10 +30,10 @@
         <br>
         <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
     </form>
-        <md-list-item class="pointer" *ngFor="let cohort of displayCohortData" (click)="navigate(cohort)">
+        <div class="file-item pointer middle" *ngFor="let cohort of displayCohortData" (click)="navigate(cohort)">
             <md-icon class="mr-2" >folder</md-icon>  {{ cohort.name }}
-        </md-list-item>
-    </md-list>
+        </div>
+    </div>
 </div>
 
 
