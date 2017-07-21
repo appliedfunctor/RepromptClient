@@ -136,9 +136,9 @@
 }
 
 .material-form {
-  width: 500px;
+  width: 400px;
   min-width: 380px;
-  max-width: 500px;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -222,4 +222,18 @@
 
 .middle {
     vertical-align: middle;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #DCDCDC;
+    padding: 12px;
+    color: #7A7A7A;
+}
+
+.file-subheading {
+    margin-top: 5px;
+    border-bottom: 1px solid #DCDCDC;
+    color: #7A7A7A;
 }

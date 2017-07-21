@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx'
 import { Paths } from "../app.paths"
 import { AuthHttp } from 'angular2-jwt';
 import { CohortModel } from "../_models/cohort.model"
+import { CohortMemberModel } from "app/_models/cohortMember.model";
 
 @Injectable()
 export class CohortService {    
@@ -12,6 +13,8 @@ export class CohortService {
     private cohortGetAllPath = '/api/cohorts/owned'
     private cohortSavePath = '/api/cohort/save'
     private cohortDeletePath = '/api/cohort/'
+    private cohortMemberPath = '/api/cohort/member'
+    private userGetPath = '/api/user'
 
     constructor(private authHttp: AuthHttp) {
     }
@@ -36,6 +39,25 @@ export class CohortService {
 
     delete(cohortId: number) {
         return this.authHttp.delete(this.path.getUrl(this.cohortDeletePath) + cohortId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
+    }
+
+    attach(cohortId: number, userId: number) {
+        let data = new CohortMemberModel({cohortId: cohortId, userId: userId})
+        return this.authHttp.post(this.path.getUrl(this.cohortMemberPath), data)
+                            .map(res => res.json())
+                            .catch(this.handleError)
+    }
+
+    detach(cohortId: number, userId: number) {
+        return this.authHttp.delete(this.path.getUrl(this.cohortMemberPath) + '/' + cohortId + '/' + userId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
+    }
+
+    getAllUsers() {
+        return this.authHttp.get(this.path.getUrl(this.userGetPath))
                             .map(res => res.json())
                             .catch(this.handleError)
     }

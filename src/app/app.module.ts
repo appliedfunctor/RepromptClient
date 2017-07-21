@@ -8,13 +8,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import 'hammerjs';
 import {  MdButtonModule, MdCheckboxModule, MdSidenavModule, MdInputModule, MdListModule, 
           MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule, 
-          MdProgressSpinnerModule, MdDialogModule} from '@angular/material'
+          MdProgressSpinnerModule, MdDialogModule, MdAutocompleteModule} from '@angular/material'
 
 import { AppComponent } from './app.component'
 import { HomeComponent } from './home/home.component'
 import { LoginComponent } from './auth/login.component'
 import { RegisterComponent } from './auth/register.component'
-import { CohortsComponent, DeleteConfirmDialog } from 'app/cohorts/cohorts.component'
+import { CohortsComponent, DeleteConfirmDialog, UnlinkConfirmDialog } from 'app/cohorts/cohorts.component'
 
 
 import { AuthComponent } from './auth/auth.component'
@@ -54,6 +54,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CohortsComponent,
     ContentComponent,
     DeleteConfirmDialog,
+    UnlinkConfirmDialog,
     RegisterComponent,
     MenuContent,
     SideMenu,
@@ -75,6 +76,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MdRadioModule,
     MdToolbarModule,
     MdProgressSpinnerModule,
+    MdAutocompleteModule,
     MdDialogModule,
     HttpModule,
     JsonpModule,
@@ -96,7 +98,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
   ],
   entryComponents: [
-    DeleteConfirmDialog
+    DeleteConfirmDialog,
+    UnlinkConfirmDialog
   ],
   bootstrap: [AppComponent]
 })
