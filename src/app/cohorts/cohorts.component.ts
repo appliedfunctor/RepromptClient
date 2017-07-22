@@ -7,6 +7,7 @@ import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
 import { AuthService } from "app/_services/auth.service";
 import { UserModel } from "app/_models/user.model";
 import { FormControl, FormGroup } from '@angular/forms';
+import { FileNavigationComponent } from 'app/file/file-navigation.component';
 
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -60,10 +61,11 @@ export class CohortsComponent{
     filterPopulationUsers(restrictTerm: string): UserModel[] {
         if(restrictTerm != null) {
             let terms = restrictTerm.split(" ")
-            return this.allUsers.filter(s => this.checkTerms(terms, [s.firstName, s.surName, s.email]) 
-                                                && !this.currentParent.members.includes(s) )  //exclude members already attached to parent          
+            return this.allUsers.filter(user => this.checkTerms(terms, [user.firstName, user.surName, user.email]) 
+                       && this.currentParent.members.filter(m => m.id === user.id).length === 0
+            )         
         }
-        return this.allUsers
+        return this.allUsers.filter(user => this.currentParent.members.filter(m => m.id === user.id).length === 0)
     }
 
     /**
@@ -86,6 +88,7 @@ export class CohortsComponent{
             this.service.attach(this.currentParent.id, user.id).subscribe(res => {
                 if(res > 0) {
                     this.togglePopulate()
+                    this.usersControl.reset()
                     this.currentParent.members.push(user)
                     this.currentParent.members.sort((a, b) => this.sortUsersByName(a, b))
                 }
@@ -304,8 +307,7 @@ export class CohortsComponent{
         this.filteredUsers = this.usersControl.valueChanges
                             .startWith(null)
                             .map(user => user && typeof user === 'object' ? user.firstName + " " + user.surName : user)
-                            .map(name => name ? this.filterPopulationUsers(name) : this.allUsers.filter(s => !this.currentParent.members.includes(s)))
-                            //todo make sure initial set excludes members already in cohort
+                            .map(name => name ? this.filterPopulationUsers(name) : this.filterPopulationUsers(null))
         this.loading = true
         this.loadAllUsers()
     }

@@ -1,6 +1,7 @@
 <div class="title">Cohort Management</div>
 <div class="panel-container">
     <div class="file-container" *ngIf="!loading">
+        
         <div class="file-item middle">
             <md-icon class="mr-2 pointer" tabindex=0 (click)="navigateBack()" (keyup.enter)="navigateBack()" alt="Back">keyboard_backspace</md-icon>
             <span class="spacer"></span>           
@@ -13,7 +14,6 @@
             <md-icon class="pointer" tabindex=0 (click)='resetNavigation()' (keyup.enter)="resetNavigation()">keyboard_arrow_right</md-icon> {{ path }}            
             <span class="spacer"></span >
         </div>
-
         
         <form *ngIf="saving || updating" class="material-form" #createCohortForm="ngForm">
         <div class="row">  

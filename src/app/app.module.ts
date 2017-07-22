@@ -30,6 +30,7 @@ import { EqualValidator } from "./validators/equal-validator.directive"
 import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { ContentComponent } from "app/content/content.component";
+import { FileNavigationComponent } from 'app/file/file-navigation.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -52,6 +53,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     LoginComponent,
     AuthComponent,
     CohortsComponent,
+    FileNavigationComponent,
     ContentComponent,
     DeleteConfirmDialog,
     UnlinkConfirmDialog,
