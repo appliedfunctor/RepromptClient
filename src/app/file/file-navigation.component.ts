@@ -15,6 +15,7 @@ import { ContainerService } from "app/_services/container.service.type";
 })
 export class FileNavigationComponent {
     @Input() service: ContainerService
+    @Input() title: string
 
     itemsControl: FormControl = new FormControl()
     populateForm = new FormGroup({

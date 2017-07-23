@@ -12,6 +12,7 @@ import { CohortService } from "app/_services/cohort.service";
     providers: [CohortService]
 })
 export class CohortsComponent{ 
+    title = "Cohort Management"
 
     /**
      * Creates an instance of CohortsComponent.
@@ -20,11 +21,12 @@ export class CohortsComponent{
      * @param {AuthService} auth 
      * @memberof CohortsComponent
      */
-    constructor(public service: CohortService) {
+    constructor(private service: CohortService) {
               
     }
 
     ngOnInit() {
+
     }
 
     
