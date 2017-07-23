@@ -3,11 +3,14 @@ import { Response, RequestOptions, Headers } from "@angular/http"
 import { Observable } from 'rxjs/Rx'
 import { Paths } from "../app.paths"
 import { AuthHttp } from 'angular2-jwt';
-import { CohortModel } from "../_models/cohort.model"
 import { CohortMemberModel } from "app/_models/cohortMember.model";
+import { FileContainer } from "app/_models/fileContainer.type";
+import { ContainerService } from "app/_services/container.service.type";
+import { CohortModel } from "app/_models/cohort.model";
+import { UserModel } from "app/_models/user.model";
 
 @Injectable()
-export class CohortService {    
+export class CohortService implements ContainerService{    
     private path = new Paths
     private cohortGetPath = '/api/cohort/'
     private cohortGetAllPath = '/api/cohorts/owned'
@@ -27,11 +30,11 @@ export class CohortService {
 
     getAll(): Observable<any> {
         return this.authHttp.get(this.path.getUrl(this.cohortGetAllPath))
-                            .map(res => res.json())
+                            .map(this.handleContainers)
                             .catch(this.handleError)
     }
 
-    save(cohort: CohortModel) {
+    save(cohort: FileContainer) {
         return this.authHttp.post(this.path.getUrl(this.cohortSavePath), cohort)
                             .map(res => res.json())
                             .catch(this.handleError)
@@ -56,10 +59,24 @@ export class CohortService {
                             .catch(this.handleError)
     }
 
-    getAllUsers() {
+    getAllItems() {
         return this.authHttp.get(this.path.getUrl(this.userGetPath))
                             .map(res => res.json())
                             .catch(this.handleError)
+    }
+
+    private handleContainers(res: Response) {   
+        //parse response data into Cohorts
+        let cohorts: CohortModel[] = []
+        res.json().forEach(data => cohorts.push(new CohortModel(data)))
+        return cohorts;
+    }
+
+    private handleElements(res: Response) {   
+        //parse response data into Elements
+        let users: UserModel[] = []
+        res.json().forEach(data => users.push(new UserModel(data)))
+        return users;
     }
 
     private handleError (error: Response | any) {

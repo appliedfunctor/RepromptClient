@@ -19,7 +19,7 @@
         <div class="row">  
             <div class="col-9">   
                 <md-input-container class="full-width">
-                    <input mdInput name="name" [(ngModel)]="name" type="text" placeholder="Cohort name" required>
+                    <input mdInput name="name" [(ngModel)]="name" type="text" placeholder="Container name" required>
                     <md-error>Name is required</md-error>
                 </md-input-container>
             </div>
@@ -31,8 +31,8 @@
         <br>
         <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
     </form>        
-        <div class="file-item pointer middle" *ngFor="let cohort of displayCohortData" (click)="navigate(cohort)">
-            <md-icon class="mr-2" (keyup.enter)="navigate(cohort)" tabindex=0 >folder</md-icon>  {{ cohort.name }}
+        <div class="file-item pointer middle" *ngFor="let container of filteredContainers" (click)="navigate(container)">
+            <md-icon class="mr-2" (keyup.enter)="navigate(container)" tabindex=0 >folder</md-icon>  {{ container.name }}
         </div>
         <div class="file-subheading" *ngIf="currentParent?.members?.length > 0">{{currentParent?.name}} Members</div>
 
@@ -40,19 +40,19 @@
 
         <form [formGroup]="populateForm" *ngIf="populating">
             <md-input-container>
-                <input mdInput placeholder="User" [mdAutocomplete]="auto" [formControl]="itemsControl">
+                <input mdInput placeholder="Item" [mdAutocomplete]="auto" [formControl]="itemsControl">
             </md-input-container>
 
-            <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayUserAutocomplete">
-                <md-option (onSelectionChange)="attachUser(item)" *ngFor="let item of filteredItems | async" [value]="user">{{ item.name }}</md-option>
+            <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayAutocomplete">
+                <md-option (onSelectionChange)="attachItem(item)" *ngFor="let item of filteredItems | async" [value]="item">{{ item.name }}</md-option>
             </md-autocomplete>
         </form>
 
 
         <div class="file-item" *ngFor="let member of currentParent?.members">
-            <md-icon>person</md-icon> {{ member.firstName }} {{ member.surName }}            
+            <md-icon>person</md-icon> {{ member.name }}            
             <span class="spacer"></span >
-            <md-icon class="pointer" tabindex=0 (keyup.enter)="confirmUserUnlink(currentParent, member)" (click)="confirmUserUnlink(currentParent, member)" alt="Unlink">delete</md-icon>    
+            <md-icon class="pointer" tabindex=0 (keyup.enter)="confirmItemUnlink(currentParent, member)" (click)="confirmItemUnlink(currentParent, member)" alt="Unlink">delete</md-icon>    
         </div>        
     </div>
 </div>

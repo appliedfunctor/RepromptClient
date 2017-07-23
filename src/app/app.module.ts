@@ -14,7 +14,7 @@ import { AppComponent } from './app.component'
 import { HomeComponent } from './home/home.component'
 import { LoginComponent } from './auth/login.component'
 import { RegisterComponent } from './auth/register.component'
-import { CohortsComponent, DeleteConfirmDialog, UnlinkConfirmDialog } from 'app/cohorts/cohorts.component'
+import { CohortsComponent } from 'app/cohorts/cohorts.component'
 
 
 import { AuthComponent } from './auth/auth.component'
@@ -30,7 +30,7 @@ import { EqualValidator } from "./validators/equal-validator.directive"
 import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt';
 import { Http, RequestOptions } from '@angular/http';
 import { ContentComponent } from "app/content/content.component";
-import { FileNavigationComponent } from 'app/file/file-navigation.component';
+import { FileNavigationComponent, DeleteConfirmDialog, UnlinkConfirmDialog } from 'app/file/file-navigation.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({

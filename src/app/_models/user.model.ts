@@ -1,6 +1,7 @@
 import { UserRoles } from "app/enums/user.roles.enum";
+import { FileElement } from "app/_models/fileElement.type";
 
-export class UserModel {
+export class UserModel implements FileElement {
     id: number
     firstName: string
     surName: string
@@ -10,6 +11,8 @@ export class UserModel {
     isEducator: boolean
     isAdministrator: boolean
     avatarUrl: string
+
+    name: string
 
     constructor(userData) {
         this.id = userData.id ? userData.id : null;
@@ -21,9 +24,19 @@ export class UserModel {
         this.isEducator = userData.isEducator ? userData.isEducator : false;
         this.isAdministrator = userData.isAdministrator ? userData.isAdministrator : false;
         this.avatarUrl = userData.avatarUrl ? userData.avatarUrl : "assets/blankProfileBlue.svg";
+
+        this.name = this.firstName + " " + this.surName
     }
 
-    getRole(): String {
+    getName(): string {
+        return this.firstName + " " + this.surName
+    }
+
+    getSearchValues(): string[] {
+        return [this.firstName, this.surName, this.email]
+    }
+
+    getRole(): string {
         let roles = new UserRoles   
         if (this.isAdministrator) {
             return roles.Administrator
