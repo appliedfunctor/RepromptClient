@@ -4,6 +4,8 @@ import { FileNavigationComponent } from 'app/file/file-navigation.component';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import { CohortService } from "app/_services/cohort.service";
+import { UserModel } from "app/_models/user.model";
+import { CohortModel } from "app/_models/cohort.model";
 
 
 @Component({
@@ -13,6 +15,8 @@ import { CohortService } from "app/_services/cohort.service";
 })
 export class CohortsComponent{ 
     title = "Cohort Management"
+    elementType = UserModel
+    containerType = CohortModel
 
     /**
      * Creates an instance of CohortsComponent.

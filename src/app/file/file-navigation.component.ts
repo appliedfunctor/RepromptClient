@@ -16,6 +16,8 @@ import { ContainerService } from "app/_services/container.service.type";
 export class FileNavigationComponent {
     @Input() service: ContainerService
     @Input() title: string
+    @Input() elementType
+    @Input() containerType
 
     itemsControl: FormControl = new FormControl()
     populateForm = new FormGroup({
@@ -98,6 +100,16 @@ export class FileNavigationComponent {
         }
     }
 
+    createElement<element extends FileElement>(element:{ new(...args: any[]): element }, data): element
+    {
+        return new element(data)
+    }
+
+    createContainer<container extends FileContainer>(container:{ new(...args: any[]): container }, data): container
+    {
+        return new container(data)
+    }
+
     /**
      * 
      * filter the list of users down based on information already entered into the box
@@ -109,8 +121,11 @@ export class FileNavigationComponent {
     filterPopulationItems(restrictTerm: string): FileElement[] {
         if(restrictTerm != null) {
             let terms = restrictTerm.split(" ")
-            return this.allItems.filter(item => this.checkTerms(terms, item.getSearchValues()) 
-                       && this.currentParent.members.filter(m => m.id === item.id).length === 0
+            return this.allItems.filter(item => {
+                    let concreteItem = this.createElement(this.elementType, item)
+                    this.checkTerms(terms, concreteItem.getSearchValues()) 
+                    && this.currentParent.members.filter(m => m.id === item.id).length === 0
+                }
             )         
         }
         return this.allItems.filter(user => this.currentParent.members.filter(m => m.id === user.id).length === 0)
@@ -168,7 +183,7 @@ export class FileNavigationComponent {
     }
 
     createNewContainer() {
-        let data = {parentId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: this.name}
+        let data = {parentId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: this.name, members: []}
         console.log(data)
         this.service.save(data).subscribe(res => {
             if(res != null && res.hasOwnProperty('error')) {

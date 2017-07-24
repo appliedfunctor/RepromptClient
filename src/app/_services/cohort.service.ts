@@ -68,7 +68,11 @@ export class CohortService implements ContainerService{
     private handleContainers(res: Response) {   
         //parse response data into Cohorts
         let cohorts: CohortModel[] = []
-        res.json().forEach(data => cohorts.push(new CohortModel(data)))
+        res.json().forEach(data => {
+            let cohort = new CohortModel(data)
+            cohort.members = cohort.members.map(user => new UserModel(user))
+            cohorts.push(new CohortModel(data))
+        })
         return cohorts;
     }
 

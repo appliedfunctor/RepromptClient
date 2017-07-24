@@ -40,7 +40,7 @@
 
         <form [formGroup]="populateForm" *ngIf="populating">
             <md-input-container>
-                <input mdInput placeholder="Item" [mdAutocomplete]="auto" [formControl]="itemsControl">
+                <input mdInput placeholder="Attach" [mdAutocomplete]="auto" [formControl]="itemsControl">
             </md-input-container>
 
             <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayAutocomplete">
