@@ -5,21 +5,12 @@
 <button md-menu-item *ngIf="authenticated" (click)="redirect('/')"><i class="fa fa-home"></i> Home</button>
 
 <!-- students -->
-
-<div *ngIf="!user.isEducator"> 
-    <div *ngIf="authenticated">
-        <button md-menu-item (click)="redirect('/')" *ngIf="authenticated"><i class="fa fa-home"></i> Learn</button>
-        <button md-menu-item *ngIf="authenticated"><i class="fa fa-home"></i> Test</button>
-    </div>
-</div>
+<button md-menu-item *ngIf="!user.isEducator" (click)="redirect('/')"><i class="fa fa-home"></i> Learn</button>
+<button md-menu-item *ngIf="!user.isEducator"><i class="fa fa-home"></i> Test</button>
 
 <!-- educators -->
+<button md-menu-item *ngIf="user.isEducator" (click)="redirect('cohorts/')"><i class="fa fa-university"></i> Cohorts</button>
+<button md-menu-item *ngIf="user.isEducator" (click)="redirect('content/')"><i class="fa fa-file"></i> Content</button>
+<button md-menu-item *ngIf="user.isEducator" (click)="redirect('users/')"><i class="fa fa-users"></i> Users</button>
 
-<div *ngIf="user.isEducator"> 
-    <div *ngIf="authenticated">
-        <button md-menu-item *ngIf="authenticated" (click)="redirect('cohorts/')"><i class="fa fa-university"></i> Cohorts</button>
-        <button md-menu-item *ngIf="authenticated" (click)="redirect('content/')"><i class="fa fa-file"></i> Content</button>
-        <button md-menu-item *ngIf="authenticated" (click)="redirect('users/')"><i class="fa fa-users"></i> Users</button>
-    </div>
-</div>
-
+    

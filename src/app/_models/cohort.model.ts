@@ -1,6 +1,7 @@
 import { UserModel } from "app/_models/user.model";
+import { FileContainer } from "app/_models/fileContainer.type";
 
-export class CohortModel {
+export class CohortModel implements FileContainer{
     id: number
     parentId: number
     ownerId: number

@@ -13,11 +13,11 @@ import { UserModel } from "app/_models/user.model";
 export class CohortService implements ContainerService{    
     private path = new Paths
     private cohortGetPath = '/api/cohort/'
-    private cohortGetAllPath = '/api/cohorts/owned'
-    private cohortSavePath = '/api/cohort/save'
+    private cohortGetAllContainersPath = '/api/cohorts/owned'
+    private cohortSavePath = '/api/cohort/'
     private cohortDeletePath = '/api/cohort/'
-    private cohortMemberPath = '/api/cohort/member'
-    private userGetPath = '/api/user'
+    private cohortMemberPath = '/api/cohort/member/'
+    private userGetPath = '/api/users/'
 
     constructor(private authHttp: AuthHttp) {
     }
@@ -28,8 +28,8 @@ export class CohortService implements ContainerService{
                             .catch(this.handleError)
     }
 
-    getAll(): Observable<any> {
-        return this.authHttp.get(this.path.getUrl(this.cohortGetAllPath))
+    getAllContainers(): Observable<any> {
+        return this.authHttp.get(this.path.getUrl(this.cohortGetAllContainersPath))
                             .map(this.handleContainers)
                             .catch(this.handleError)
     }

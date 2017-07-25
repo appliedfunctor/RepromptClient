@@ -16,21 +16,26 @@ import { ContainerService } from "app/_services/container.service.type";
 export class FileNavigationComponent {
     @Input() service: ContainerService
     @Input() title: string
+    @Input() itemIcon: string = 'add_circle'
     @Input() elementType
     @Input() containerType
+    @Input() populateMode: string = 'attach'
+    @Input() itemName: string = 'Item'
+
+    itemNameValue: string = ''
 
     itemsControl: FormControl = new FormControl()
     populateForm = new FormGroup({
        itemsControl: this.itemsControl
     });
     allItems: FileElement[] = []
-    filteredItems: Observable<FileElement[]>  
+    filteredItems: Observable<FileElement[]>
 
     populating: boolean = false
     loading: boolean = true
 
-    allContainers: FileContainer[]
-    filteredContainers: FileContainer[]
+    allContainers: FileContainer[] = []
+    filteredContainers: FileContainer[] = []
     path: string = "/"
     currentParent: FileContainer = null
     breadcumbs: FileContainer[] = []
@@ -56,9 +61,14 @@ export class FileNavigationComponent {
     }
 
     loadData() {
-        this.service.getAll().subscribe(res => {
-            this.allContainers = res
-            this.updateRootallContainers(null)
+        this.service.getAllContainers().subscribe(res => {
+
+            if(res && res.length > 0) {                
+                this.allContainers = res
+                console.log(this.allContainers)
+                this.updateRootallContainers(null)
+            }            
+
             this.loading = false
         })
     }
@@ -155,6 +165,14 @@ export class FileNavigationComponent {
         this.populating = !this.populating
     }
 
+    toggleOff() {
+        this.populating = false
+        this.saving = false
+        this.updating = false
+        this.name = ''
+
+    }
+
     submitData() {
         this.loading = true
         if(this.updating && this.currentParent != null) {
@@ -239,6 +257,7 @@ export class FileNavigationComponent {
 
     navigate(container: FileContainer) {
         if(container != null && container.hasOwnProperty('id')) {
+            this.toggleOff()
             this.breadcumbs.push(container)      
             this.currentParent = container
             this.updateNavigation()
@@ -251,6 +270,9 @@ export class FileNavigationComponent {
     }
 
     navigateBack() {
+
+        this.toggleOff()
+
         this.breadcumbs.pop()
         if( this.breadcumbs.length < 1) {
             this.resetNavigation()          

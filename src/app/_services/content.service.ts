@@ -8,15 +8,19 @@ import { FileContainer } from "app/_models/fileContainer.type";
 import { ContainerService } from "app/_services/container.service.type";
 import { CohortModel } from "app/_models/cohort.model";
 import { UserModel } from "app/_models/user.model";
+import { ContentFolderModel } from "app/_models/contentFolder.model";
+import { PackageModel } from "app/_models/package.model";
 
 @Injectable()
 export class ContentService implements ContainerService{    
     private path = new Paths
-    private contentGetPath = '/api/content/'
-    private contentGetAllPath = '/api/content/owned'
-    private contentSavePath = '/api/content/save'
-    private contentDeletePath = '/api/content/'
-    private contentMemberPath = '/api/content/item'
+    private folderGetPath = '/api/content/folder/'
+    private folderGetAllPath = '/api/content/folders/owned'
+    private folderSavePath = '/api/content/folder'
+    private packageSavePath = '/api/content/package/'
+    private folderDeletePath = '/api/content/folder/'
+    private packageDeletePath = '/api/content/package/'
+    private contentPackagePath = '/api/content/package'
 
     constructor(private authHttp: AuthHttp) {
     }
@@ -29,7 +33,7 @@ export class ContentService implements ContainerService{
      * @memberof ContentService
      */
     get(contentId: number): Observable<any> {
-        return this.authHttp.get(this.path.getUrl(this.contentGetPath) + contentId)
+        return this.authHttp.get(this.path.getUrl(this.folderGetPath) + contentId)
                             .map(res => res.json())
                             .catch(this.handleError)
     }
@@ -40,8 +44,8 @@ export class ContentService implements ContainerService{
      * @returns {Observable<any>} 
      * @memberof ContentService
      */
-    getAll(): Observable<any> {
-        return this.authHttp.get(this.path.getUrl(this.contentGetAllPath))
+    getAllContainers(): Observable<any> {
+        return this.authHttp.get(this.path.getUrl(this.folderGetAllPath))
                             .map(this.handleContainers)
                             .catch(this.handleError)
     }
@@ -53,10 +57,10 @@ export class ContentService implements ContainerService{
      * @returns 
      * @memberof ContentService
      */
-    save(cohort: FileContainer) {
-        // return this.authHttp.post(this.path.getUrl(this.cohortSavePath), cohort)
-        //                     .map(res => res.json())
-        //                     .catch(this.handleError)
+    save(container: FileContainer) {
+        return this.authHttp.post(this.path.getUrl(this.folderSavePath), container)
+                            .map(res => res.json())
+                            .catch(this.handleError)
     }
 
     /**
@@ -66,10 +70,10 @@ export class ContentService implements ContainerService{
      * @returns 
      * @memberof ContentService
      */
-    delete(cohortId: number) {
-        // return this.authHttp.delete(this.path.getUrl(this.cohortDeletePath) + cohortId)
-        //                     .map(res => res.json())
-        //                     .catch(this.handleError)
+    delete(folderId: number) {
+        return this.authHttp.delete(this.path.getUrl(this.folderDeletePath) + folderId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
     }
 
     /**
@@ -80,11 +84,10 @@ export class ContentService implements ContainerService{
      * @returns 
      * @memberof ContentService
      */
-    attach(contentId: number, cohortId: number) {
-        // let data = new CohortMemberModel({cohortId: cohortId, userId: userId})
-        // return this.authHttp.post(this.path.getUrl(this.cohortMemberPath), data)
-        //                     .map(res => res.json())
-        //                     .catch(this.handleError)
+    attach(packageModel: PackageModel) {
+        return this.authHttp.post(this.path.getUrl(this.packageSavePath), packageModel)
+                            .map(res => res.json())
+                            .catch(this.handleError)
     }
 
     /**
@@ -95,10 +98,10 @@ export class ContentService implements ContainerService{
      * @returns 
      * @memberof ContentService
      */
-    detach(cohortId: number, userId: number) {
-        // return this.authHttp.delete(this.path.getUrl(this.cohortMemberPath) + '/' + cohortId + '/' + userId)
-        //                     .map(res => res.json())
-        //                     .catch(this.handleError)
+    detach(packageModel: PackageModel) {
+        return this.authHttp.delete(this.path.getUrl(this.packageDeletePath) + '/' + packageModel.id)
+                            .map(res => res.json())
+                            .catch(this.handleError)
     }
 
     /**
@@ -108,16 +111,17 @@ export class ContentService implements ContainerService{
      * @memberof ContentService
      */
     getAllItems() {
-        // return this.authHttp.get(this.path.getUrl(this.userGetPath))
+        // return this.authHttp.get(this.path.getUrl(this.contentPackagePath))
         //                     .map(res => res.json())
         //                     .catch(this.handleError)
+        return Observable.of('')
     }
 
     private handleContainers(res: Response) {   
-        //parse response data into Cohorts
-        // let cohorts: CohortModel[] = []
-        // res.json().forEach(data => cohorts.push(new CohortModel(data)))
-        // return cohorts;
+        //parse response data into Folders
+        let folders: ContentFolderModel[] = []
+        res.json().forEach(data => folders.push(new ContentFolderModel(data)))
+        return folders;
     }
 
     private handleElements(res: Response) {   

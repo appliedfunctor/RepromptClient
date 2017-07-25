@@ -10,9 +10,7 @@
 <router-outlet></router-outlet>
 
 <md-menu #userMenu="mdMenu" >
-  <div *ngIf="authenticated">
-    <button md-menu-item (click)="logout()"><i class="fa fa-sign-out"></i> Logout </button>
-  </div>
+    <button *ngIf="authenticated" md-menu-item (click)="logout()"><i class="fa fa-sign-out"></i> Logout </button>
 </md-menu> 
 
 <md-menu #appMenu="mdMenu">
