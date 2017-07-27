@@ -1,8 +1,10 @@
-<file-navigation    [service]="service" 
+<file-navigation   
+                    [service]="service" 
                     [title]="title" 
                     [elementType]="elementType" 
                     [containerType]="containerType"
                     [itemIcon]="itemIcon"
                     [populateMode]="populateMode"
-                    [itemName]="itemName">
+                    [itemName]="itemName"
+                    (elementSelection)="elementSelected($event)">
 </file-navigation>

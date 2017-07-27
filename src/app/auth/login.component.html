@@ -1,4 +1,4 @@
-<form class="material-form" #loginForm="ngForm">
+<form class="material-form" #loginForm="ngForm" *ngIf="!loading">
     <p>        
         <md-input-container class="full-width">
             <input mdInput name="email" [(ngModel)]="email" type="email" placeholder="Email" required email>

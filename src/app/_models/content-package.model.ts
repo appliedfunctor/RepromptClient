@@ -1,7 +1,7 @@
-import { FileElement } from 'app/_models/fileElement.type'
-import { ContentItemModel } from 'app/_models/contentItem.model'
+import { FileElement } from 'app/_models/file-element.type'
+import { ContentItemModel } from 'app/_models/content-item.model'
 
-export class PackageModel implements FileElement {
+export class ContentPackageModel implements FileElement {
     id: number
     name: string
     folderId: number

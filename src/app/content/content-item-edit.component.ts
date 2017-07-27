@@ -1,0 +1,45 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { FileUploadModule } from 'primeng/primeng'
+import { ContentItemModel } from "app/_models/content-item.model";
+
+interface Window {
+    webkitURL?: any;
+}
+
+@Component({
+    selector: 'content-item-edit',
+    templateUrl: 'content-item-edit.component.html'
+})
+export class ContentItemEditComponent {
+
+    @Input() element: string
+    @Input() active: boolean
+    @Input() packageId: number
+    @Output() valueChange = new EventEmitter<ContentItemModel>()
+    currentData: ContentItemModel = new ContentItemModel({})
+    editText: string = 'Save'
+
+    ngOnInit() {
+        this.notifyChange()
+    }
+
+    submit() {
+        if(this.currentData.name && this.currentData.name != '') {
+            this.notifyChange()
+        }
+    }
+
+    fileUpload(object) {
+        console.log(object.files)
+        if(object.files && object.files.length > 0) {
+            this.currentData.image = object.files[0]
+            console.log(this.currentData.image)
+            this.notifyChange()
+        }
+    }
+
+    notifyChange() {
+        this.valueChange.emit(this.currentData)
+    }
+
+}

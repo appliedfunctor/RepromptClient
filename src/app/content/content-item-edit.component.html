@@ -1,0 +1,53 @@
+<form *ngIf="active" class="material-form" #nameEditForm="ngForm">
+    <div class="file-item file-heading">
+        Create Content Item
+    </div>   
+
+    <div class="file-item file-subheading">
+        <span class="fa-stack fa-1x mr-1">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <strong class="fa-stack-1x calendar-text text-white">1</strong>
+        </span>
+        Choose a name
+    </div>
+
+    <md-input-container class="full-width">
+
+        <input mdInput name="name" [(ngModel)]="currentData.name" type="text" placeholder="Name - describe the mini-topic" required (keyup.enter)="submit()">
+        <md-error>Name is required</md-error>
+    </md-input-container> 
+    <br>
+    <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
+    
+
+    <div class="file-item file-subheading">
+        <span class="fa-stack fa-1x mr-1">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <strong class="fa-stack-1x calendar-text text-white">2</strong>
+        </span>
+        Upload an Image (optional - drop or choose)</div>
+    <p-fileUpload name="image" auto="true" showCancelButton="false" customUpload="true" (uploadHandler)="fileUpload($event)" accept="image/*" maxFileSize="1000000"></p-fileUpload>
+
+    <div *ngIf="currentFile != null">
+        Current File: {{currentFile.name}}
+    </div>
+
+
+    <div class="file-item file-subheading">
+        <span class="fa-stack fa-1x mr-1">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <strong class="fa-stack-1x calendar-text text-white">3</strong>
+        </span>
+        Provide Revision Content
+    </div>
+
+    
+    <md-input-container class="full-width">
+        <textarea rows="6" mdInput placeholder="Address 2" name="content" [(ngModel)]="currentData.content" placeholder="Brief revision notes for the mini-topic" required></textarea>
+        <md-error>Content is required</md-error>
+    </md-input-container> 
+    
+    <button md-raised-button class="mt-2" color="accent" type="button" (click)="submit()"  [disabled]="!nameEditForm.valid">{{ editText }}</button> 
+
+
+</form>  

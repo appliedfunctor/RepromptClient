@@ -17,7 +17,8 @@ export class CohortsComponent{
     title = "Cohort Management"
     elementType = UserModel
     containerType = CohortModel
-    itemIcon = "person_add"
+    itemIcon = "person"
+    itemName = 'Member'
 
     /**
      * Creates an instance of CohortsComponent.

@@ -3,13 +3,13 @@ import { Response, RequestOptions, Headers } from "@angular/http"
 import { Observable } from 'rxjs/Rx'
 import { Paths } from "../app.paths"
 import { AuthHttp } from 'angular2-jwt';
-import { CohortMemberModel } from "app/_models/cohortMember.model";
-import { FileContainer } from "app/_models/fileContainer.type";
+import { CohortMemberModel } from "app/_models/cohort-member.model";
+import { FileContainer } from "app/_models/file-container.type";
 import { ContainerService } from "app/_services/container.service.type";
 import { CohortModel } from "app/_models/cohort.model";
 import { UserModel } from "app/_models/user.model";
-import { ContentFolderModel } from "app/_models/contentFolder.model";
-import { PackageModel } from "app/_models/package.model";
+import { ContentFolderModel } from "app/_models/content-folder.model";
+import { ContentPackageModel } from "app/_models/content-package.model";
 
 @Injectable()
 export class ContentService implements ContainerService{    
@@ -84,7 +84,7 @@ export class ContentService implements ContainerService{
      * @returns 
      * @memberof ContentService
      */
-    attach(packageModel: PackageModel) {
+    attach(packageModel: ContentPackageModel) {
         return this.authHttp.post(this.path.getUrl(this.packageSavePath), packageModel)
                             .map(res => res.json())
                             .catch(this.handleError)
@@ -98,8 +98,8 @@ export class ContentService implements ContainerService{
      * @returns 
      * @memberof ContentService
      */
-    detach(packageModel: PackageModel) {
-        return this.authHttp.delete(this.path.getUrl(this.packageDeletePath) + '/' + packageModel.id)
+    detach(folderId: number, packageId: number) {
+        return this.authHttp.delete(this.path.getUrl(this.packageDeletePath) + packageId)
                             .map(res => res.json())
                             .catch(this.handleError)
     }

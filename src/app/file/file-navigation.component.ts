@@ -5,9 +5,12 @@ import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
 import { AuthService } from "app/_services/auth.service";
 import { UserModel } from "app/_models/user.model";
 import { FormControl, FormGroup } from '@angular/forms';
-import { FileElement } from "app/_models/fileElement.type";
-import { FileContainer } from "app/_models/fileContainer.type";
+import { FileElement } from "app/_models/file-element.type";
+import { FileContainer } from "app/_models/file-container.type";
 import { ContainerService } from "app/_services/container.service.type";
+import { UpperCasePipe } from '@angular/common';
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
+import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog";
 
 @Component({
     selector: 'file-navigation',
@@ -22,11 +25,14 @@ export class FileNavigationComponent {
     @Input() populateMode: string = 'attach'
     @Input() itemName: string = 'Item'
 
-    itemNameValue: string = ''
+    @Output() elementSelection = new EventEmitter<FileElement>()
 
     itemsControl: FormControl = new FormControl()
+    popCreateControl: FormControl = new FormControl()
     populateForm = new FormGroup({
        itemsControl: this.itemsControl
+    });
+    populateCreationForm = new FormGroup({
     });
     allItems: FileElement[] = []
     filteredItems: Observable<FileElement[]>
@@ -53,7 +59,7 @@ export class FileNavigationComponent {
     ngOnInit() {
         this.filteredItems = this.itemsControl.valueChanges
                             .startWith(null)
-                            .map(item => item && typeof item === 'object' && item as FileElement ? item.name : item)
+                            .map(item => item && typeof item === 'object' ? item.name : item)
                             .map(name => name ? this.filterPopulationItems(name) : this.filterPopulationItems(null))
         this.loading = true
         this.loadData()  
@@ -65,7 +71,6 @@ export class FileNavigationComponent {
 
             if(res && res.length > 0) {                
                 this.allContainers = res
-                console.log(this.allContainers)
                 this.updateRootallContainers(null)
             }            
 
@@ -98,13 +103,33 @@ export class FileNavigationComponent {
     }
 
     attachItem(item: FileElement) {
-        if(item.id != null && item.id > 0) {
+        if(item && item.id != null && item.id > 0) {
+            this.loading = true
             this.service.attach(this.currentParent.id, item.id).subscribe(res => {
                 if(res > 0) {
                     this.togglePopulate()
                     this.itemsControl.reset()
                     this.currentParent.members.push(item)
-                    this.currentParent.members.sort((a, b) => this.sortElementsByName(a, b))
+                    this.currentParent.members.sort((a, b) => this.sortElementsByName(a, b))                    
+                }
+                this.loading = false
+            })
+        }
+    }
+
+    createNewItem(name: string) {        
+        if(name && name.length > 0) {
+            this.loading = true
+            let data = {folderId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: name, content: []}   
+            this.service.attach(data, null).subscribe(res => {
+                if(res != null && res.hasOwnProperty('error')) {
+                    this.error = res.error
+                    this.loading = false
+                } else {
+                    this.currentParent.members.push(res)
+                    this.currentParent.members.sort((a, b) => this.sortElementsByName(a, b))                    
+                    this.resetForm()
+                    this.loading = false
                 }
             })
         }
@@ -129,16 +154,21 @@ export class FileNavigationComponent {
      * @memberof ContainersComponent
      */
     filterPopulationItems(restrictTerm: string): FileElement[] {
-        if(restrictTerm != null) {
+        if(restrictTerm && restrictTerm != null) {
             let terms = restrictTerm.split(" ")
             return this.allItems.filter(item => {
                     let concreteItem = this.createElement(this.elementType, item)
-                    this.checkTerms(terms, concreteItem.getSearchValues()) 
+                    return this.checkTerms(terms, concreteItem.getSearchValues()) 
                     && this.currentParent.members.filter(m => m.id === item.id).length === 0
                 }
             )         
         }
-        return this.allItems.filter(user => this.currentParent.members.filter(m => m.id === user.id).length === 0)
+
+        if(this.currentParent.members && this.currentParent.members.length > 0) {
+            return this.allItems.filter(user => this.currentParent.members.filter(m => m.id === user.id).length === 0)
+        }
+
+        return this.allItems
     }
 
     
@@ -202,7 +232,6 @@ export class FileNavigationComponent {
 
     createNewContainer() {
         let data = {parentId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: this.name, members: []}
-        console.log(data)
         this.service.save(data).subscribe(res => {
             if(res != null && res.hasOwnProperty('error')) {
                 this.error = res.error
@@ -242,9 +271,10 @@ export class FileNavigationComponent {
     }
 
     resetForm() {
-        this.name = ""        
+        this.name = ""      
         this.saving = false
         this.updating = false
+        this.populating = false
     }
 
     updateRootallContainers(parent: FileContainer) {
@@ -301,6 +331,10 @@ export class FileNavigationComponent {
         this.breadcumbs.slice(-showDepth).forEach(c => this.path += c.name + '/')
     }
 
+    itemSelected(member: FileElement) {
+        this.elementSelection.emit(member)
+    }
+
     confirmDelete(selectedContainerId: number) {
         if(selectedContainerId != null) {
             let dialogRef = this.dialog.open(DeleteConfirmDialog)
@@ -322,6 +356,7 @@ export class FileNavigationComponent {
         let dialogRef = this.dialog.open(UnlinkConfirmDialog)
         dialogRef.componentInstance.item = selectedItem.name
         dialogRef.componentInstance.container = selectedContainer.name
+        dialogRef.componentInstance.action = this.populateMode == 'attach' ? 'unlink' : 'delete'
         dialogRef.afterClosed().subscribe(res => {
                 if(res === true) {
                     //perform deletion
@@ -337,19 +372,4 @@ export class FileNavigationComponent {
     displayAutocomplete(item: FileElement) {
         return item ? item.name : item
     }
-}
-
-@Component({
-  selector: 'delete-confirm-dialog',
-  templateUrl: 'delete-confirm.dialog.html',
-})
-export class DeleteConfirmDialog {}
-
-@Component({
-  selector: 'unlink-confirm-dialog',
-  templateUrl: 'unlink-confirm.dialog.html',
-})
-export class UnlinkConfirmDialog {
-    public item: string
-    public container: string
 }

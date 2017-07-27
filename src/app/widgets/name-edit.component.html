@@ -1,0 +1,16 @@
+<form *ngIf="active" class="material-form" #nameEditForm="ngForm">
+    <div class="row">  
+        <div class="col-9">   
+            <md-input-container class="full-width">
+                <input mdInput name="name" [(ngModel)]="name" type="text" placeholder="{{ element }} Name" required (keyup.enter)="submit()">
+                <md-error>Name is required</md-error>
+            </md-input-container>
+        </div>
+        <div class="col-3"> 
+            <span class="spacer"></span >
+            <button md-raised-button class="mt-2" color="accent" type="button" (click)="submit()"  [disabled]="!nameEditForm.valid">{{ editText }}</button> 
+        </div>
+    </div>       
+    <br>
+    <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
+</form>   

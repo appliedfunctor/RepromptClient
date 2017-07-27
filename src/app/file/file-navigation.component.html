@@ -35,7 +35,7 @@
         <div class="file-item pointer middle" *ngFor="let container of filteredContainers" (click)="navigate(container)">
             <md-icon class="mr-2" (keyup.enter)="navigate(container)" tabindex=0 >folder</md-icon>  {{ container.name }}
         </div>
-        <div class="file-subheading" *ngIf="currentParent?.members?.length > 0">{{currentParent?.name}} Members</div>
+        <div class="file-subheading" *ngIf="currentParent?.members?.length > 0">{{currentParent?.name}} {{itemName}}s</div>
 
 
         <ng-content></ng-content>
@@ -50,25 +50,26 @@
             </md-autocomplete>
         </form>
 
-        <form  #populateForm="ngForm" class="material-form" *ngIf="populating && populateMode == 'create'">
+        <form [formGroup]="populateCreationForm" class="material-form" *ngIf="populating && populateMode == 'create'">
             <div class="row">  
                 <div class="col-9">   
                     <md-input-container class="full-width">
-                        <input mdInput name="name" [(ngModel)]="itemNameValue" type="text" placeholder="{{itemName}} name" required>
+                        <input mdInput name="name" [formControl]="popCreateControl" type="text" placeholder="{{itemName}} name" required>
                         <md-error>Name is required</md-error>
                     </md-input-container>
                 </div>
                 <div class="col-3"> 
                     <span class="spacer"></span >
-                    <button md-raised-button class="mt-2" color="accent" type="button" (click)="createItem()" [disabled]="!populateForm.valid">Create</button> 
+                    <button md-raised-button class="mt-2" color="accent" type="button" (click)="createNewItem(popCreateControl.value)" [disabled]="!populateForm.valid">Create</button> 
                 </div>
             </div>       
         </form>
 
 
         <div class="file-item" *ngFor="let member of currentParent?.members">
-            <md-icon>person</md-icon> {{ member.name }}            
-            <span class="spacer"></span >
+            <div class="file-item pointer spacer" (keyup.enter)="itemSelected(member)" (click)="itemSelected(member)">
+                <md-icon class="mr-2">{{itemIcon}}</md-icon> {{ member.name }}    
+            </div>                    
             <md-icon class="pointer" tabindex=0 (keyup.enter)="confirmItemUnlink(currentParent, member)" (click)="confirmItemUnlink(currentParent, member)" alt="Unlink">delete</md-icon>    
         </div>        
     </div>

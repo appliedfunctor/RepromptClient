@@ -1,7 +1,9 @@
 import { Component } from "@angular/core"
 import { ContentService } from "app/_services/content.service";
-import { PackageModel } from "app/_models/package.model";
-import { ContentFolderModel } from "app/_models/contentFolder.model";
+import { ContentPackageModel } from "app/_models/content-package.model";
+import { ContentFolderModel } from "app/_models/content-folder.model";
+import { FileElement } from "app/_models/file-element.type";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'content',
@@ -10,18 +12,22 @@ import { ContentFolderModel } from "app/_models/contentFolder.model";
 })
 export class ContentComponent {
     title = "Content Management"
-    elementType = PackageModel
+    elementType = ContentPackageModel
     containerType = ContentFolderModel
-    itemIcon = "description"
+    itemIcon = "note"
     populateMode = 'create'
     itemName = 'Package'
 
-    constructor(private service: ContentService) {
+    constructor(private service: ContentService, private router: Router) {
 
     }
 
     ngOnInit() {
 
+    }
+
+    elementSelected(element: FileElement) {
+        this.router.navigate(['content/package/'+element.id])
     }
     
 }

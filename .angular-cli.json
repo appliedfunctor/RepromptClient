@@ -16,8 +16,8 @@
         "android-chrome-384x384.png",
         "apple-touch-icon.png",
         "browserconfig.xml",
-        "favicon-16x16",
-        "favicon-32x32",
+        "favicon-16x16.png",
+        "favicon-32x32.png",
         "mstile-150x150.png",
         "safari-pinned-tab.svg"
       ],
@@ -33,6 +33,8 @@
         "../node_modules/tether/dist/css/tether.min.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css",
         "styles.scss"
       ],
       "scripts": [

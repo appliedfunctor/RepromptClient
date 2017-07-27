@@ -8,7 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import 'hammerjs';
 import {  MdButtonModule, MdCheckboxModule, MdSidenavModule, MdInputModule, MdListModule, 
           MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule, 
-          MdProgressSpinnerModule, MdDialogModule, MdAutocompleteModule} from '@angular/material'
+          MdProgressSpinnerModule, MdDialogModule, MdAutocompleteModule, MdCardModule} from '@angular/material'
 
 import { AppComponent } from './app.component'
 import { HomeComponent } from './home/home.component'
@@ -27,10 +27,17 @@ import { routing } from './app.routing'
 import { AuthService } from "./_services/auth.service"
 import { SideMenu } from "./menus/sidemenu.component"
 import { EqualValidator } from "./validators/equal-validator.directive"
-import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt';
-import { Http, RequestOptions } from '@angular/http';
-import { ContentComponent } from "app/content/content.component";
-import { FileNavigationComponent, DeleteConfirmDialog, UnlinkConfirmDialog } from 'app/file/file-navigation.component';
+import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt'
+import { Http, RequestOptions } from '@angular/http'
+import { ContentComponent } from "app/content/content.component"
+import { FileNavigationComponent } from 'app/file/file-navigation.component'
+import { PackageComponent } from "app/content/package.component"
+import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog"
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
+import { NameEditComponent } from 'app/widgets/name-edit.component'
+import { ContentItemEditComponent } from 'app/content/content-item-edit.component'
+import { FileUploadModule } from 'primeng/primeng'
+import { ContentItemCardComponent } from "app/content/content-item-card.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -54,9 +61,13 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthComponent,
     CohortsComponent,
     FileNavigationComponent,
+    ContentItemEditComponent,
+    ContentItemCardComponent,
     ContentComponent,
+    PackageComponent,
     DeleteConfirmDialog,
     UnlinkConfirmDialog,
+    NameEditComponent,
     RegisterComponent,
     MenuContent,
     SideMenu,
@@ -65,6 +76,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FileUploadModule,
     MdButtonModule,
     MdCheckboxModule,
     FormsModule,
@@ -80,6 +92,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MdProgressSpinnerModule,
     MdAutocompleteModule,
     MdDialogModule,
+    MdCardModule,
     HttpModule,
     JsonpModule,
     routing

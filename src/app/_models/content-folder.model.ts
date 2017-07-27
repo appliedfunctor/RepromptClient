@@ -1,13 +1,13 @@
 import { UserModel } from "app/_models/user.model";
-import { FileContainer } from "app/_models/fileContainer.type";
-import { PackageModel } from "app/_models/package.model";
+import { FileContainer } from "app/_models/file-container.type";
+import { ContentPackageModel } from "app/_models/content-package.model";
 
 export class ContentFolderModel implements FileContainer{
     id: number
     parentId: number
     ownerId: number
     name: string
-    members: PackageModel[]
+    members: ContentPackageModel[]
 
     constructor(data){
         this.id = data.id ? data.id : null

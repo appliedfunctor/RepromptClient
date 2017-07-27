@@ -1,4 +1,4 @@
-import { FileElement } from "app/_models/fileElement.type";
+import { FileElement } from "app/_models/file-element.type";
 
 export interface FileContainer {
     id?: number

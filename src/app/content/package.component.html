@@ -1,0 +1,49 @@
+<div class="title">Package Management</div>
+<div class="row">
+    <div [ngClass]="{ 'col-md-4': itemCreating, 'col-md-12': !itemCreating }">
+        <div class="panel-container">
+            <div class="file-container">
+                <div *ngIf="currentPackage != null">
+                    <div class="file-item file-heading">
+                        <md-icon class="mr-2">note</md-icon> {{currentPackage?.name}}
+                        <div class="spacer"></div>   
+                        <md-icon class="pointer" tabindex=0 (keyup.enter)="toggleItem()" (click)="toggleItem()" alt="Add Content Item">assignment</md-icon>
+                        <md-icon class="">add</md-icon>                           
+                        
+                    </div>
+
+                    <div class="" *ngIf="currentPackage?.content.length < 1">
+                        <p>This package currently holds no content. </p>
+
+                        <p>Add some!</p>
+                    </div>
+
+                    <div class="file-item" *ngFor="let item of currentPackage?.content">
+                        <md-icon class="mr-2">assignment</md-icon> {{ item.name }}   
+                        <div class="spacer"></div>   
+                        <md-icon class="pointer mr-2" tabindex=0 (keyup.enter)="confirmItemUnlink(currentPackage, member)" (click)="confirmItemUnlink(currentPackage, member)" alt="Unlink">assessment</md-icon>                            
+                        <md-icon class="pointer" tabindex=0 (keyup.enter)="confirmItemUnlink(currentPackage, member)" (click)="confirmItemUnlink(currentPackage, member)" alt="Unlink">delete</md-icon>    
+                
+                    </div>   
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div [ngClass]="{ 'col-md-4': itemCreating }">
+        <div class="panel-container">
+            <content-item-edit [active]="itemCreating" [element]="itemName" [packageId]="currentPackage?.id" (valueChange)="onValueChange($event)"></content-item-edit>
+        </div>
+    </div>
+
+    <div [ngClass]="{ 'col-md-4': itemCreating }">
+        <div class="panel-container">
+            <content-item-card [active]="itemCreating" [contentItem]="currentContentItem"></content-item-card>
+        </div>
+    </div>
+
+</div>
+
+
+<md-spinner class="dead-center" *ngIf="loading"></md-spinner>
