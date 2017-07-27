@@ -46,15 +46,16 @@ export class PackageComponent {
         this.currentContentItem = data
     }
 
-    saveItem(data: ContentItemModel) {
-        if(data && data.name != '') {
-            console.log(JSON.stringify(data))
-            // this.loading = true
-            // this.service.saveItem(data).subscribe(res => {
-            //     this.loading = false
-            //     this.currentPackage.content.push(res)
-            //     this.currentPackage.content.sort(this.sortItemsByName)
-            // })
+    saveItem() {
+        if(this.currentContentItem && this.currentContentItem.name != '') {
+            this.currentContentItem.packageId = this.currentPackage.id
+            console.log(JSON.stringify(this.currentContentItem))
+            this.loading = true
+            this.service.saveItem(this.currentContentItem).subscribe(res => {
+                this.loading = false
+                this.currentPackage.content.push(res)
+                this.currentPackage.content.sort(this.sortItemsByName)
+            })
         }
     }
 

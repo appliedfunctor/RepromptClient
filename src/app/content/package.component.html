@@ -33,7 +33,7 @@
 
     <div [ngClass]="{ 'col-md-4': itemCreating }">
         <div class="panel-container">
-            <content-item-edit [active]="itemCreating" [element]="itemName" [packageId]="currentPackage?.id" (valueChange)="onValueChange($event)"></content-item-edit>
+            <content-item-edit [active]="itemCreating" [element]="itemName" [packageId]="currentPackage?.id" (submit)="saveItem()" (valueChange)="onValueChange($event)"></content-item-edit>
         </div>
     </div>
 

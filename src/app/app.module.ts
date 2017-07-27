@@ -36,7 +36,7 @@ import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog"
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
 import { NameEditComponent } from 'app/widgets/name-edit.component'
 import { ContentItemEditComponent } from 'app/content/content-item-edit.component'
-import { FileUploadModule } from 'primeng/primeng'
+import { FileUploadModule, EditorModule, TabViewModule } from 'primeng/primeng'
 import { ContentItemCardComponent } from "app/content/content-item-card.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -77,6 +77,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserModule,
     BrowserAnimationsModule,
     FileUploadModule,
+    EditorModule,
+    TabViewModule,
     MdButtonModule,
     MdCheckboxModule,
     FormsModule,

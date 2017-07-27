@@ -254,15 +254,23 @@
 .revision-card {
   width: 380px;
   padding: 0px;
-  margin-left: -24px;
-  margin-bottom: 10px;
 }
 
-.mat-card {
+.revision-card-image {
+    width: 380px;
+    margin-left: -24px;
+    margin-bottom: 10px;
+}
+
+.md-card {
     padding: 0px;
 }
 
 .justify {
     text-align: justify;
     text-justify: inter-word;
+}
+
+.header-size {
+    font-size: 1.5em;
 }

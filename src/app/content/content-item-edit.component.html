@@ -26,11 +26,24 @@
             <strong class="fa-stack-1x calendar-text text-white">2</strong>
         </span>
         Upload an Image (optional - drop or choose)</div>
-    <p-fileUpload name="image" auto="true" showCancelButton="false" customUpload="true" (uploadHandler)="fileUpload($event)" accept="image/*" maxFileSize="1000000"></p-fileUpload>
+    <p-fileUpload name="image" auto="true" showCancelButton="false" customUpload="true" (uploadHandler)="fileUpload($event)" accept="image/*" maxFileSize="1000000">
+        
+        <ng-template pTemplate="content">
+            <div *ngIf="file?.name == null">Drop an image here to upload</div>
+            <div *ngIf="file?.name != null">
+                Current File: {{file.name}}
+            </div> 
+        </ng-template>
+        
+        <ng-template let-file pTemplate="file">
+            <div><img width="45" [src]="file.objectURL"></div>
+        </ng-template> 
 
-    <div *ngIf="currentFile != null">
-        Current File: {{currentFile.name}}
-    </div>
+        
+
+    </p-fileUpload>
+
+     
 
 
     <div class="file-item file-subheading">
@@ -41,13 +54,17 @@
         Provide Revision Content
     </div>
 
+    <p-editor name="content" [(ngModel)]="currentData.content" [style]="{'height':'320px'}">
+        <p-header>
+            <button title="Bold" aria-label="Bold" class="ql-bold" type="button"></button>
+            <button title="Italic" aria-label="Italic" class="ql-italic" type="button"></button>
+            <button title="Underline" aria-label="Underline" class="ql-underline" type="button"></button>
+            <button title="Strikethrough" aria-label="Strikethrough" class="ql-strike" type="button"></button>
+            <button title="Code" aria-label="Code-block" class="ql-code-block" type="button"></button>
+        </p-header>    
+    </p-editor>    
     
-    <md-input-container class="full-width">
-        <textarea rows="6" mdInput placeholder="Address 2" name="content" [(ngModel)]="currentData.content" placeholder="Brief revision notes for the mini-topic" required></textarea>
-        <md-error>Content is required</md-error>
-    </md-input-container> 
-    
-    <button md-raised-button class="mt-2" color="accent" type="button" (click)="submit()"  [disabled]="!nameEditForm.valid">{{ editText }}</button> 
+    <button md-raised-button class="mt-2" color="accent" type="button" (click)="onSubmit()"  [disabled]="!nameEditForm.valid">{{ editText }}</button> 
 
 
 </form>  

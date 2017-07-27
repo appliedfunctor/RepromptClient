@@ -16,6 +16,7 @@ export class ContentItemEditComponent {
     @Input() active: boolean
     @Input() packageId: number
     @Output() valueChange = new EventEmitter<ContentItemModel>()
+    @Output() submit = new EventEmitter<boolean>()
     currentData: ContentItemModel = new ContentItemModel({})
     editText: string = 'Save'
 
@@ -23,9 +24,9 @@ export class ContentItemEditComponent {
         this.notifyChange()
     }
 
-    submit() {
+    onSubmit() {
         if(this.currentData.name && this.currentData.name != '') {
-            this.notifyChange()
+            this.submit.emit(true)
         }
     }
 

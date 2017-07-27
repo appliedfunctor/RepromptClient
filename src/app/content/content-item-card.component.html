@@ -1,16 +1,20 @@
-<md-card *ngIf="active" class="revision-card">
-  <md-card-header>
-    <div md-card-avatar class="example-header-image"></div>
-    <md-card-title>{{contentItem.name}}</md-card-title>
-    <md-card-subtitle>-</md-card-subtitle>
-  </md-card-header>
-  <img *ngIf="contentItem?.image" [src]="contentItem.image.objectURL" class="revision-card">
-  {{currentData?.image?.objectURL}}
-  <md-card-content class="justify">
-    {{contentItem.content}}
-  </md-card-content>
-  <md-card-actions>
-    <button md-button>LIKE</button>
-    <button md-button>SHARE</button>
-  </md-card-actions>
-</md-card>
+<div class="file-container">
+    <div  *ngIf="active">    
+        <div class="file-item file-heading">
+            Preview Content Item
+        </div>  
+        
+        <md-card *ngIf="active" class="revision-card">
+            <md-card-header>
+                <md-card-title class="header-size">{{contentItem.name}}</md-card-title>
+            </md-card-header>
+            <img *ngIf="contentItem?.image" [src]="contentItem.image.objectURL" class="revision-card-image">
+            {{currentData?.image?.objectURL}}
+            <md-card-content class="justify" [innerHTML]="contentItem.content"></md-card-content>
+            <md-card-actions>
+                <button md-button>LIKE</button>
+                <button md-button>SHARE</button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div>
