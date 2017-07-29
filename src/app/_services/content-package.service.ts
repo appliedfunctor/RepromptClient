@@ -11,6 +11,7 @@ import { UserModel } from "app/_models/user.model";
 import { ContentFolderModel } from "app/_models/content-folder.model";
 import { ContentPackageModel } from "app/_models/content-package.model";
 import { ContentItemModel } from "app/_models/content-item.model";
+import { AuthService } from "app/_services/auth.service";
 
 @Injectable()
 export class ContentPackageService {    
@@ -18,8 +19,9 @@ export class ContentPackageService {
     private packageGetPath = '/api/content/package/'
     private itemGetPath = '/api/content/item/'
     private itemGetAllPath = '/api/content/folders/owned'
+    private multipartHeader = new Headers({ 'Content-Type': 'multipart/mixed', 'What': 'testing' })
 
-    constructor(private authHttp: AuthHttp) {
+    constructor(private authHttp: AuthHttp, private auth: AuthService) {
     }
 
     /**
@@ -27,7 +29,7 @@ export class ContentPackageService {
      * 
      * @param {number} contentId 
      * @returns {Observable<any>} 
-     * @memberof ContentService
+     * @memberof ContentPackageService
      */
     get(packageId: number): Observable<any> {
         return this.authHttp.get(this.path.getUrl(this.packageGetPath) + packageId)
@@ -41,7 +43,7 @@ export class ContentPackageService {
     //  * Get all items for the current content package
     //  * 
     //  * @returns {Observable<any>} 
-    //  * @memberof ContentService
+    //  * @memberof ContentPackageService
     //  */
     // getAllItems(): Observable<any> {
     //     return this.authHttp.get(this.path.getUrl(this.folderGetAllPath))
@@ -63,16 +65,41 @@ export class ContentPackageService {
     }
 
     /**
-     * save a content package
+     * save a content package. Had to fallback to using XMLHttpRequest directly as Angular 4 
+     * kept overriding the Content-Type header, preventing the multipart/mixed upload
      * 
-     * @param {ContentItemModel} pkg 
+     * @param {FormData} pkg 
      * @returns 
-     * @memberof ContentItemModel
+     * @memberof ContentPackageService
      */
-    saveItem(item: ContentItemModel) {
-        return this.authHttp.post(this.path.getUrl(this.itemGetPath), item)
-                            .map(this.handleItem)
-                            .catch(this.handleError)
+    saveItem(item: FormData) {
+        
+        let xhr = new XMLHttpRequest()
+        xhr.open("POST", this.path.getUrl(this.itemGetPath), true)
+        xhr.setRequestHeader("X-Auth-Token", this.auth.getToken())
+        xhr.send(item)
+
+        return Observable.create( (observer) => {
+            
+            //code based on https://stackoverflow.com/questions/44085756/how-to-return-observable-from-xhr 
+            // accessed 29/07/2017, author: users/310726/martin
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        observer.next(JSON.parse(xhr.response))
+                        observer.complete()
+                    } else {
+                        observer.error(xhr.response);
+                    }
+                }
+
+                return () => {
+                    xhr.abort()
+                }
+            }
+            
+        })
+        
     }
 
     /**
@@ -80,13 +107,20 @@ export class ContentPackageService {
      * 
      * @param {number} cohortId 
      * @returns 
-     * @memberof ContentService
+     * @memberof ContentPackageService
      */
-    delete(folderId: number) {
-        // return this.authHttp.delete(this.path.getUrl(this.folderDeletePath) + folderId)
-        //                     .map(res => res.json())
-        //                     .catch(this.handleError)
+    delete(packageId: number) {
+        return this.authHttp.delete(this.path.getUrl(this.packageGetPath) + packageId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
     }     
+
+
+    deleteItem(itemId: number) {
+        return this.authHttp.delete(this.path.getUrl(this.itemGetPath) + itemId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
+    }
 
     private handlePackage(res: Response) {   
         //parse response data into Folders

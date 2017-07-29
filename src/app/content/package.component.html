@@ -21,8 +21,8 @@
                     <div class="file-item" *ngFor="let item of currentPackage?.content">
                         <md-icon class="mr-2">assignment</md-icon> {{ item.name }}   
                         <div class="spacer"></div>   
-                        <md-icon class="pointer mr-2" tabindex=0 (keyup.enter)="confirmItemUnlink(currentPackage, member)" (click)="confirmItemUnlink(currentPackage, member)" alt="Unlink">assessment</md-icon>                            
-                        <md-icon class="pointer" tabindex=0 (keyup.enter)="confirmItemUnlink(currentPackage, member)" (click)="confirmItemUnlink(currentPackage, member)" alt="Unlink">delete</md-icon>    
+                        <md-icon class="pointer mr-2" tabindex=0 (keyup.enter)="openAssessment(item)" (click)="openAssessment(item)" alt="Unlink">assessment</md-icon>                            
+                        <md-icon class="pointer" tabindex=0 (keyup.enter)="confirmItemDelete(item)" (click)="confirmItemDelete(item)" alt="Unlink">delete</md-icon>    
                 
                     </div>   
 

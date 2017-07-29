@@ -10,7 +10,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
             let jwtToken = loginInfo && loginInfo.token
             return jwtToken
         }),
-		globalHeaders: [{'Content-Type':'application/json'}],
+		//globalHeaders: [{'Content-Type':'multipart/mixed'}],
 	}), http, options);
 }
 

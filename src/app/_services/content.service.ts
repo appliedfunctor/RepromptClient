@@ -12,7 +12,7 @@ import { ContentFolderModel } from "app/_models/content-folder.model";
 import { ContentPackageModel } from "app/_models/content-package.model";
 
 @Injectable()
-export class ContentService implements ContainerService{    
+export class ContentService implements ContainerService{  
     private path = new Paths
     private folderGetPath = '/api/content/folder/'
     private folderGetAllPath = '/api/content/folders/owned'
@@ -125,7 +125,7 @@ export class ContentService implements ContainerService{
     }
 
     private handleElements(res: Response) {   
-        //parse response data into Elements
+        // parse response data into Elements
         // let users: UserModel[] = []
         // res.json().forEach(data => users.push(new UserModel(data)))
         // return users;

@@ -4,6 +4,10 @@ import { ContentPackageService } from "app/_services/content-package.service"
 import { ContentPackageModel } from "app/_models/content-package.model"
 import { ContentItemEditComponent } from 'app/content/content-item-edit.component'
 import { ContentItemModel } from "app/_models/content-item.model";
+import { AuthService } from "app/_services/auth.service";
+import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
+
 
 @Component({
     selector: 'content-package',
@@ -19,7 +23,7 @@ export class PackageComponent {
     itemName = 'Content Item'
     currentContentItem: ContentItemModel = new ContentItemModel({})
 
-    constructor(private route: ActivatedRoute, private service: ContentPackageService) {
+    constructor(private route: ActivatedRoute, private service: ContentPackageService, private auth: AuthService, public dialog: MdDialog) {
         
     }
 
@@ -51,12 +55,38 @@ export class PackageComponent {
             this.currentContentItem.packageId = this.currentPackage.id
             console.log(JSON.stringify(this.currentContentItem))
             this.loading = true
-            this.service.saveItem(this.currentContentItem).subscribe(res => {
+
+            let data = new FormData()
+            if(this.currentContentItem.id) data.append('id', this.currentContentItem.id.toString())
+            if(this.currentContentItem.name) data.append('name', this.currentContentItem.name)
+            if(this.currentContentItem.content) data.append('content', this.currentContentItem.content)
+            if(this.currentContentItem.packageId) data.append('packageId', this.currentContentItem.packageId.toString())
+            if(this.currentContentItem.image) data.append('image', this.currentContentItem.image)
+            
+            this.service.saveItem(data).subscribe(res => {
                 this.loading = false
                 this.currentPackage.content.push(res)
                 this.currentPackage.content.sort(this.sortItemsByName)
+                this.itemCreating = false
             })
         }
+    }
+
+    confirmItemDelete(item: ContentItemModel) {
+        let dialogRef = this.dialog.open(UnlinkConfirmDialog)
+        dialogRef.componentInstance.item = item.name
+        dialogRef.componentInstance.container = this.currentPackage.name
+        dialogRef.componentInstance.action = 'delete'
+        dialogRef.afterClosed().subscribe(res => {
+                if(res === true) {
+                    //perform deletion
+                    this.service.deleteItem(item.id).subscribe(response => {
+                        if(response > 0) {
+                            this.currentPackage.content = this.currentPackage.content.filter(element => element.id != item.id)
+                        }
+                    })
+                }
+            })
     }
 
     sortItemsByName(a: ContentItemModel, b: ContentItemModel) {

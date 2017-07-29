@@ -104,6 +104,12 @@ export class AuthService {
         return this.isTokenValid() ? true : false   
     }
 
+    getToken() {
+        let loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
+        let jwtToken = loginInfo && loginInfo.token
+        return jwtToken
+    }
+
     isTokenValid() {
         //console.log("token null: " + (this.jwtToken == null))
         if(this.jwtToken != null) {

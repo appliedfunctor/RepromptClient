@@ -5,7 +5,7 @@ export class ContentItemModel {
     id: number
     packageId: number
     imageUrl: string
-    image: File
+    image
     name: string
     content: string
     questions: QuestionModel[]
