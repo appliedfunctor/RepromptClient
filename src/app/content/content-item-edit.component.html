@@ -1,6 +1,7 @@
 <form *ngIf="active" class="material-form" #nameEditForm="ngForm">
     <div class="file-item file-heading">
-        Create Content Item
+        <div *ngIf="currentData.id == null">Create Content Item</div> 
+        <div *ngIf="currentData.id != null">Edit Content Item</div> 
     </div>   
 
     <div class="file-item file-subheading">
@@ -29,7 +30,9 @@
     <p-fileUpload name="image" auto="true" showCancelButton="false" customUpload="true" (uploadHandler)="fileUpload($event)" accept="image/*" maxFileSize="1000000">
         
         <ng-template pTemplate="content">
-            <div *ngIf="file?.name == null">Drop an image here to upload</div>
+            <div *ngIf="file?.name == null">Drop an image here to upload
+                <br>{{currentData.imageUrl}}
+            </div>
             <div *ngIf="file?.name != null">
                 Current File: {{file.name}}
             </div> 
@@ -54,7 +57,7 @@
         Provide Revision Content
     </div>
 
-    <p-editor name="content" [(ngModel)]="currentData.content" [style]="{'height':'320px'}">
+    <p-editor name="content" [(ngModel)]="currentData.content" [style]="{'height':'280px'}">
         <p-header>
             <button title="Bold" aria-label="Bold" class="ql-bold" type="button"></button>
             <button title="Italic" aria-label="Italic" class="ql-italic" type="button"></button>

@@ -9,9 +9,19 @@ export class Paths {
 
     getUrl(append: string) {
         let start = this.secure ? this.https : this.http
-        if(isDevMode()) {
+        if(isDevMode() && !append.startsWith("http")) {
             return start + this.base + append
         }        
         return append
+    }
+
+    getBaseUrl(append: string) {
+        if(isDevMode() && !append.startsWith("http")) return this.http + this.base + '/'
+        return ""
+    }
+
+    getBase() {
+        if(isDevMode()) return this.http + this.base + '/'
+        return ""
     }
 }

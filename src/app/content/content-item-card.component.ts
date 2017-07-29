@@ -1,5 +1,6 @@
 import { Component, Input } from "@angular/core"
 import { ContentItemModel } from "app/_models/content-item.model";
+import { Paths } from "app/app.paths";
 
 @Component({
     selector: 'content-item-card',
@@ -8,6 +9,8 @@ import { ContentItemModel } from "app/_models/content-item.model";
 export class ContentItemCardComponent {
     @Input() contentItem: ContentItemModel = new ContentItemModel({})
     @Input() active: boolean = false
+    private path = new Paths
+    base = this.path.getBase()
 }
 
 

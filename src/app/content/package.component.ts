@@ -20,6 +20,7 @@ export class PackageComponent {
     currentPackage: ContentPackageModel = null
     loading = false
     itemCreating = false
+    itemEditing = false
     itemName = 'Content Item'
     currentContentItem: ContentItemModel = new ContentItemModel({})
 
@@ -42,8 +43,24 @@ export class PackageComponent {
         })
     }
 
-    toggleItem() {
+    toggleItemCreation() {        
+        this.currentContentItem = new ContentItemModel({})
+        this.itemEditing = false
         this.itemCreating = !this.itemCreating
+    }
+
+    toggleItemEditing(item: ContentItemModel) {
+        if(this.currentContentItem.id != item.id){
+            this.currentContentItem = new ContentItemModel(item)
+            this.itemCreating = false
+            this.itemEditing = true
+        } else {
+            this.currentContentItem = new ContentItemModel({})
+            this.itemCreating = false
+            this.itemEditing = false
+        }
+        
+        
     }
 
     onValueChange(data: ContentItemModel) {
@@ -65,11 +82,35 @@ export class PackageComponent {
             
             this.service.saveItem(data).subscribe(res => {
                 this.loading = false
-                this.currentPackage.content.push(res)
-                this.currentPackage.content.sort(this.sortItemsByName)
+
+                if(this.currentContentItem.id != null && this.currentContentItem.id > 0) {
+                    this.postUpdateUiUpdate(res)
+                } else {
+                    this.postSaveUiUpdate(res)
+                }
+                
                 this.itemCreating = false
+                this.itemEditing = false
+                this.currentContentItem = new ContentItemModel({})
             })
         }
+    }
+
+    postSaveUiUpdate(newItem: ContentItemModel) {
+        this.currentPackage.content.push(newItem)
+        this.currentPackage.content.sort(this.sortItemsByName)
+    }
+
+    postUpdateUiUpdate(updatedItem: ContentItemModel) {
+        this.currentPackage.content.map(e => { 
+            if(e.id == updatedItem.id) {
+                e.name = updatedItem.name
+                e.content = updatedItem.content
+                e.imageUrl = updatedItem.imageUrl
+                e.questions = updatedItem.questions
+            }
+        })
+        this.currentPackage.content.sort(this.sortItemsByName)
     }
 
     confirmItemDelete(item: ContentItemModel) {

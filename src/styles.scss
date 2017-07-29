@@ -274,3 +274,10 @@
 .header-size {
     font-size: 1.5em;
 }
+
+.selectedItem {
+    border: 1px solid #263238;
+    background: #263238;
+    border-radius: 3px;
+    color: white;
+}

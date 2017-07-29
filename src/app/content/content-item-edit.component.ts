@@ -15,9 +15,10 @@ export class ContentItemEditComponent {
     @Input() element: string
     @Input() active: boolean
     @Input() packageId: number
+    @Input() currentData: ContentItemModel = new ContentItemModel({})
     @Output() valueChange = new EventEmitter<ContentItemModel>()
     @Output() submit = new EventEmitter<boolean>()
-    currentData: ContentItemModel = new ContentItemModel({})
+    
     editText: string = 'Save'
 
     ngOnInit() {
