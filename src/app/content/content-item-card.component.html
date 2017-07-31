@@ -4,18 +4,12 @@
             Preview Content Item
         </div>  
         
-        <md-card *ngIf="active" class="revision-card">
-            <md-card-header>
-                <md-card-title class="header-size">{{contentItem.name}}</md-card-title>
-            </md-card-header>
+        <div *ngIf="active" class="card revision-card">
+            <div class="card-head">{{contentItem.name}}</div>
             <img *ngIf="contentItem?.image" [src]="contentItem.image.objectURL" class="revision-card-image">
             <img *ngIf="contentItem?.imageUrl && !contentItem?.image" [src]="base+contentItem?.imageUrl" class="revision-card-image">
             {{currentData?.image?.objectURL}}
-            <md-card-content class="justify" [innerHTML]="contentItem.content"></md-card-content>
-            <md-card-actions>
-                <button md-button>LIKE</button>
-                <button md-button>SHARE</button>
-            </md-card-actions>
-        </md-card>
+            <div class="card-content justify" [innerHTML]="contentItem.content"></div>
+        </div>
     </div>
 </div>

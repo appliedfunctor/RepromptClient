@@ -91,6 +91,7 @@ export class CohortService implements ContainerService{
     }
 
     private handleError (error: Response | any) {
+        console.log("handling error")
         let errMsg: string;
         if (error instanceof Response) {
         const body = error.json() || '';

@@ -59,11 +59,18 @@
 
     <p-editor name="content" [(ngModel)]="currentData.content" [style]="{'height':'280px'}">
         <p-header>
-            <button title="Bold" aria-label="Bold" class="ql-bold" type="button"></button>
-            <button title="Italic" aria-label="Italic" class="ql-italic" type="button"></button>
-            <button title="Underline" aria-label="Underline" class="ql-underline" type="button"></button>
-            <button title="Strikethrough" aria-label="Strikethrough" class="ql-strike" type="button"></button>
-            <button title="Code" aria-label="Code-block" class="ql-code-block" type="button"></button>
+            <span class="ql-formats">
+                <button title="Bold" aria-label="Bold" class="ql-bold" type="button"></button>
+                <button title="Italic" aria-label="Italic" class="ql-italic" type="button"></button>
+                <button title="Underline" aria-label="Underline" class="ql-underline" type="button"></button>
+                <button title="Strikethrough" aria-label="Strikethrough" class="ql-strike" type="button"></button>
+            </span>
+            <span class="ql-formats">
+                <button title="Code" aria-label="Code-block" class="ql-code-block" type="button"></button>
+                <button title="Ordered List" aria-label="Ordered List" class="ql-list" value="ordered" type="button"></button>
+                <button title="Unordered List" aria-label="Unordered List" class="ql-list" value="bullet" type="button"></button>
+            </span>
+            
         </p-header>    
     </p-editor>    
     

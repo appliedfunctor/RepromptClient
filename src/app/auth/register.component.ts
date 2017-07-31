@@ -23,7 +23,8 @@ export class RegisterComponent {
     response
     error: boolean = false
     isEducator: string = "false"
-    loading: boolean = false;
+    loading: boolean = false
+    alive: boolean = true
     @Output() tab = new EventEmitter<number>()
 
     constructor(private router: Router, private service: AuthService) {
@@ -39,7 +40,9 @@ export class RegisterComponent {
             isEducator: this.isEducator
         })
 
-        this.service.register(user).subscribe(data => {
+        this.service.register(user)
+        .takeWhile(() => this.alive)
+        .subscribe(data => {
 
             this.response = data
             this.errorMessage = data.hasOwnProperty('error') ? data.error : "There has been an error attempting to register you."            
@@ -58,6 +61,12 @@ export class RegisterComponent {
 
     switchTab() {
         this.tab.emit(0);
+    }
+
+    //application lifecycle preventing memory leaks http://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
+    //accessed 31/07/2017
+    ngOnDestroy() {
+        this.alive = false
     }
 
 }

@@ -1,11 +1,12 @@
 <div class="title">Package Management</div>
+<div class="container">
 <div class="row">
     <div [ngClass]="{ 'col-md-4': itemCreating || itemEditing, 'col-md-12': !itemCreating && !itemEditing }">
         <div class="panel-container">
             <div class="file-container">
                 <div *ngIf="currentPackage != null">
                     <div class="file-item file-heading">
-                        <md-icon class="mr-2">note</md-icon> {{currentPackage?.name}}
+                        <md-icon class="mr-2 pointer" (click)="navigateBack()" (keyup.enter)="navigateBack()">note</md-icon> {{currentPackage?.name}}
                         <div class="spacer"></div>   
                         <md-icon class="pointer" tabindex=0 (keyup.enter)="toggleItemCreation()" (click)="toggleItemCreation()" alt="Add Content Item">assignment</md-icon>
                         <md-icon class="">add</md-icon>                           
@@ -44,6 +45,7 @@
         </div>
     </div>
 
+</div>
 </div>
 
 

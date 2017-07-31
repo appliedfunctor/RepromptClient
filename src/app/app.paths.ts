@@ -16,6 +16,7 @@ export class Paths {
     }
 
     getBaseUrl(append: string) {
+        console.log(`called: ${append}`)
         if(isDevMode() && !append.startsWith("http")) return this.http + this.base + '/'
         return ""
     }

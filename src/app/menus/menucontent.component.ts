@@ -10,13 +10,14 @@ import { Router } from "@angular/router";
 export class MenuContent {
     user: UserModel = new UserModel({})
     authenticated: boolean = false
+    subscribed
     @Input() account: String = "Unauthenticated";
     @Output() logout = new EventEmitter<boolean>();
 
     constructor(private service: AuthService, private router: Router) {
         this.updateData(this.service.getCurrentUser())
 
-        service.userChange.subscribe(u => {
+        this.subscribed = service.userChange.subscribe(u => {
             this.updateData(u)
         })
     }
@@ -32,5 +33,9 @@ export class MenuContent {
 
     redirect(destination: string) {
         this.router.navigate([destination])
+    }
+
+    ngOnDestroy() {
+        this.subscribed.unsubscribe()
     }
 }

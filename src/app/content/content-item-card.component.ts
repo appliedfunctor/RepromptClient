@@ -10,7 +10,13 @@ export class ContentItemCardComponent {
     @Input() contentItem: ContentItemModel = new ContentItemModel({})
     @Input() active: boolean = false
     private path = new Paths
-    base = this.path.getBase()
+    base: string
+
+    ngOnChanges(changes) {
+        if(changes.hasOwnProperty('contentItem')) {
+            this.base = this.path.getBaseUrl(this.contentItem.imageUrl)
+        }
+    }
 }
 
 

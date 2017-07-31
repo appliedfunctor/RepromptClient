@@ -24,6 +24,7 @@ export class FileNavigationComponent {
     @Input() containerType
     @Input() populateMode: string = 'attach'
     @Input() itemName: string = 'Item'
+    @Input() navigationId: number = null
 
     @Output() elementSelection = new EventEmitter<FileElement>()
 
@@ -51,6 +52,7 @@ export class FileNavigationComponent {
     error: Boolean = false
     errorMessage: string = "There has been an error attempting to authenticate you."
     name: string = ""
+    alive: boolean = true
 
     constructor(public dialog: MdDialog, private auth: AuthService) {
 
@@ -66,11 +68,21 @@ export class FileNavigationComponent {
         this.loadAllItems()
     }
 
+    ngOnDestroy() {
+        this.alive = false
+    }
+
     loadData() {
-        this.service.getAllContainers().subscribe(res => {
+        this.service.getAllContainers()
+        .takeWhile(() => this.alive)
+        .subscribe(res => {
 
             if(res && res.length > 0) {                
                 this.allContainers = res
+                //this.allContainers.forEach(c => console.log(c))
+                
+                this.handleRouteId()
+
                 this.updateRootallContainers(null)
             }            
 
@@ -78,8 +90,17 @@ export class FileNavigationComponent {
         })
     }
 
+    handleRouteId() {
+        if(this.navigationId != null) {
+            let container: FileContainer = this.allContainers.find(c => c.id == this.navigationId)
+            this.navigate(container)
+        }
+    }
+
     loadAllItems() {
-        this.service.getAllItems().subscribe(res => {
+        this.service.getAllItems()
+        .takeWhile(() => this.alive)
+        .subscribe(res => {
             if (res.length > 0) {
                 this.allItems = res
             }
@@ -105,7 +126,9 @@ export class FileNavigationComponent {
     attachItem(item: FileElement) {
         if(item && item.id != null && item.id > 0) {
             this.loading = true
-            this.service.attach(this.currentParent.id, item.id).subscribe(res => {
+            this.service.attach(this.currentParent.id, item.id)
+            .takeWhile(() => this.alive)
+            .subscribe(res => {
                 if(res > 0) {
                     this.togglePopulate()
                     this.itemsControl.reset()
@@ -121,7 +144,9 @@ export class FileNavigationComponent {
         if(name && name.length > 0) {
             this.loading = true
             let data = {folderId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: name, content: []}   
-            this.service.attach(data, null).subscribe(res => {
+            this.service.attach(data, null)
+            .takeWhile(() => this.alive)
+            .subscribe(res => {
                 if(res != null && res.hasOwnProperty('error')) {
                     this.error = res.error
                     this.loading = false
@@ -215,7 +240,9 @@ export class FileNavigationComponent {
     updateContainer() {
         let data = this.getCurrentContainer()
         data.name = this.name
-        this.service.save(data).subscribe(res => {
+        this.service.save(data)
+        .takeWhile(() => this.alive)
+        .subscribe(res => {
             if(res != null && res.hasOwnProperty('error')) {
                 this.error = res.error
             } else {
@@ -232,7 +259,9 @@ export class FileNavigationComponent {
 
     createNewContainer() {
         let data = {parentId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: this.name, members: []}
-        this.service.save(data).subscribe(res => {
+        this.service.save(data)
+        .takeWhile(() => this.alive)
+        .subscribe(res => {
             if(res != null && res.hasOwnProperty('error')) {
                 this.error = res.error
             } else {
@@ -338,10 +367,14 @@ export class FileNavigationComponent {
     confirmDelete(selectedContainerId: number) {
         if(selectedContainerId != null) {
             let dialogRef = this.dialog.open(DeleteConfirmDialog)
-            dialogRef.afterClosed().subscribe(res => {
+            dialogRef.afterClosed()
+            .takeWhile(() => this.alive)
+            .subscribe(res => {
                 if(res === true) {
                     //perform deletion
-                    this.service.delete(selectedContainerId).subscribe(response => {
+                    this.service.delete(selectedContainerId)
+                    .takeWhile(() => this.alive)
+                    .subscribe(response => {
                         if(response > 0) {
                             this.allContainers = this.allContainers.filter(e => e.id != selectedContainerId)
                             this.navigateBack()
@@ -357,10 +390,14 @@ export class FileNavigationComponent {
         dialogRef.componentInstance.item = selectedItem.name
         dialogRef.componentInstance.container = selectedContainer.name
         dialogRef.componentInstance.action = this.populateMode == 'attach' ? 'unlink' : 'delete'
-        dialogRef.afterClosed().subscribe(res => {
+        dialogRef.afterClosed()
+        .takeWhile(() => this.alive)
+        .subscribe(res => {
                 if(res === true) {
                     //perform deletion
-                    this.service.detach(selectedContainer.id, selectedItem.id).subscribe(response => {
+                    this.service.detach(selectedContainer.id, selectedItem.id)
+                    .takeWhile(() => this.alive)
+                    .subscribe(response => {
                         if(response > 0) {
                             selectedContainer.members = selectedContainer.members.filter(item => item.id != selectedItem.id)
                         }
@@ -371,5 +408,11 @@ export class FileNavigationComponent {
 
     displayAutocomplete(item: FileElement) {
         return item ? item.name : item
+    }
+
+    ngOnChanges(changes) {
+        if(changes.hasOwnProperty('navigationId')) {
+           this.handleRouteId()
+        }
     }
 }

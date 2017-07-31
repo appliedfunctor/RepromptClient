@@ -16,14 +16,25 @@ export class AppComponent {
   firstName: String = "Guest"
   surName: String = ""
   authenticated: boolean = false
+  alive: boolean = true
+  sub
 
   constructor(private service: AuthService, private router: Router) {    
-    service.userChange.subscribe(user => {
+    
+  }
+
+  ngOnInit() {
+    this.sub = this.service.userChange
+        .subscribe(user => {
       this.user = user
       this.onUserChange()
     })
-    this.user = service.getCurrentUser()
+    this.user = this.service.getCurrentUser()
     this.authenticated = this.service.isAuthenticated()
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe()
   }
 
   logout() {
@@ -39,6 +50,8 @@ export class AppComponent {
     
     if(this.authenticated) {
       this.router.navigate(['/'])
+    } else {
+      this.router.navigate(['/auth'])
     }
     console.log("Auth "+ this.authenticated + " User: " + this.user)
   }

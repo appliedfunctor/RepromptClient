@@ -30,6 +30,20 @@ export class AuthService {
         this.loadDataFromStorage()
     }
 
+    ngOnInit() {
+        
+    }
+
+    startAuthChecks() {          
+        let subscription = Observable.interval(30000)
+            .subscribe((count) => {
+              if(!this.isAuthenticated()) {
+                subscription.unsubscribe()
+                this.logout()
+              }            
+          })
+    }
+
     loadDataFromStorage() {
         //load existing JWT token from storage
         var loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
@@ -37,6 +51,9 @@ export class AuthService {
         //load existing user from storage
         if(loginInfo != null && loginInfo.user != null){
             this.user = new UserModel(loginInfo.user)
+        }
+        if(this.isAuthenticated()) {
+            this.startAuthChecks()
         }
         //this.onUserChange()
     }
@@ -67,7 +84,7 @@ export class AuthService {
     }
 
     login(email: String, password: String): Observable<any> {
-        console.log(this.path.getUrl(this.loginPath))
+        //console.log(this.path.getUrl(this.loginPath))
 		let options = new RequestOptions({ headers: this.headers });
         let sendData = JSON.stringify({email: email, password: password });
         
@@ -86,6 +103,8 @@ export class AuthService {
             if(res.hasOwnProperty("id")) {
                 this.user = new UserModel(res)
                 this.onUserChange()
+
+                this.startAuthChecks()
             }
         })
         

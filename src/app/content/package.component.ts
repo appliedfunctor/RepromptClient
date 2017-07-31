@@ -23,21 +23,30 @@ export class PackageComponent {
     itemEditing = false
     itemName = 'Content Item'
     currentContentItem: ContentItemModel = new ContentItemModel({})
+    alive: boolean = true
 
-    constructor(private route: ActivatedRoute, private service: ContentPackageService, private auth: AuthService, public dialog: MdDialog) {
+    constructor(private router: Router, private route: ActivatedRoute, private service: ContentPackageService, private auth: AuthService, public dialog: MdDialog) {
         
     }
 
     ngOnInit() {
-        this.route.params.subscribe((params: ParamMap) => {
+        this.route.params
+        .takeWhile(() => this.alive)
+        .subscribe((params: ParamMap) => {
             this.navigationId = params['id']
             this.loadPackageData(this.navigationId)
         })
     }
 
+    ngOnDestroy() {
+        this.alive = false
+    }
+
     loadPackageData(packageId: number) {
         this.loading = true
-        this.service.get(packageId).subscribe(res => {
+        this.service.get(packageId)
+        .takeWhile(() => this.alive)
+        .subscribe(res => {
             this.currentPackage = res
             this.loading = false
         })
@@ -70,7 +79,7 @@ export class PackageComponent {
     saveItem() {
         if(this.currentContentItem && this.currentContentItem.name != '') {
             this.currentContentItem.packageId = this.currentPackage.id
-            console.log(JSON.stringify(this.currentContentItem))
+            //console.log(JSON.stringify(this.currentContentItem))
             this.loading = true
 
             let data = new FormData()
@@ -78,9 +87,12 @@ export class PackageComponent {
             if(this.currentContentItem.name) data.append('name', this.currentContentItem.name)
             if(this.currentContentItem.content) data.append('content', this.currentContentItem.content)
             if(this.currentContentItem.packageId) data.append('packageId', this.currentContentItem.packageId.toString())
+            if(this.currentContentItem.imageUrl) data.append('imageUrl', this.currentContentItem.imageUrl)
             if(this.currentContentItem.image) data.append('image', this.currentContentItem.image)
             
-            this.service.saveItem(data).subscribe(res => {
+            this.service.saveItem(data)
+            .takeWhile(() => this.alive)
+            .subscribe(res => {
                 this.loading = false
 
                 if(this.currentContentItem.id != null && this.currentContentItem.id > 0) {
@@ -88,12 +100,20 @@ export class PackageComponent {
                 } else {
                     this.postSaveUiUpdate(res)
                 }
+                this.clearContentItemUi()
                 
-                this.itemCreating = false
-                this.itemEditing = false
-                this.currentContentItem = new ContentItemModel({})
             })
         }
+    }
+
+    navigateBack() {
+        this.router.navigate(['content/'+this.currentPackage.folderId])
+    }
+
+    clearContentItemUi(){
+        this.itemCreating = false
+        this.itemEditing = false
+        this.currentContentItem = new ContentItemModel({})
     }
 
     postSaveUiUpdate(newItem: ContentItemModel) {
@@ -121,9 +141,12 @@ export class PackageComponent {
         dialogRef.afterClosed().subscribe(res => {
                 if(res === true) {
                     //perform deletion
-                    this.service.deleteItem(item.id).subscribe(response => {
+                    this.service.deleteItem(item.id)
+                    .takeWhile(() => this.alive)
+                    .subscribe(response => {
                         if(response > 0) {
                             this.currentPackage.content = this.currentPackage.content.filter(element => element.id != item.id)
+                            this.clearContentItemUi()
                         }
                     })
                 }

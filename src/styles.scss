@@ -251,19 +251,30 @@
     height: 120px;
 }
 
-.revision-card {
-  width: 380px;
+.revision-card { 
   padding: 0px;
 }
 
 .revision-card-image {
-    width: 380px;
-    margin-left: -24px;
+    width: 100%;
     margin-bottom: 10px;
 }
 
-.md-card {
+.card {
     padding: 0px;
+    margin: 3px;
+    border: 0px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    border-radius: 2px;
+    display: flex;
+    -webkit-box-direction: normal;
+    box-sizing: border-box;
+    -webkit-box-orient: vertical;
+}
+
+.card-content {
+    padding:10px;
+    font-size: 0.8em;
 }
 
 .justify {
@@ -271,8 +282,10 @@
     text-justify: inter-word;
 }
 
-.header-size {
+.card-head {
     font-size: 1.5em;
+    border-bottom: 1px solid #DCDCDC;
+    padding: 5px;
 }
 
 .selectedItem {
