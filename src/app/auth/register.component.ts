@@ -2,7 +2,7 @@ import { Component, ViewChild, Output, EventEmitter } from "@angular/core"
 import { AuthService } from "../_services/auth.service"
 import { Router } from "@angular/router"
 import { UserModel } from "app/_models/user.model"
-import { EqualValidator } from "app/validators/equal-validator.directive"
+import { EqualValidator } from "app/_directives/equal-validator.directive"
 
 
 @Component({

@@ -21,6 +21,7 @@ export class PackageComponent {
     loading = false
     itemCreating = false
     itemEditing = false
+    itemAssessment = false
     itemName = 'Content Item'
     currentContentItem: ContentItemModel = new ContentItemModel({})
     alive: boolean = true
@@ -42,6 +43,18 @@ export class PackageComponent {
         this.alive = false
     }
 
+    toggleAssessment(item: ContentItemModel) {
+        if(this.currentContentItem.id != item.id){
+            this.currentContentItem = new ContentItemModel(item)
+        } else if(this.itemAssessment) {
+            this.currentContentItem = new ContentItemModel({})
+        }
+        this.itemEditing = false
+        this.itemCreating = false
+        
+        this.itemAssessment = !this.itemAssessment
+    }
+
     loadPackageData(packageId: number) {
         this.loading = true
         this.service.get(packageId)
@@ -53,6 +66,7 @@ export class PackageComponent {
     }
 
     toggleItemCreation() {        
+        this.itemAssessment = false
         this.currentContentItem = new ContentItemModel({})
         this.itemEditing = false
         this.itemCreating = !this.itemCreating
@@ -61,15 +75,16 @@ export class PackageComponent {
     toggleItemEditing(item: ContentItemModel) {
         if(this.currentContentItem.id != item.id){
             this.currentContentItem = new ContentItemModel(item)
-            this.itemCreating = false
+            this.itemEditing = true
+        } else if (!this.itemEditing) {
             this.itemEditing = true
         } else {
             this.currentContentItem = new ContentItemModel({})
-            this.itemCreating = false
             this.itemEditing = false
         }
         
-        
+        this.itemAssessment = false
+        this.itemCreating = false
     }
 
     onValueChange(data: ContentItemModel) {

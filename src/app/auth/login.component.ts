@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core'
 import { AuthService } from '../_services/auth.service'
 import { ErrorMessage } from "app/_models/error.model"
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { EqualValidator } from "app/validators/equal-validator.directive"
+import { EqualValidator } from "app/_directives/equal-validator.directive"
 import { UserModel } from "app/_models/user.model";
 
 @Component({

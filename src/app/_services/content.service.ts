@@ -16,7 +16,7 @@ export class ContentService implements ContainerService{
     private path = new Paths
     private folderGetPath = '/api/content/folder/'
     private folderGetAllPath = '/api/content/folders/owned'
-    private folderSavePath = '/api/content/folder'
+    private folderSavePath = '/api/content/folder/'
     private packageSavePath = '/api/content/package/'
     private folderDeletePath = '/api/content/folder/'
     private packageDeletePath = '/api/content/package/'

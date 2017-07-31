@@ -1,0 +1,17 @@
+<div class="file-container">
+    <div class="file-item file-heading">
+        <md-icon class="mr-2 pointer" (click)="navigateBack()" (keyup.enter)="navigateBack()">assessment</md-icon> Questions
+        <div class="spacer"></div>   
+        <md-icon class="pointer" tabindex=0 (keyup.enter)="newQuestionCreation()" (click)="newQuestionCreation()" alt="Add Assessment">assessment</md-icon>
+        <md-icon class="">add</md-icon>
+    </div>
+
+    <div class="file-item" *ngFor="let question of currentData.questions">
+        <i class="fa fa-lg fa-question-circle mr-2"></i> {{question.question}}
+        <div class="spacer"></div> 
+        <md-icon class="ml-2">delete</md-icon>
+
+    </div>
+</div>
+
+<md-spinner class="dead-center" *ngIf="loading"></md-spinner>

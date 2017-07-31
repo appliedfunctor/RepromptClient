@@ -1,0 +1,14 @@
+<div class="file-container">
+    <div class="file-item file-heading">
+        Question Edit
+    </div>
+    <br>
+
+    <div class="file-item">
+        <md-select class="full-width" placeholder="Type" [(ngModel)]="questionType" (ngModelChange)="onSelectChange()">
+            <md-option *ngFor="let type of questionTypes" [value]="type.code">{{ type.name }}</md-option>
+        </md-select>
+    </div>
+
+    <div #host></div>
+</div>

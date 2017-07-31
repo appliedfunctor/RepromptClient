@@ -39,17 +39,17 @@ export class ContentPackageService {
 
 
 
-    // /**
-    //  * Get all items for the current content package
-    //  * 
-    //  * @returns {Observable<any>} 
-    //  * @memberof ContentPackageService
-    //  */
-    // getAllItems(): Observable<any> {
-    //     return this.authHttp.get(this.path.getUrl(this.folderGetAllPath))
-    //                         .map(this.handleContainers)
-    //                         .catch(this.handleError)
-    // }
+    /**
+     * Get all items for the current content package
+     * 
+     * @returns {Observable<any>} 
+     * @memberof ContentPackageService
+     */
+    getItem(itemId: number): Observable<any> {
+        return this.authHttp.get(this.path.getUrl(this.itemGetPath) + itemId)
+                            .map(this.handleItem)
+                            .catch(this.handleError)
+    }
 
     /**
      * save a content package
@@ -130,7 +130,7 @@ export class ContentPackageService {
     private handleItem(res: Response) {   
         //parse response data into Item
         let newItem = new ContentItemModel(res.json())
-        console.log("Response: " + JSON.stringify(res.json()))
+        //console.log("Response: " + JSON.stringify(res.json()))
         return newItem
     }
 
