@@ -2,14 +2,20 @@
     <div class="file-item file-heading">
         <md-icon class="mr-2 pointer" (click)="navigateBack()" (keyup.enter)="navigateBack()">assessment</md-icon> Questions
         <div class="spacer"></div>   
-        <md-icon class="pointer" tabindex=0 (keyup.enter)="newQuestionCreation()" (click)="newQuestionCreation()" alt="Add Assessment">assessment</md-icon>
-        <md-icon class="">add</md-icon>
+        <div tabindex=0 class="file-item pointer" (keyup.enter)="newQuestionCreation()" (click)="newQuestionCreation()" alt="Add Assessment" >
+            <md-icon >add</md-icon>
+        </div>
     </div>
 
     <div class="file-item" *ngFor="let question of currentData.questions">
-        <i class="fa fa-lg fa-question-circle mr-2"></i> {{question.question}}
-        <div class="spacer"></div> 
-        <md-icon class="ml-2">delete</md-icon>
+        <div class="spacer file-item" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)" [ngClass]="{ 'selectedItem': currentQuestion.id === question.id}">
+            <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question}}       
+            
+            <div class="file-stack">
+                <md-icon class="ml-2" class="pointer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>
+                <md-icon class="ml-2" class="pointer" (click)="deleteQuestion(question)" (keyup.enter)="deleteQuestion(question)">delete</md-icon>
+            </div>
+        </div>
 
     </div>
 </div>

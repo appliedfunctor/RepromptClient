@@ -1,6 +1,7 @@
-import { Component, Input } from "@angular/core"
+import { Component, Input, Output, EventEmitter } from "@angular/core"
 import { ContentItemModel } from "app/_models/content-item.model";
 import { ContentPackageService } from "app/_services/content-package.service";
+import { QuestionModel } from "app/_models/question.model";
 
 @Component({
     selector: 'content-item-questions',
@@ -8,6 +9,8 @@ import { ContentPackageService } from "app/_services/content-package.service";
 })
 export class ContentItemQuestionsComponent {
     @Input() currentData: ContentItemModel = new ContentItemModel({})
+    @Output() questionSelected = new EventEmitter<QuestionModel>()
+    currentQuestion = new QuestionModel({})
 
     loading = false
     active: boolean = true
@@ -34,5 +37,20 @@ export class ContentItemQuestionsComponent {
             this.loading = false
         })
         
+    }
+
+    selectQuestion(question: QuestionModel) {
+        this.currentQuestion = question
+        this.questionSelected.emit(question)
+    }
+
+    deleteQuestion(question: QuestionModel) {
+        this.service.deleteQuestion(question.id)
+        .takeWhile(() => this.active)
+        .subscribe(res => {
+            if(res > 0) {
+                this.currentData.questions.filter(q => q.id != question.id)
+            }
+        })
     }
 }

@@ -7,6 +7,7 @@ import { ContentItemModel } from "app/_models/content-item.model";
 import { AuthService } from "app/_services/auth.service";
 import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
+import { QuestionModel } from "app/_models/question.model";
 
 
 @Component({
@@ -24,6 +25,7 @@ export class PackageComponent {
     itemAssessment = false
     itemName = 'Content Item'
     currentContentItem: ContentItemModel = new ContentItemModel({})
+    currentQuestion: QuestionModel = new QuestionModel({})
     alive: boolean = true
 
     constructor(private router: Router, private route: ActivatedRoute, private service: ContentPackageService, private auth: AuthService, public dialog: MdDialog) {
@@ -41,6 +43,24 @@ export class PackageComponent {
 
     ngOnDestroy() {
         this.alive = false
+    }
+
+    onQuestionSelected(question: QuestionModel) {
+        this.currentQuestion = new QuestionModel(question)
+        console.log("Question Selected: " + JSON.stringify(question))
+    }
+
+    onQuestionSave(event: QuestionModel) {
+        let found = this.currentContentItem.questions.find(q => q.id == event.id)
+        if(found && found.id === event.id) {
+            this.currentContentItem.questions.map(q => {
+                if(q.id === event.id) q = event
+            })
+        } else {
+            this.currentContentItem.questions.push(event)
+            this.currentContentItem.questions.sort(this.sortQuestionsByQuestion)
+        }
+        
     }
 
     toggleAssessment(item: ContentItemModel) {
@@ -171,6 +191,12 @@ export class PackageComponent {
     sortItemsByName(a: ContentItemModel, b: ContentItemModel) {
         if(a.name > b.name) { return 1 }
         if(a.name < b.name) { return -1 }
+        return 0
+    }
+
+    sortQuestionsByQuestion(a: QuestionModel, b: QuestionModel) {
+        if(a.question > b.question) { return 1 }
+        if(a.question < b.question) { return -1 }
         return 0
     }
 }

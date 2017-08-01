@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ViewChild, Type, ViewContainerRef } from "@angular/core"
+import { Component, ComponentFactoryResolver, ViewChild, Type, ViewContainerRef, Output, EventEmitter, Input } from "@angular/core"
 import { QuestionHandler } from "app/_models/question-handler.type";
 import { QuestionEditSort } from "app/content/question-handlers/question-edit-sort.component";
 import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mcsa.component";
@@ -15,9 +15,11 @@ export class ContentItemQuestionEditComponent {
     questionTypes: any[]
     questionType: string  
     @ViewChild("host", {read: ViewContainerRef}) host: ViewContainerRef
-    contentItem: ContentItemModel = new ContentItemModel({id: 5})
-    question: QuestionModel = new QuestionModel({})
+    @Input() contentItem: ContentItemModel = new ContentItemModel({})
+    @Input() question: QuestionModel = new QuestionModel({})
     mode = 'Create'
+    subscribed
+    @Output() saved = new EventEmitter<QuestionModel>()
 
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private service: QuestionEditService){}
@@ -32,6 +34,10 @@ export class ContentItemQuestionEditComponent {
         this.mode = (this.question.id && this.question.id > 0) ? 'Edit' : 'Create'
     }
 
+    ngOnDestroy() {
+        this.subscribed.unsubscribe()
+    }
+
     loadComponent() {        
         let selected = this.questionTypes.find(qc => qc.code == this.questionType)
         let factory = this.componentFactoryResolver.resolveComponentFactory(selected.component)        
@@ -40,6 +46,9 @@ export class ContentItemQuestionEditComponent {
         
         (<QuestionHandler>componentRef.instance).contentItem = this.contentItem;
         (<QuestionHandler>componentRef.instance).question = this.question;
+        this.subscribed = (<QuestionHandler>componentRef.instance).saved.subscribe(event => {
+            this.saved.emit(event)
+        })
     }
 
     onSelectChange() {

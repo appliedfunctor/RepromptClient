@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core"
+import { Component, Input, Output, EventEmitter } from "@angular/core"
 import { QuestionHandler } from "app/_models/question-handler.type";
 import { ContentItemModel } from "app/_models/content-item.model";
 import { QuestionModel } from "app/_models/question.model";
@@ -11,6 +11,7 @@ import { QuestionModel } from "app/_models/question.model";
 export class QuestionEditSort implements QuestionHandler {
     @Input() contentItem: ContentItemModel
     @Input() question: QuestionModel
+    @Output() saved = new EventEmitter<QuestionModel>()
     constructor() { }
 
 }

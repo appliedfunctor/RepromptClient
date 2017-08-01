@@ -2,16 +2,17 @@ import { Injectable } from "@angular/core";
 import { Response, RequestOptions, Headers } from "@angular/http"
 import { Observable } from 'rxjs/Rx'
 import { Paths } from "../app.paths"
-import { AuthHttp } from 'angular2-jwt';
-import { CohortMemberModel } from "app/_models/cohort-member.model";
-import { FileContainer } from "app/_models/file-container.type";
-import { ContainerService } from "app/_services/container.service.type";
-import { CohortModel } from "app/_models/cohort.model";
-import { UserModel } from "app/_models/user.model";
-import { ContentFolderModel } from "app/_models/content-folder.model";
-import { ContentPackageModel } from "app/_models/content-package.model";
-import { ContentItemModel } from "app/_models/content-item.model";
-import { AuthService } from "app/_services/auth.service";
+import { AuthHttp } from 'angular2-jwt'
+import { CohortMemberModel } from "app/_models/cohort-member.model"
+import { FileContainer } from "app/_models/file-container.type"
+import { ContainerService } from "app/_services/container.service.type"
+import { CohortModel } from "app/_models/cohort.model"
+import { UserModel } from "app/_models/user.model"
+import { ContentFolderModel } from "app/_models/content-folder.model"
+import { ContentPackageModel } from "app/_models/content-package.model"
+import { ContentItemModel } from "app/_models/content-item.model"
+import { AuthService } from "app/_services/auth.service"
+import { QuestionModel } from "app/_models/question.model";
 
 @Injectable()
 export class ContentPackageService {    
@@ -19,6 +20,8 @@ export class ContentPackageService {
     private packageGetPath = '/api/content/package/'
     private itemGetPath = '/api/content/item/'
     private itemGetAllPath = '/api/content/folders/owned'
+    private questionGetPath = '/api/content/question/'
+    private answerGetPath = '/api/content/answer/'
     private multipartHeader = new Headers({ 'Content-Type': 'multipart/mixed', 'What': 'testing' })
 
     constructor(private authHttp: AuthHttp, private auth: AuthService) {
@@ -102,6 +105,12 @@ export class ContentPackageService {
         
     }
 
+    saveQuestion(question: QuestionModel) {
+        return this.authHttp.post(this.path.getUrl(this.questionGetPath), question)
+                            .map(this.handleQuestion)
+                            .catch(this.handleError)
+    }
+
     /**
      * delete a content package by id
      * 
@@ -122,6 +131,18 @@ export class ContentPackageService {
                             .catch(this.handleError)
     }
 
+    deleteQuestion(questionId: number){
+        return this.authHttp.delete(this.path.getUrl(this.questionGetPath) + questionId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
+    }
+
+    deleteAnswer(answerId: number){
+        return this.authHttp.delete(this.path.getUrl(this.answerGetPath) + answerId)
+                            .map(res => res.json())
+                            .catch(this.handleError)
+    }
+
     private handlePackage(res: Response) {   
         //parse response data into Folders
         return new ContentPackageModel(res.json())
@@ -132,6 +153,10 @@ export class ContentPackageService {
         let newItem = new ContentItemModel(res.json())
         //console.log("Response: " + JSON.stringify(res.json()))
         return newItem
+    }
+
+    private handleQuestion(res: Response) {
+        return new QuestionModel(res.json())
     }
 
     private handleItems(res: Response) {   
