@@ -32,10 +32,10 @@ export class ContentItemEditComponent {
     }
 
     fileUpload(object) {
-        console.log(object.files)
+        //console.log(object.files)
         if(object.files && object.files.length > 0) {
             this.currentData.image = object.files[0]
-            console.log(this.currentData.image)
+            //console.log(this.currentData.image)
             this.notifyChange()
         }
     }

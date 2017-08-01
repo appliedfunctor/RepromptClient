@@ -7,16 +7,15 @@
         </div>
     </div>
 
-    <div class="file-item" *ngFor="let question of currentData.questions">
-        <div class="spacer file-item" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)" [ngClass]="{ 'selectedItem': currentQuestion.id === question.id}">
-            <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question}}       
-            
-            <div class="file-stack">
-                <md-icon class="ml-2" class="pointer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>
-                <md-icon class="ml-2" class="pointer" (click)="deleteQuestion(question)" (keyup.enter)="deleteQuestion(question)">delete</md-icon>
-            </div>
+    <div class="file-item" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)" 
+    [ngClass]="{ 'selectedItem': currentQuestion.id === question.id}"
+    *ngFor="let question of currentData.questions">
+        <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question}}       
+        
+        <div class="file-stack">
+            <md-icon class="ml-2" class="pointer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>
+            <md-icon class="ml-2" class="pointer" (click)="deleteQuestion(question)" (keyup.enter)="deleteQuestion(question)">delete</md-icon>
         </div>
-
     </div>
 </div>
 

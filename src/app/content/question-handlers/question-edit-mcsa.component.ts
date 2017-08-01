@@ -27,7 +27,7 @@ export class QuestionEditMCSA implements QuestionHandler {
     constructor(private service: ContentPackageService) { }
 
     ngOnInit() {
-        console.log("Data: " + JSON.stringify(this.contentItem))
+        //console.log("Data: " + JSON.stringify(this.contentItem))
     }
 
     trackByIndex(index: number, distractor: AnswerModel): number { return index }
@@ -83,8 +83,7 @@ export class QuestionEditMCSA implements QuestionHandler {
 
     }
 
-    ngOnChange() {
-
+    ngOnChanges(change) {
     }
 
     ngOnDestroy() {

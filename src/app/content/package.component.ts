@@ -47,7 +47,6 @@ export class PackageComponent {
 
     onQuestionSelected(question: QuestionModel) {
         this.currentQuestion = new QuestionModel(question)
-        console.log("Question Selected: " + JSON.stringify(question))
     }
 
     onQuestionSave(event: QuestionModel) {
@@ -114,7 +113,6 @@ export class PackageComponent {
     saveItem() {
         if(this.currentContentItem && this.currentContentItem.name != '') {
             this.currentContentItem.packageId = this.currentPackage.id
-            //console.log(JSON.stringify(this.currentContentItem))
             this.loading = true
 
             let data = new FormData()

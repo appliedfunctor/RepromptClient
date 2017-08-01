@@ -31,7 +31,7 @@ export class ContentItemQuestionEditComponent {
             this.loadComponent()
         }
 
-        this.mode = (this.question.id && this.question.id > 0) ? 'Edit' : 'Create'
+        this.setMode()
     }
 
     ngOnDestroy() {
@@ -53,5 +53,21 @@ export class ContentItemQuestionEditComponent {
 
     onSelectChange() {
         this.loadComponent()
+    }
+
+    ngOnChanges(changes) {
+        if(this.contentItem && this.question && this.questionTypes) {            
+            this.setTypeFromData()
+            this.setMode()
+            this.loadComponent()
+        }
+    }
+
+    setMode() {
+        this.mode = (this.question.id && this.question.id > 0) ? 'Edit' : 'Create'
+    }
+
+    setTypeFromData() {
+        this.questionType = this.question.format
     }
 }

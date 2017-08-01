@@ -40,8 +40,12 @@ export class ContentItemQuestionsComponent {
     }
 
     selectQuestion(question: QuestionModel) {
-        this.currentQuestion = question
-        this.questionSelected.emit(question)
+        if(this.currentQuestion == question) {
+            this.newQuestionCreation()
+        } else {
+            this.currentQuestion = question
+            this.emitQuestion()
+        }
     }
 
     deleteQuestion(question: QuestionModel) {
@@ -52,5 +56,14 @@ export class ContentItemQuestionsComponent {
                 this.currentData.questions.filter(q => q.id != question.id)
             }
         })
+    }
+
+    newQuestionCreation() {
+        this.currentQuestion = new QuestionModel({})
+        this.emitQuestion()
+    }
+
+    emitQuestion() {
+        this.questionSelected.emit(this.currentQuestion)
     }
 }
