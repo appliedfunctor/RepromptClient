@@ -1,1 +1,31 @@
-MCSA Component
+
+
+<md-input-container class="full-width">
+    <input mdInput name="question" [(ngModel)]="question.question" type="text" placeholder="Question" required>
+    <md-error>Question is required</md-error>
+</md-input-container> 
+    
+<md-input-container class="full-width">
+    <input mdInput name="correctAnswer" [(ngModel)]="correctAnswer.answer" type="text" placeholder="Correct Answer" required>
+    <md-error>Correct Answer is required</md-error>
+</md-input-container> 
+
+<div class="file-subheading file-item">
+    Distractors
+    <div class="spacer"></div>
+    <md-icon class="pointer mr-2 file-item" (click)="addDistractor()" (key.enter)="addDistractor()">add_circle</md-icon>
+    <md-icon class="pointer file-item" (click)="removeDistractor()" (key.enter)="removeDistractor()">remove_circle</md-icon>
+</div>
+    
+<md-input-container class="full-width" *ngFor="let distractor of distractors, let i = index">
+    <input mdInput name="distractor+i" [(ngModel)]="distractors[i].answer" type="text" placeholder="Distractor" required>
+    <md-error>Correct Answer is required</md-error>
+</md-input-container> 
+
+    <br>
+    <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
+    
+
+
+
+<md-spinner class="dead-center" *ngIf="loading"></md-spinner>

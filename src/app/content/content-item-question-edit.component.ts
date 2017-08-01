@@ -4,6 +4,7 @@ import { QuestionEditSort } from "app/content/question-handlers/question-edit-so
 import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mcsa.component";
 import { QuestionEditService } from "app/_services/question-edit.service";
 import { ContentItemModel } from "app/_models/content-item.model";
+import { QuestionModel } from "app/_models/question.model";
 
 @Component({
     selector: 'content-item-question-edit',
@@ -14,7 +15,10 @@ export class ContentItemQuestionEditComponent {
     questionTypes: any[]
     questionType: string  
     @ViewChild("host", {read: ViewContainerRef}) host: ViewContainerRef
-    data = new ContentItemModel({id: 5})
+    contentItem: ContentItemModel = new ContentItemModel({id: 5})
+    question: QuestionModel = new QuestionModel({})
+    mode = 'Create'
+
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private service: QuestionEditService){}
 
@@ -24,6 +28,8 @@ export class ContentItemQuestionEditComponent {
             this.questionType = this.questionTypes[0].code
             this.loadComponent()
         }
+
+        this.mode = (this.question.id && this.question.id > 0) ? 'Edit' : 'Create'
     }
 
     loadComponent() {        
@@ -32,7 +38,8 @@ export class ContentItemQuestionEditComponent {
         this.host.clear()
         let componentRef = this.host.createComponent(factory);
         
-        (<QuestionHandler>componentRef.instance).data = this.data
+        (<QuestionHandler>componentRef.instance).contentItem = this.contentItem;
+        (<QuestionHandler>componentRef.instance).question = this.question;
     }
 
     onSelectChange() {
