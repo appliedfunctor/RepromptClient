@@ -5,8 +5,8 @@ import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
 import { AuthService } from "app/_services/auth.service";
 import { UserModel } from "app/_models/user.model";
 import { FormControl, FormGroup } from '@angular/forms';
-import { FileElement } from "app/_models/file-element.type";
-import { FileContainer } from "app/_models/file-container.type";
+import { FileElement } from "app/_models/file-element.model";
+import { FileContainer } from "app/_models/file-container.model";
 import { ContainerService } from "app/_services/container.service.type";
 import { UpperCasePipe } from '@angular/common';
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
@@ -133,7 +133,7 @@ export class FileNavigationComponent {
                     this.togglePopulate()
                     this.itemsControl.reset()
                     this.currentParent.members.push(item)
-                    this.currentParent.members.sort((a, b) => this.sortElementsByName(a, b))                    
+                    this.currentParent.members.sort(FileElement.sortByName)                    
                 }
                 this.loading = false
             })
@@ -152,7 +152,7 @@ export class FileNavigationComponent {
                     this.loading = false
                 } else {
                     this.currentParent.members.push(res)
-                    this.currentParent.members.sort((a, b) => this.sortElementsByName(a, b))                    
+                    this.currentParent.members.sort(FileElement.sortByName)                    
                     this.resetForm()
                     this.loading = false
                 }
@@ -247,9 +247,9 @@ export class FileNavigationComponent {
                 this.error = res.error
             } else {
                 this.allContainers.map(e => { if(e.id == res.id) e.name = res.name })
-                this.allContainers.sort((a, b) => this.sortContainersByName(a, b))
+                this.allContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.filteredContainers.map(e => { if(e.id == res.id) e.name = res.name })
-                this.filteredContainers.sort((a, b) => this.sortContainersByName(a, b))
+                this.filteredContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.resetForm()
                 this.updateNavigation()
                 this.loading = false
@@ -266,9 +266,9 @@ export class FileNavigationComponent {
                 this.error = res.error
             } else {
                 this.allContainers.push(res)
-                this.allContainers.sort((a, b) => this.sortContainersByName(a, b))
+                this.allContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.filteredContainers.push(res)
-                this.filteredContainers.sort((a, b) => this.sortContainersByName(a, b))
+                this.filteredContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.resetForm()
                 this.loading = false
             }
@@ -285,18 +285,6 @@ export class FileNavigationComponent {
         let current = this.breadcumbs.pop()
         this.breadcumbs.push(current)
         return current.name
-    }
-
-    sortElementsByName(a: FileElement, b: FileElement) {
-        if(a.name > b.name) { return 1 }
-        if(a.name < b.name) { return -1 }
-        return 0
-    }
-
-    sortContainersByName(a: FileContainer, b: FileContainer) {
-        if(a.name > b.name) { return 1 }
-        if(a.name < b.name) { return -1 }
-        return 0
     }
 
     resetForm() {

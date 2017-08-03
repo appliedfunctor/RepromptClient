@@ -1,6 +1,6 @@
 import { Observable } from "rxjs/Observable";
-import { FileContainer } from "app/_models/file-container.type";
-import { FileElement } from "app/_models/file-element.type";
+import { FileContainer } from "app/_models/file-container.model";
+import { FileElement } from "app/_models/file-element.model";
 
 export interface ContainerService {
     get(containerId: number): Observable<any>

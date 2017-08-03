@@ -1,5 +1,5 @@
 import { UserRoles } from "app/enums/user.roles.enum";
-import { FileElement } from "app/_models/file-element.type";
+import { FileElement } from "app/_models/file-element.model";
 
 export class UserModel implements FileElement {
     id: number

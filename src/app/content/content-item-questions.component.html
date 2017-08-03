@@ -7,14 +7,20 @@
         </div>
     </div>
 
-    <div class="file-item" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)" 
+    <div *ngIf="currentData.questions.length < 1">
+        There are no questions for this mini topic yet.
+        Add some!
+    </div>
+
+    <div class="file-item"  
     [ngClass]="{ 'selectedItem': currentQuestion.id === question.id}"
     *ngFor="let question of currentData.questions">
+    <div class="spacer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">
         <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question}}       
-        
+    </div>
         <div class="file-stack">
-            <md-icon class="ml-2" class="pointer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>
-            <md-icon class="ml-2" class="pointer" (click)="deleteQuestion(question)" (keyup.enter)="deleteQuestion(question)">delete</md-icon>
+            <md-icon class="ml-2" class="pointer" tabindex=0 (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>
+            <md-icon class="ml-2" class="pointer" tabindex=0 (click)="verifyDeleteQuestion(question)" (keyup.enter)="verifyDeleteQuestion(question)">delete</md-icon>
         </div>
     </div>
 </div>

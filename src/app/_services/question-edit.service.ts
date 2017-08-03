@@ -8,7 +8,7 @@ export class QuestionEditService {
     getQuestionHandlers() {
         return [
                 { code: "MCSA", name: "Mutiple choice, single answer", component: QuestionEditMCSA },
-                { code: "SORT", name: "Sort into buckets", component: QuestionEditSort }                        
+                { code: "SORT", name: "Sort into order", component: QuestionEditSort }                        
             ]
     }
 }

@@ -1,4 +1,4 @@
-import { FileElement } from 'app/_models/file-element.type'
+import { FileElement } from 'app/_models/file-element.model'
 import { ContentItemModel } from 'app/_models/content-item.model'
 
 export class ContentPackageModel implements FileElement {

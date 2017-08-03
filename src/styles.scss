@@ -276,11 +276,12 @@
     -webkit-box-direction: normal;
     box-sizing: border-box;
     -webkit-box-orient: vertical;
+    font-family: Roboto,Helvetica Neue,sans-serif;
 }
 
 .card-content {
     padding:10px;
-    font-size: 0.8em;
+    font-size: 14px;
 }
 
 .justify {
@@ -289,9 +290,10 @@
 }
 
 .card-head {
-    font-size: 1.5em;
+    font-size: 1.3em;
     border-bottom: 1px solid #DCDCDC;
     padding: 5px;
+    font-weight: 400;
 }
 
 .selectedItem {
@@ -303,4 +305,12 @@
 
 .ml--2{
     margin-left: -.5rem!important;
+}
+
+.dragula div {
+    border: solid 1px #DCDCDC;
+    border-radius: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
 }

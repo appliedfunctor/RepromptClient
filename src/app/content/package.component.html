@@ -48,7 +48,8 @@
 
     <div class="col-md-4" *ngIf="itemAssessment">
         <div class="panel-container">
-            <content-item-questions [currentData]="currentContentItem" 
+            <content-item-questions [currentData]="currentContentItem"
+                                    [currentQuestion] ="currentQuestion"
                                     (questionSelected)="onQuestionSelected($event)"
             ></content-item-questions>
         </div>

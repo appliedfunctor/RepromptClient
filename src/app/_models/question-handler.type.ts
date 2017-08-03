@@ -6,4 +6,6 @@ export interface QuestionHandler {
     contentItem: ContentItemModel
     question: QuestionModel
     saved: EventEmitter<QuestionModel>
+
+    onDataChanged()
 }

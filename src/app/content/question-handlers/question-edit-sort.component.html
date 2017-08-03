@@ -1,1 +1,32 @@
-Sort Component
+<form #sortForm="ngForm" ngControl="sortForm" (ngSubmit)="submit()">
+
+    <md-input-container class="full-width">
+        <input mdInput id="question" name="question" [(ngModel)]="question.question" type="text" placeholder="Question" required>
+        <md-error>Question is required</md-error>
+    </md-input-container> 
+
+    <form #addForm="ngForm" ngControl="addForm" (ngSubmit)="addItem()">
+        <div class="row">  
+            <div class="col-9">   
+                <md-input-container class="full-width">
+                    <input mdInput name="element" type="text" placeholder="Add element" [(ngModel)]="newElement" (keyup.enter)="addItem()">
+                    <md-error>Element requires a name</md-error>
+                </md-input-container>
+            </div>
+            <div class="col-3"> 
+                <span class="spacer"></span >
+                <button md-raised-button class="mt-2" color="accent" type="button" (click)="addItem()">Add</button> 
+            </div>
+        </div> 
+    </form>
+
+</form>
+
+Drag and drop to order correctly
+
+<div class='dragula' [dragula]='"first-bag"' [dragulaModel]='items'>
+    <div *ngFor="let item of items">{{item}}</div>
+</div>
+
+<br>
+<button md-raised-button color="accent" type="submit" [disabled]="!sortForm.valid">Save</button>

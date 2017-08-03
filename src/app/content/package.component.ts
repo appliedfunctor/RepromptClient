@@ -46,46 +46,71 @@ export class PackageComponent {
     }
 
     onQuestionSelected(question: QuestionModel) {
-        this.currentQuestion = new QuestionModel(question)
+        this.currentQuestion = new QuestionModel(question)        
     }
 
-    onQuestionSave(event: QuestionModel) {
-        let found = this.currentContentItem.questions.find(q => q.id == event.id)
-        if(found && found.id === event.id) {
-            this.currentContentItem.questions.map(q => {
-                if(q.id === event.id) q = event
-            })
-        } else {
-            this.currentContentItem.questions.push(event)
-            this.currentContentItem.questions.sort(this.sortQuestionsByQuestion)
-        }
+    onQuestionSave(question: QuestionModel) {
+        let found = this.currentContentItem.questions.find(q => q.id == question.id)
         
+        if(found && found.id === question.id) {
+            this.currentContentItem.questions.map(q => { 
+            if(q.id == this.currentQuestion.id) {
+                q.question = this.currentQuestion.question
+                q.answers = this.currentQuestion.answers
+                q.format = this.currentQuestion.format
+            }
+        })        
+        } else {
+            this.currentContentItem.questions.push(question)
+            
+        }
+        this.currentContentItem.questions.sort(QuestionModel.sortByQuestion)
+        this.currentQuestion = question
+        this.updatePackageItem()        
+        
+    }
+
+    updatePackageItem() {
+        this.currentPackage.content.forEach(item => {
+            if(item.id === this.currentContentItem.id) {
+                item.content = this.currentContentItem.content
+                item.image = this.currentContentItem.image
+                item.imageUrl = this.currentContentItem.imageUrl
+                item.name = this.currentContentItem.name
+                item.questions = this.currentContentItem.questions
+            }
+        })
     }
 
     toggleAssessment(item: ContentItemModel) {
         if(this.currentContentItem.id != item.id){
-            this.currentContentItem = new ContentItemModel(item)
+            this.currentContentItem = new ContentItemModel(item)    
+            this.currentQuestion = new QuestionModel({})
+            this.itemAssessment = true
         } else if(this.itemAssessment) {
             this.currentContentItem = new ContentItemModel({})
+            this.itemAssessment = false
+        } else {
+            this.itemAssessment = !this.itemAssessment
         }
         this.itemEditing = false
-        this.itemCreating = false
-        
-        this.itemAssessment = !this.itemAssessment
+        this.itemCreating = false        
     }
 
     loadPackageData(packageId: number) {
-        this.loading = true
-        this.service.get(packageId)
-        .takeWhile(() => this.alive)
-        .subscribe(res => {
-            this.currentPackage = res
-            this.loading = false
-        })
+        if(packageId != null) {
+            this.loading = true
+            this.service.get(packageId)
+            .takeWhile(() => this.alive)
+            .subscribe(res => {
+                this.currentPackage = res
+                this.loading = false
+            })
+        }
     }
 
     toggleItemCreation() {        
-        this.itemAssessment = false
+        this.disableItemAssessment()
         this.currentContentItem = new ContentItemModel({})
         this.itemEditing = false
         this.itemCreating = !this.itemCreating
@@ -102,8 +127,13 @@ export class PackageComponent {
             this.itemEditing = false
         }
         
-        this.itemAssessment = false
+        this.disableItemAssessment()
         this.itemCreating = false
+    }
+
+    disableItemAssessment() {
+        this.itemAssessment = false
+        this.currentQuestion = new QuestionModel({})
     }
 
     onValueChange(data: ContentItemModel) {
@@ -145,7 +175,8 @@ export class PackageComponent {
 
     clearContentItemUi(){
         this.itemCreating = false
-        this.itemEditing = false
+        this.itemEditing = false    
+        this.itemAssessment = false
         this.currentContentItem = new ContentItemModel({})
     }
 
@@ -189,12 +220,6 @@ export class PackageComponent {
     sortItemsByName(a: ContentItemModel, b: ContentItemModel) {
         if(a.name > b.name) { return 1 }
         if(a.name < b.name) { return -1 }
-        return 0
-    }
-
-    sortQuestionsByQuestion(a: QuestionModel, b: QuestionModel) {
-        if(a.question > b.question) { return 1 }
-        if(a.question < b.question) { return -1 }
         return 0
     }
 }

@@ -43,6 +43,7 @@ import { ContentItemQuestionEditComponent } from "app/content/content-item-quest
 import { ContentItemQuestionsComponent } from "app/content/content-item-questions.component"
 import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mcsa.component"
 import { QuestionEditSort } from "app/content/question-handlers/question-edit-sort.component"
+import { DragulaModule } from 'ng2-dragula'
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -93,7 +94,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MdButtonModule,
     MdCheckboxModule,
     FormsModule,
-    ReactiveFormsModule,
     MdSidenavModule,
     MdInputModule,
     MdListModule,
@@ -109,6 +109,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MdCardModule,
     HttpModule,
     JsonpModule,
+    DragulaModule,
     routing    
   ],
   providers: [

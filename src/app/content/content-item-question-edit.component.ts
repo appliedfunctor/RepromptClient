@@ -5,6 +5,7 @@ import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mc
 import { QuestionEditService } from "app/_services/question-edit.service";
 import { ContentItemModel } from "app/_models/content-item.model";
 import { QuestionModel } from "app/_models/question.model";
+import { Observable } from "rxjs/Rx";
 
 @Component({
     selector: 'content-item-question-edit',
@@ -13,13 +14,14 @@ import { QuestionModel } from "app/_models/question.model";
 })
 export class ContentItemQuestionEditComponent {
     questionTypes: any[]
-    questionType: string  
+    questionType: string = 'MCSA'
     @ViewChild("host", {read: ViewContainerRef}) host: ViewContainerRef
     @Input() contentItem: ContentItemModel = new ContentItemModel({})
     @Input() question: QuestionModel = new QuestionModel({})
     mode = 'Create'
     subscribed
     @Output() saved = new EventEmitter<QuestionModel>()
+    currentEditModule: QuestionHandler
 
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private service: QuestionEditService){}
@@ -42,11 +44,13 @@ export class ContentItemQuestionEditComponent {
         let selected = this.questionTypes.find(qc => qc.code == this.questionType)
         let factory = this.componentFactoryResolver.resolveComponentFactory(selected.component)        
         this.host.clear()
-        let componentRef = this.host.createComponent(factory);
+        let componentRef = this.host.createComponent(factory)
+
+        this.currentEditModule = <QuestionHandler>componentRef.instance
         
-        (<QuestionHandler>componentRef.instance).contentItem = this.contentItem;
-        (<QuestionHandler>componentRef.instance).question = this.question;
-        this.subscribed = (<QuestionHandler>componentRef.instance).saved.subscribe(event => {
+        this.currentEditModule.contentItem = this.contentItem
+        this.currentEditModule.question = this.question
+        this.subscribed = this.currentEditModule.saved.subscribe(event => {
             this.saved.emit(event)
         })
     }
@@ -59,7 +63,9 @@ export class ContentItemQuestionEditComponent {
         if(this.contentItem && this.question && this.questionTypes) {            
             this.setTypeFromData()
             this.setMode()
-            this.loadComponent()
+            this.currentEditModule.contentItem = this.contentItem
+            this.currentEditModule.question = this.question
+            this.currentEditModule.onDataChanged()
         }
     }
 

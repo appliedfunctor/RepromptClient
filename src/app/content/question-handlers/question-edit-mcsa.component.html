@@ -1,12 +1,12 @@
-<form class="material-form" #mcsaForm="ngForm" (ngSubmit)="submit()">
+<form #mcsaForm="ngForm" ngControl="mcsaForm" (ngSubmit)="submit()">
 
-    <md-input-container class="full-width">
-        <input mdInput name="question" [(ngModel)]="question.question" type="text" placeholder="Question" required>
+    <md-input-container class="full-width" *ngIf="formVisible">
+        <input mdInput id="question" name="question" [(ngModel)]="question.question" type="text" placeholder="Question" required>
         <md-error>Question is required</md-error>
     </md-input-container> 
         
-    <md-input-container class="full-width">
-        <input mdInput name="correctAnswer" [(ngModel)]="correctAnswer.answer" type="text" placeholder="Correct Answer" required>
+    <md-input-container class="full-width" *ngIf="formVisible">
+        <input mdInput id="correctAnswer" name="correctAnswer" [(ngModel)]="correctAnswer.answer" type="text" placeholder="Correct Answer" required>
         <md-error>Correct Answer is required</md-error>
     </md-input-container> 
 
@@ -24,7 +24,7 @@
 
         <br>
         <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
-
+    <br>
     <button md-raised-button color="accent" type="submit" [disabled]="!mcsaForm.valid">Save</button>
         
 </form>

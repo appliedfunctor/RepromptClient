@@ -1,6 +1,9 @@
 <div class="file-container">
     <div class="file-item file-heading">
-        {{mode}} Question
+            <md-icon *ngIf="mode == 'Create'" class="mr-2">add</md-icon> 
+            <md-icon *ngIf="mode == 'Edit'" class="mr-2">edit</md-icon> 
+            {{mode}} Question
+       <div class="spacer"></div>
     </div>
     <br>
 

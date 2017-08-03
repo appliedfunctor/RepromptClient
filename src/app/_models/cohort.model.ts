@@ -1,5 +1,5 @@
 import { UserModel } from "app/_models/user.model";
-import { FileContainer } from "app/_models/file-container.type";
+import { FileContainer } from "app/_models/file-container.model";
 
 export class CohortModel implements FileContainer{
     id: number

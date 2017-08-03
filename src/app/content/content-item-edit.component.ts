@@ -44,4 +44,8 @@ export class ContentItemEditComponent {
         this.valueChange.emit(this.currentData)
     }
 
+    ngOnChanges(changes) {
+        console.log('Changed: ' + changes)
+    }
+
 }

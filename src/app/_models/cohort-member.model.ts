@@ -1,4 +1,4 @@
-import { FileElement } from 'app/_models/file-element.type'
+import { FileElement } from 'app/_models/file-element.model'
 
 export class CohortMemberModel implements FileElement {
     id: number;

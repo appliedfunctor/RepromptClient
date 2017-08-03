@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx'
 import { Paths } from "../app.paths"
 import { AuthHttp } from 'angular2-jwt';
 import { CohortMemberModel } from "app/_models/cohort-member.model";
-import { FileContainer } from "app/_models/file-container.type";
+import { FileContainer } from "app/_models/file-container.model";
 import { ContainerService } from "app/_services/container.service.type";
 import { CohortModel } from "app/_models/cohort.model";
 import { UserModel } from "app/_models/user.model";

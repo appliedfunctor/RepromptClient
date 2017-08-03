@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter } from "@angular/core"
 import { ContentItemModel } from "app/_models/content-item.model";
 import { ContentPackageService } from "app/_services/content-package.service";
 import { QuestionModel } from "app/_models/question.model";
+import { MdDialog } from "@angular/material";
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
 
 @Component({
     selector: 'content-item-questions',
@@ -9,19 +11,18 @@ import { QuestionModel } from "app/_models/question.model";
 })
 export class ContentItemQuestionsComponent {
     @Input() currentData: ContentItemModel = new ContentItemModel({})
+    @Input() currentQuestion: QuestionModel = new QuestionModel({})
     @Output() questionSelected = new EventEmitter<QuestionModel>()
-    currentQuestion = new QuestionModel({})
 
     loading = false
     active: boolean = true
 
-    constructor(private service: ContentPackageService) {
+    constructor(private service: ContentPackageService, public dialog: MdDialog) {
 
     }
     
     ngOnChanges(changes) {      
-        //load question data
-        this.loadQuestions()
+        this.currentData.questions.sort(QuestionModel.sortByQuestion)
     }
 
     ngOnDestroy() {
@@ -29,18 +30,20 @@ export class ContentItemQuestionsComponent {
     }
 
     loadQuestions() {
-        this.loading = true
-        this.service.getItem(this.currentData.id)
-        .takeWhile(() => this.active)
-        .subscribe( res => {
-            this.currentData = res
-            this.loading = false
-        })
+        if(this.currentData && this.currentData.id != null) {
+            this.loading = true
+            this.service.getItem(this.currentData.id)
+            .takeWhile(() => this.active)
+            .subscribe( res => {
+                this.currentData = res
+                this.loading = false
+            })
+        }
         
     }
 
     selectQuestion(question: QuestionModel) {
-        if(this.currentQuestion == question) {
+        if(this.currentQuestion.id == question.id) {
             this.newQuestionCreation()
         } else {
             this.currentQuestion = question
@@ -48,13 +51,25 @@ export class ContentItemQuestionsComponent {
         }
     }
 
-    deleteQuestion(question: QuestionModel) {
-        this.service.deleteQuestion(question.id)
+    verifyDeleteQuestion(question: QuestionModel) {
+        let dialogRef = this.dialog.open(UnlinkConfirmDialog)
+        dialogRef.componentInstance.item = question.question
+        dialogRef.componentInstance.container = this.currentData.name
+        dialogRef.componentInstance.action = 'delete'
+        dialogRef.afterClosed()
         .takeWhile(() => this.active)
         .subscribe(res => {
-            if(res > 0) {
-                this.currentData.questions.filter(q => q.id != question.id)
-            }
+                if(res === true) {
+                    //perform deletion
+                    this.service.deleteQuestion(question.id)
+                    .takeWhile(() => this.active)
+                    .subscribe(res => {
+                        if(res > 0) {
+                            this.currentData.questions = this.currentData.questions.filter(q => q.id != question.id)
+                            console.log('delete: ' + res)
+                        }
+                    })
+                }
         })
     }
 

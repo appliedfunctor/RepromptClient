@@ -2,7 +2,7 @@ import { Component } from "@angular/core"
 import { ContentService } from "app/_services/content.service";
 import { ContentPackageModel } from "app/_models/content-package.model";
 import { ContentFolderModel } from "app/_models/content-folder.model";
-import { FileElement } from "app/_models/file-element.type";
+import { FileElement } from "app/_models/file-element.model";
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 
 @Component({
