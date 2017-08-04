@@ -117,8 +117,8 @@ export class QuestionEditMCSA implements QuestionHandler {
             this.service.deleteAnswer(ans.id)
             .takeWhile(() => this.active)
             .subscribe(res => {
-                //do nothing
                 console.log(res)
+                this.answerDeletions = []
             })
         })
 

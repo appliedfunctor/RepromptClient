@@ -9,6 +9,7 @@ import { EducatorGuard } from "app/_guards/educator.guard"
 import { CohortsComponent } from "app/cohorts/cohorts.component"
 import { ContentComponent } from "app/content/content.component";
 import { PackageComponent } from "app/content/package.component";
+import { PublishComponent } from "app/publish/publish.component";
 
 const appRoutes: Routes = [
     { path: 'auth', component: AuthComponent },
@@ -16,7 +17,7 @@ const appRoutes: Routes = [
     { path: 'content', component: ContentComponent, canActivate: [EducatorGuard] },
     { path: 'content/:id', component: ContentComponent, canActivate: [EducatorGuard] },
     { path: 'content/package/:id', component: PackageComponent, canActivate: [EducatorGuard] },
-    { path: 'users', component: AuthComponent, canActivate: [EducatorGuard] },
+    { path: 'publish', component: PublishComponent, canActivate: [EducatorGuard] },
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
  
     // otherwise redirect to home

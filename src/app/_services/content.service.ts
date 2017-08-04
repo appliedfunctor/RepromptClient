@@ -121,7 +121,7 @@ export class ContentService implements ContainerService{
         //parse response data into Folders
         let folders: ContentFolderModel[] = []
         res.json().forEach(data => folders.push(new ContentFolderModel(data)))
-        return folders;
+        return folders
     }
 
     private handleElements(res: Response) {   

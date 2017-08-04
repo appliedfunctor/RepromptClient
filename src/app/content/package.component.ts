@@ -182,7 +182,7 @@ export class PackageComponent {
 
     postSaveUiUpdate(newItem: ContentItemModel) {
         this.currentPackage.content.push(newItem)
-        this.currentPackage.content.sort(this.sortItemsByName)
+        this.currentPackage.content.sort(ContentItemModel.sortByName)
     }
 
     postUpdateUiUpdate(updatedItem: ContentItemModel) {
@@ -194,7 +194,7 @@ export class PackageComponent {
                 e.questions = updatedItem.questions
             }
         })
-        this.currentPackage.content.sort(this.sortItemsByName)
+        this.currentPackage.content.sort(ContentItemModel.sortByName)
     }
 
     confirmItemDelete(item: ContentItemModel) {
@@ -215,11 +215,5 @@ export class PackageComponent {
                     })
                 }
             })
-    }
-
-    sortItemsByName(a: ContentItemModel, b: ContentItemModel) {
-        if(a.name > b.name) { return 1 }
-        if(a.name < b.name) { return -1 }
-        return 0
     }
 }

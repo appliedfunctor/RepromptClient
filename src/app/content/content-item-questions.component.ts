@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core"
-import { ContentItemModel } from "app/_models/content-item.model";
-import { ContentPackageService } from "app/_services/content-package.service";
-import { QuestionModel } from "app/_models/question.model";
-import { MdDialog } from "@angular/material";
-import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
+import { ContentItemModel } from "app/_models/content-item.model"
+import { ContentPackageService } from "app/_services/content-package.service"
+import { QuestionModel } from "app/_models/question.model"
+import { MdDialog } from "@angular/material"
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
 
 @Component({
     selector: 'content-item-questions',

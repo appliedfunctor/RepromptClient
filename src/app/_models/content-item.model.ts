@@ -19,7 +19,11 @@ export class ContentItemModel {
         this.name = data.name ? data.name : ""
         this.content = data.content ? data.content : ""
         this.questions = data.questions ? data.questions : []
-        //if(this.questions.length > 0) this.questions.map(q => new QuestionModel(q))
-        //this.score = data.score ? new ScoreModel(data.score) : null
+    }
+
+    static sortByName(a: ContentItemModel, b: ContentItemModel) {
+        if(a.name > b.name) { return 1 }
+        if(a.name < b.name) { return -1 }
+        return 0
     }
 }

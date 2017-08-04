@@ -74,6 +74,9 @@ export class ContentItemQuestionEditComponent {
     }
 
     setTypeFromData() {
-        this.questionType = this.question.format
+        if(this.questionType != this.question.format) {
+            this.questionType = this.question.format
+            this.loadComponent()
+        }
     }
 }

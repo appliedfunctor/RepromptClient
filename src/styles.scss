@@ -216,6 +216,7 @@
     margin-top: 5px;
     margin-bottom: 5px;
     flex: 0, 0, auto;
+    border: 1px solid transparent;
 }
 
 .spacer {
@@ -234,6 +235,7 @@
     border-bottom: 1px solid #DCDCDC;
     padding: 12px;
     color: #7A7A7A;
+    text-align: center;
 }
 
 .file-subheading {
@@ -251,10 +253,6 @@
 .ui-widget.ui-button, .ui-button{
     background: #263238;
     border-color: #263238;
-}
-
-.ui-widget-content {
-    height: 120px;
 }
 
 .revision-card { 
@@ -313,4 +311,8 @@
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 5px;
+}
+
+ui-calendar {
+    border: 1px solid #DCDCDC;
 }

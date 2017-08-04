@@ -16,7 +16,7 @@
     [ngClass]="{ 'selectedItem': currentQuestion.id === question.id}"
     *ngFor="let question of currentData.questions">
     <div class="spacer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">
-        <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question | summary:'12'}}       
+        <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question}}       
     </div>
         <div class="file-stack">
             <md-icon class="ml-2" class="pointer" tabindex=0 (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>

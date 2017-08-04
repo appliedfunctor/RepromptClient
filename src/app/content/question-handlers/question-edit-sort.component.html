@@ -1,4 +1,4 @@
-<form #sortForm="ngForm" ngControl="sortForm" (ngSubmit)="submit()">
+<form #sortForm="ngForm" ngControl="sortForm">
 
     <md-input-container class="full-width">
         <input mdInput id="question" name="question" [(ngModel)]="question.question" type="text" placeholder="Question" required>
@@ -22,11 +22,14 @@
 
 </form>
 
-Drag and drop to order correctly
+Add items, then drag and drop to put into the correct order for marking
 
-<div class='dragula' [dragula]='"first-bag"' [dragulaModel]='items'>
+<div class='dragula' [dragula]='"first-bag"' [dragulaModel]='items' (remove)="itemRemoved($event)">
     <div *ngFor="let item of items">{{item}}</div>
 </div>
 
 <br>
-<button md-raised-button color="accent" type="submit" [disabled]="!sortForm.valid">Save</button>
+<button md-raised-button color="accent" type="submit" [disabled]="!sortForm.valid" (click)="submit()" (keyup.enter)="submit()">Save</button>
+
+<br>
+            <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>

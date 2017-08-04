@@ -15,4 +15,8 @@ export class CohortModel implements FileContainer{
         this.name = cohortData.name ? cohortData.name : ""
         this.members = cohortData.members ? cohortData.members : []
     }
+
+    getSearchValues() {
+        return [this.name]
+    }
 }

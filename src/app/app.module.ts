@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser'
-import { NgModule } from '@angular/core'
+import { NgModule, LOCALE_ID } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpModule, JsonpModule } from '@angular/http'
 
@@ -9,7 +9,12 @@ import 'hammerjs';
 import {  MdButtonModule, MdCheckboxModule, MdSidenavModule, MdInputModule, MdListModule, 
           MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule, 
           MdProgressSpinnerModule, MdDialogModule, MdAutocompleteModule, MdCardModule,
-          MdSelectModule} from '@angular/material'
+          MdSelectModule,
+          MdDatepickerModule,
+          MdNativeDateModule,
+          DateAdapter,
+          NativeDateAdapter,
+          MD_DATE_FORMATS} from '@angular/material'
 
 import { AppComponent } from './app.component'
 import { HomeComponent } from './home/home.component'
@@ -37,13 +42,15 @@ import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog"
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
 import { NameEditComponent } from 'app/widgets/name-edit.component'
 import { ContentItemEditComponent } from 'app/content/content-item-edit.component'
-import { FileUploadModule, EditorModule, TabViewModule } from 'primeng/primeng'
+import { FileUploadModule, EditorModule, TabViewModule, CalendarModule } from 'primeng/primeng'
 import { ContentItemCardComponent } from "app/content/content-item-card.component"
 import { ContentItemQuestionEditComponent } from "app/content/content-item-question-edit.component"
 import { ContentItemQuestionsComponent } from "app/content/content-item-questions.component"
 import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mcsa.component"
 import { QuestionEditSort } from "app/content/question-handlers/question-edit-sort.component"
 import { DragulaModule } from 'ng2-dragula'
+import { SummaryPipe } from 'app/_pipes/summary.pipe'
+import { PublishComponent } from "app/publish/publish.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -81,7 +88,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SideMenu,
     EqualValidator,
     QuestionEditMCSA,
-    QuestionEditSort
+    QuestionEditSort,
+    SummaryPipe,
+    PublishComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +98,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FileUploadModule,
+    CalendarModule,
     EditorModule,
     TabViewModule,
     MdButtonModule,
