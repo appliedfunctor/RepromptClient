@@ -51,6 +51,7 @@ import { QuestionEditSort } from "app/content/question-handlers/question-edit-so
 import { DragulaModule } from 'ng2-dragula'
 import { SummaryPipe } from 'app/_pipes/summary.pipe'
 import { PublishComponent } from "app/publish/publish.component";
+import { stringToDatePipe } from "app/_pipes/string-to-date.pipe";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -90,6 +91,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     QuestionEditMCSA,
     QuestionEditSort,
     SummaryPipe,
+    stringToDatePipe,
     PublishComponent
   ],
   imports: [

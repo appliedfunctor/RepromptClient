@@ -4,4 +4,6 @@ import { Component } from "@angular/core";
   selector: 'delete-confirm-dialog',
   templateUrl: 'delete-confirm.dialog.html',
 })
-export class DeleteConfirmDialog {}
+export class DeleteConfirmDialog {
+  public item: string = 'container'
+}
