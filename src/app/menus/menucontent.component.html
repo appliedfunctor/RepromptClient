@@ -1,12 +1,11 @@
 
 
 <button md-menu-item href="auth" *ngIf="!authenticated"><i class="fa fa-sign-in"></i> Authenticate </button>
-<button md-menu-item *ngIf="!user.isEducator"> Help </button>
 <button md-menu-item *ngIf="authenticated" (click)="redirect('/')"><i class="fa fa-home"></i> Home</button>
 
 <!-- students -->
-<button md-menu-item *ngIf="!user.isEducator" (click)="redirect('/')"><i class="fa fa-home"></i> Learn</button>
-<button md-menu-item *ngIf="!user.isEducator"><i class="fa fa-home"></i> Test</button>
+<button md-menu-item *ngIf="!user.isEducator" (click)="redirect('/')"><i class="fa fa-clipboard"></i> Manage</button>
+<button md-menu-item *ngIf="!user.isEducator"><i class="fa fa-check-square-o"></i> Study</button>
 
 <!-- educators -->
 <button md-menu-item *ngIf="user.isEducator" (click)="redirect('cohorts/')"><i class="fa fa-university"></i> Cohorts</button>
