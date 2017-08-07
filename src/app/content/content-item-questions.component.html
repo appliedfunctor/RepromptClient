@@ -1,6 +1,6 @@
 <div class="file-container">
     <div class="file-item file-heading">
-        <md-icon class="mr-2 pointer" (click)="navigateBack()" (keyup.enter)="navigateBack()">assessment</md-icon> Questions
+        <md-icon class="mr-2 pointer">assessment</md-icon> Questions
         <div class="spacer"></div>   
         <div tabindex=0 class="file-item pointer" (keyup.enter)="newQuestionCreation()" (click)="newQuestionCreation()" alt="Add Assessment" >
             <md-icon >add</md-icon>
@@ -25,4 +25,6 @@
     </div>
 </div>
 
-<md-spinner class="dead-center" *ngIf="loading"></md-spinner>
+<div class="dead-container" *ngIf="loading">
+  <md-spinner class="dead-center"></md-spinner>
+</div>

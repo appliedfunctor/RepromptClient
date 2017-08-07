@@ -1,4 +1,4 @@
-<form class="material-form" #registerForm="ngForm" (ngSubmit)="submit()">
+<form class="material-form" #registerForm="ngForm" (submit)="submit()">
     <p>
         <md-input-container class="full-width">
             <input name="firstName" [(ngModel)]="firstName" id="firstName" type="text" mdInput placeholder="First name" required>
@@ -56,5 +56,3 @@
     <br>
     <div [hidden]="!error" class="alert alert-danger mt-5">{{ errorMessage }}</div>
 </form>
-
-<md-spinner class="dead-center" *ngIf="loading"></md-spinner>

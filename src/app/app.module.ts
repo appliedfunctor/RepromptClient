@@ -52,6 +52,8 @@ import { DragulaModule } from 'ng2-dragula'
 import { SummaryPipe } from 'app/_pipes/summary.pipe'
 import { PublishComponent } from "app/publish/publish.component";
 import { stringToDatePipe } from "app/_pipes/string-to-date.pipe";
+import { ManageComponent } from "app/manage/manage.component";
+import { StudyComponent } from "app/study/study.component";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -92,7 +94,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     QuestionEditSort,
     SummaryPipe,
     stringToDatePipe,
-    PublishComponent
+    PublishComponent,
+    ManageComponent,
+    StudyComponent
   ],
   imports: [
     BrowserModule,

@@ -16,10 +16,10 @@ export class LoginComponent {
     errorMessage: String = "There has been an error attempting to authenticate you."
     email: String = ""
     password: String = ""
-    response;    
-    loading: boolean = false;
+    response    
     alive: boolean = true
     @Output() tab = new EventEmitter<number>()    
+    @Output() loadingEvent = new EventEmitter<boolean>()
 
     constructor(private fb: FormBuilder, private service: AuthService) {
         this.loginForm = fb.group({
@@ -46,8 +46,12 @@ export class LoginComponent {
         this.alive = false
     }
 
+    emitLoading(value: boolean) {
+        this.loadingEvent.emit(value)
+    }
+
     submit() {
-        this.loading = true
+        this.emitLoading(true)
         this.service.login(this.email, this.password)
         .takeWhile(() => this.alive)
         .subscribe(data => {
@@ -60,7 +64,7 @@ export class LoginComponent {
             } else {
                 this.error = true
             }
-            this.loading = false
+            this.emitLoading(false)
             
         });        
     }

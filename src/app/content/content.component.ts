@@ -21,7 +21,7 @@ export class ContentComponent {
     alive: boolean = true
 
 
-    constructor(private service: ContentService, private router: Router, private route: ActivatedRoute) {
+    constructor(public service: ContentService, private router: Router, private route: ActivatedRoute) {
 
     }
 

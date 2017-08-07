@@ -27,7 +27,7 @@ export class CohortsComponent{
      * @param {AuthService} auth 
      * @memberof CohortsComponent
      */
-    constructor(private service: CohortService) {
+    constructor(public service: CohortService) {
               
     }
 

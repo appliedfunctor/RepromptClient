@@ -14,10 +14,13 @@ export class MenuContent {
     @Input() account: String = "Unauthenticated";
     @Output() logout = new EventEmitter<boolean>();
 
-    constructor(private service: AuthService, private router: Router) {
+    constructor(private service: AuthService, private router: Router) {        
+    }
+
+    ngOnInit() {
         this.updateData(this.service.getCurrentUser())
 
-        this.subscribed = service.userChange.subscribe(u => {
+        this.subscribed = this.service.userChange.subscribe(u => {
             this.updateData(u)
         })
     }

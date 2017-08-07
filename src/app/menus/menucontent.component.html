@@ -4,12 +4,12 @@
 <button md-menu-item *ngIf="authenticated" (click)="redirect('/')"><i class="fa fa-home"></i> Home</button>
 
 <!-- students -->
-<button md-menu-item *ngIf="!user.isEducator" (click)="redirect('/')"><i class="fa fa-clipboard"></i> Manage</button>
-<button md-menu-item *ngIf="!user.isEducator"><i class="fa fa-check-square-o"></i> Study</button>
+<button md-menu-item *ngIf="authenticated && !user.isEducator" (click)="redirect('manage/')"><i class="fa fa-clipboard"></i> Manage</button>
+<button md-menu-item *ngIf="authenticated && !user.isEducator" (click)="redirect('study/')"><i class="fa fa-check-square-o" ></i> Study</button>
 
 <!-- educators -->
-<button md-menu-item *ngIf="user.isEducator" (click)="redirect('cohorts/')"><i class="fa fa-university"></i> Cohorts</button>
-<button md-menu-item *ngIf="user.isEducator" (click)="redirect('content/')"><i class="fa fa-file"></i> Content</button>
-<button md-menu-item *ngIf="user.isEducator" (click)="redirect('publish/')"><i class="fa fa-check-square-o"></i> Publish</button>
+<button md-menu-item *ngIf="authenticated && user.isEducator" (click)="redirect('cohorts/')"><i class="fa fa-university"></i> Cohorts</button>
+<button md-menu-item *ngIf="authenticated && user.isEducator" (click)="redirect('content/')"><i class="fa fa-file"></i> Content</button>
+<button md-menu-item *ngIf="authenticated && user.isEducator" (click)="redirect('publish/')"><i class="fa fa-check-square-o"></i> Publish</button>
 
     
