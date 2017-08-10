@@ -24,14 +24,12 @@ import { CohortsComponent } from 'app/cohorts/cohorts.component'
 
 
 import { AuthComponent } from './auth/auth.component'
-import { MenuContent } from './menus/menucontent.component'
 import { AuthGuard } from './_guards/auth.guard'
 import { EducatorGuard } from './_guards/educator.guard'
 import { StudentGuard } from './_guards/student.guard'
 import { UnauthGuard } from './_guards/unauth.guard'
 import { routing } from './app.routing'
 import { AuthService } from "./_services/auth.service"
-import { SideMenu } from "./menus/sidemenu.component"
 import { EqualValidator } from "./_directives/equal-validator.directive"
 import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt'
 import { Http, RequestOptions } from '@angular/http'
@@ -41,19 +39,23 @@ import { PackageComponent } from "app/content/package.component"
 import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog"
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
 import { NameEditComponent } from 'app/widgets/name-edit.component'
-import { ContentItemEditComponent } from 'app/content/content-item-edit.component'
 import { FileUploadModule, EditorModule, TabViewModule, CalendarModule } from 'primeng/primeng'
-import { ContentItemCardComponent } from "app/content/content-item-card.component"
-import { ContentItemQuestionEditComponent } from "app/content/content-item-question-edit.component"
-import { ContentItemQuestionsComponent } from "app/content/content-item-questions.component"
-import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mcsa.component"
-import { QuestionEditSort } from "app/content/question-handlers/question-edit-sort.component"
 import { DragulaModule } from 'ng2-dragula'
 import { SummaryPipe } from 'app/_pipes/summary.pipe'
-import { PublishComponent } from "app/publish/publish.component";
-import { stringToDatePipe } from "app/_pipes/string-to-date.pipe";
-import { ManageComponent } from "app/manage/manage.component";
-import { StudyComponent } from "app/study/study.component";
+import { PublishComponent } from "app/publish/publish.component"
+import { stringToDatePipe } from "app/_pipes/string-to-date.pipe"
+import { ManageComponent } from "app/manage/manage.component"
+import { StudyComponent } from "app/study/study.component"
+import { ContentItemEditComponent } from "app/content/content-components/item-edit/content-item-edit.component"
+import { ContentItemCardComponent } from "app/content/content-components/item-card/content-item-card.component"
+import { ContentItemQuestionEditComponent } from "app/content/content-components/item-question-edit/content-item-question-edit.component"
+import { ContentItemQuestionsComponent } from "app/content/content-components/content-item-questions.component"
+import { QuestionEditMCSA } from "app/assessment-handlers/mcsa/question-edit-mcsa.component"
+import { QuestionEditSort } from "app/assessment-handlers/sort/question-edit-sort.component"
+import { TestDeliveryComponent } from "app/study/test-delivery.component"
+import { SimpleNotificationsModule } from 'angular2-notifications'
+import { QuestionTestMCSA } from "app/assessment-handlers/mcsa/question-test-mcsa.component"
+import { QuestionTestSort } from "app/assessment-handlers/sort/question-test-sort.component"
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -87,16 +89,17 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UnlinkConfirmDialog,
     NameEditComponent,
     RegisterComponent,
-    MenuContent,
-    SideMenu,
     EqualValidator,
     QuestionEditMCSA,
+    QuestionTestMCSA,
     QuestionEditSort,
+    QuestionTestSort,
     SummaryPipe,
     stringToDatePipe,
     PublishComponent,
     ManageComponent,
-    StudyComponent
+    StudyComponent,
+    TestDeliveryComponent
   ],
   imports: [
     BrowserModule,
@@ -126,7 +129,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     JsonpModule,
     DragulaModule,
-    routing    
+    routing,
+    SimpleNotificationsModule.forRoot(),    
   ],
   providers: [
     AuthGuard,
@@ -147,7 +151,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DeleteConfirmDialog,
     UnlinkConfirmDialog,
     QuestionEditMCSA,
-    QuestionEditSort
+    QuestionTestMCSA,
+    QuestionEditSort,
+    QuestionTestSort,
   ],
   bootstrap: [AppComponent]
 })

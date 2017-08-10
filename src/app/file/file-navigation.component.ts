@@ -1,16 +1,17 @@
-import { Component, Output, EventEmitter } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { Pipe, PipeTransform, Input } from '@angular/core';
-import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
-import { AuthService } from "app/_services/auth.service";
-import { UserModel } from "app/_models/user.model";
-import { FormControl, FormGroup } from '@angular/forms';
-import { FileElement } from "app/_models/file-element.model";
-import { FileContainer } from "app/_models/file-container.model";
-import { ContainerService } from "app/_services/container.service.type";
-import { UpperCasePipe } from '@angular/common';
-import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
-import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog";
+import { Component, Output, EventEmitter } from "@angular/core"
+import { Observable } from "rxjs/Observable"
+import { Pipe, PipeTransform, Input } from '@angular/core'
+import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material'
+import { AuthService } from "app/_services/auth.service"
+import { UserModel } from "app/_models/user.model"
+import { FormControl, FormGroup } from '@angular/forms'
+import { FileElement } from "app/_models/file-element.model"
+import { FileContainer } from "app/_models/file-container.model"
+import { ContainerService } from "app/_services/container.service.type"
+import { UpperCasePipe } from '@angular/common'
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
+import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog"
+import { NotificationsService } from "angular2-notifications"
 
 @Component({
     selector: 'file-navigation',
@@ -54,7 +55,7 @@ export class FileNavigationComponent {
     name: string = ""
     active: boolean = true
 
-    constructor(public dialog: MdDialog, private auth: AuthService) {
+    constructor(public dialog: MdDialog, private auth: AuthService, private notify: NotificationsService) {
 
     }
 
@@ -77,15 +78,17 @@ export class FileNavigationComponent {
     loadData() {
         this.service.getAllContainers()
         .takeWhile(() => this.active)
+        .catch( (errMsg) => {
+            this.notify.error('Error', errMsg)     
+            return Observable.of(null)
+        })
         .subscribe(res => {
-
             if(res && res.length > 0) {                
                 this.allContainers = res
                 
                 this.handleRouteId()
                 this.updateRootallContainers(null)
             }            
-
             this.loading = false
         })
     }
@@ -100,8 +103,12 @@ export class FileNavigationComponent {
     loadAllItems() {
         this.service.getAllItems()
         .takeWhile(() => this.active)
+        .catch( (errMsg) => {
+            this.notify.error('Error', errMsg)     
+            return Observable.of(null)
+        })
         .subscribe(res => {
-            if (res.length > 0) {
+            if (res && res.length > 0) {
                 this.allItems = res
             }
             this.loading = false
@@ -128,8 +135,12 @@ export class FileNavigationComponent {
             this.loading = true
             this.service.attach(this.currentParent.id, item.id)
             .takeWhile(() => this.active)
+            .catch( (errMsg) => {
+                this.notify.error('Error', errMsg)     
+                return Observable.of(null)
+            })
             .subscribe(res => {
-                if(res > 0) {
+                if(res && res > 0) {
                     this.togglePopulate()
                     this.itemsControl.reset()
                     this.currentParent.members.push(item)
@@ -146,16 +157,17 @@ export class FileNavigationComponent {
             let data = {folderId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: name, content: []}   
             this.service.attach(data, null)
             .takeWhile(() => this.active)
+            .catch( (errMsg) => {
+                this.notify.error('Error', errMsg)     
+                return Observable.of(null)
+            })
             .subscribe(res => {
-                if(res != null && res.hasOwnProperty('error')) {
-                    this.error = res.error
-                    this.loading = false
-                } else {
+                if(res) {
                     this.currentParent.members.push(res)
                     this.currentParent.members.sort(FileElement.sortByName)                    
-                    this.resetForm()
-                    this.loading = false
+                    this.resetForm()                    
                 }
+                this.loading = false
             })
         }
     }
@@ -242,18 +254,20 @@ export class FileNavigationComponent {
         data.name = this.name
         this.service.save(data)
         .takeWhile(() => this.active)
+        .catch( (errMsg) => {
+            this.notify.error('Error', errMsg)     
+            return Observable.of(null)
+        })
         .subscribe(res => {
-            if(res != null && res.hasOwnProperty('error')) {
-                this.error = res.error
-            } else {
+            if(res) {
                 this.allContainers.map(e => { if(e.id == res.id) e.name = res.name })
                 this.allContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.filteredContainers.map(e => { if(e.id == res.id) e.name = res.name })
                 this.filteredContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.resetForm()
-                this.updateNavigation()
-                this.loading = false
+                this.updateNavigation()                
             }
+            this.loading = false
         })
     }
 
@@ -261,17 +275,19 @@ export class FileNavigationComponent {
         let data = {parentId: this.currentParent ? this.currentParent.id : null, ownerId: this.auth.getCurrentUser().id,  name: this.name, members: []}
         this.service.save(data)
         .takeWhile(() => this.active)
+        .catch( (errMsg) => {
+            this.notify.error('Error', errMsg)     
+            return Observable.of(null)
+        })
         .subscribe(res => {
-            if(res != null && res.hasOwnProperty('error')) {
-                this.error = res.error
-            } else {
+            if(res) {
                 this.allContainers.push(res)
                 this.allContainers.sort((a, b) => FileContainer.sortByName(a, b))
                 this.filteredContainers.push(res)
                 this.filteredContainers.sort((a, b) => FileContainer.sortByName(a, b))
-                this.resetForm()
-                this.loading = false
+                this.resetForm()                
             }
+            this.loading = false
         })
     }
 
@@ -360,13 +376,19 @@ export class FileNavigationComponent {
             .subscribe(res => {
                 if(res === true) {
                     //perform deletion
+                    this.loading = true
                     this.service.delete(selectedContainerId)
                     .takeWhile(() => this.active)
-                    .subscribe(response => {
-                        if(response > 0) {
+                    .catch( (errMsg) => {
+                        this.notify.error('Error', errMsg)     
+                        return Observable.of(null)
+                    })
+                    .subscribe(res => {
+                        if(res && res > 0) {
                             this.allContainers = this.allContainers.filter(e => e.id != selectedContainerId)
                             this.navigateBack()
                         }
+                        this.loading = false
                     })
                 }
             })
@@ -383,12 +405,18 @@ export class FileNavigationComponent {
         .subscribe(res => {
                 if(res === true) {
                     //perform deletion
+                    this.loading = true
                     this.service.detach(selectedContainer.id, selectedItem.id)
                     .takeWhile(() => this.active)
-                    .subscribe(response => {
-                        if(response > 0) {
+                    .catch( (errMsg) => {
+                        this.notify.error('Error', errMsg)
+                        return Observable.of(null)
+                    })
+                    .subscribe(res => {
+                        if(res && res > 0) {
                             selectedContainer.members = selectedContainer.members.filter(item => item.id != selectedItem.id)
                         }
+                        this.loading = true
                     })
                 }
             })

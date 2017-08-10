@@ -10,6 +10,7 @@ import { CohortModel } from "app/_models/cohort.model";
 import { UserModel } from "app/_models/user.model";
 import { ContentFolderModel } from "app/_models/content-folder.model";
 import { ContentPackageModel } from "app/_models/content-package.model";
+import { CommonLibsService } from "app/_services/common.libs.service";
 
 @Injectable()
 export class ContentService implements ContainerService{  
@@ -34,8 +35,9 @@ export class ContentService implements ContainerService{
      */
     get(contentId: number): Observable<any> {
         return this.authHttp.get(this.path.getUrl(this.folderGetPath) + contentId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -46,8 +48,9 @@ export class ContentService implements ContainerService{
      */
     getAllContainers(): Observable<any> {
         return this.authHttp.get(this.path.getUrl(this.folderGetAllPath))
-                            .map(this.handleContainers)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleContainers)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -59,8 +62,9 @@ export class ContentService implements ContainerService{
      */
     save(container: FileContainer) {
         return this.authHttp.post(this.path.getUrl(this.folderSavePath), container)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -72,8 +76,9 @@ export class ContentService implements ContainerService{
      */
     delete(folderId: number) {
         return this.authHttp.delete(this.path.getUrl(this.folderDeletePath) + folderId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -86,8 +91,9 @@ export class ContentService implements ContainerService{
      */
     attach(packageModel: ContentPackageModel) {
         return this.authHttp.post(this.path.getUrl(this.packageSavePath), packageModel)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -100,8 +106,9 @@ export class ContentService implements ContainerService{
      */
     detach(folderId: number, packageId: number) {
         return this.authHttp.delete(this.path.getUrl(this.packageDeletePath) + packageId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -113,34 +120,8 @@ export class ContentService implements ContainerService{
     getAllItems() {
         // return this.authHttp.get(this.path.getUrl(this.contentPackagePath))
         //                     .map(res => res.json())
-        //                     .catch(this.handleError)
+        //                     .catch(CommonLibsService.handleError)
         return Observable.of('')
-    }
-
-    private handleContainers(res: Response) {   
-        //parse response data into Folders
-        let folders: ContentFolderModel[] = []
-        res.json().forEach(data => folders.push(new ContentFolderModel(data)))
-        return folders
-    }
-
-    private handleElements(res: Response) {   
-        // parse response data into Elements
-        // let users: UserModel[] = []
-        // res.json().forEach(data => users.push(new UserModel(data)))
-        // return users;
-    }
-
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-        errMsg = error.message ? error.message : error.toString();
-        }
-        return Observable.throw(errMsg);
     }
 
 }

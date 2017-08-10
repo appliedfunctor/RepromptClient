@@ -4,6 +4,9 @@ import { ErrorMessage } from "app/_models/error.model"
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { EqualValidator } from "app/_directives/equal-validator.directive"
 import { UserModel } from "app/_models/user.model";
+import { Observable } from "rxjs/Rx";
+import { NotificationsService } from "angular2-notifications";
+import { Settings } from "app/libs/Settings";
 
 @Component({
     selector: 'login-form',
@@ -20,8 +23,9 @@ export class LoginComponent {
     alive: boolean = true
     @Output() tab = new EventEmitter<number>()    
     @Output() loadingEvent = new EventEmitter<boolean>()
+    public options = Settings.toastOptions
 
-    constructor(private fb: FormBuilder, private service: AuthService) {
+    constructor(private fb: FormBuilder, private service: AuthService, private notify: NotificationsService) {
         this.loginForm = fb.group({
             'email' : [null, Validators.compose(
                 [
@@ -54,19 +58,14 @@ export class LoginComponent {
         this.emitLoading(true)
         this.service.login(this.email, this.password)
         .takeWhile(() => this.alive)
-        .subscribe(data => {
-
-            this.response = data
-            this.errorMessage = data.hasOwnProperty('error') ? data.error : "There has been an error attempting to authenticate you."            
-
-            if(data.hasOwnProperty("id")) {
-                this.error = false
-            } else {
-                this.error = true
-            }
+        .catch( (errMsg) => {
+            this.notify.error('Error', errMsg)          
+            return Observable.of(null)
+        })
+        .subscribe((response) => {
+            this.response = response
             this.emitLoading(false)
-            
-        });        
+        })   
     }
 
     switchTab() {

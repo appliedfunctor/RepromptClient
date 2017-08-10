@@ -2,12 +2,13 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 import { Component } from "@angular/core"
 import { ContentPackageService } from "app/_services/content-package.service"
 import { ContentPackageModel } from "app/_models/content-package.model"
-import { ContentItemEditComponent } from 'app/content/content-item-edit.component'
-import { ContentItemModel } from "app/_models/content-item.model";
-import { AuthService } from "app/_services/auth.service";
-import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material';
-import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog";
-import { QuestionModel } from "app/_models/question.model";
+import { ContentItemModel } from "app/_models/content-item.model"
+import { AuthService } from "app/_services/auth.service"
+import { MdDialog, MdDialogRef, MdAutocompleteModule } from '@angular/material'
+import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
+import { QuestionModel } from "app/_models/question.model"
+import { Observable } from "rxjs/Rx"
+import { NotificationsService } from "angular2-notifications"
 
 
 @Component({
@@ -27,8 +28,10 @@ export class PackageComponent {
     currentContentItem: ContentItemModel = new ContentItemModel({})
     currentQuestion: QuestionModel = new QuestionModel({})
     alive: boolean = true
+    delivery: boolean = false
 
-    constructor(private router: Router, private route: ActivatedRoute, private service: ContentPackageService, private auth: AuthService, public dialog: MdDialog) {
+    constructor(private router: Router, private route: ActivatedRoute, private service: ContentPackageService, 
+        private auth: AuthService, public dialog: MdDialog, private notify: NotificationsService) {
         
     }
 
@@ -102,6 +105,10 @@ export class PackageComponent {
             this.loading = true
             this.service.get(packageId)
             .takeWhile(() => this.alive)
+            .catch( (errMsg) => {
+                this.notify.error('Error', errMsg)     
+                return Observable.of(null)
+            })
             .subscribe(res => {
                 this.currentPackage = res
                 this.loading = false
@@ -155,6 +162,10 @@ export class PackageComponent {
             
             this.service.saveItem(data)
             .takeWhile(() => this.alive)
+            .catch( (errMsg) => {
+                this.notify.error('Error', errMsg)     
+                return Observable.of(null)
+            })
             .subscribe(res => {
                 this.loading = false
 
@@ -207,6 +218,10 @@ export class PackageComponent {
                     //perform deletion
                     this.service.deleteItem(item.id)
                     .takeWhile(() => this.alive)
+                    .catch( (errMsg) => {
+                        this.notify.error('Error', errMsg)     
+                        return Observable.of(0)
+                    })
                     .subscribe(response => {
                         if(response > 0) {
                             this.currentPackage.content = this.currentPackage.content.filter(element => element.id != item.id)

@@ -3,6 +3,9 @@ import { AuthService } from "../_services/auth.service"
 import { Router } from "@angular/router"
 import { UserModel } from "app/_models/user.model"
 import { EqualValidator } from "app/_directives/equal-validator.directive"
+import { Observable } from "rxjs/Rx"
+import { NotificationsService } from "angular2-notifications";
+import { Settings } from "app/libs/Settings";
 
 
 @Component({
@@ -26,8 +29,9 @@ export class RegisterComponent {
     alive: boolean = true
     @Output() tab = new EventEmitter<number>()
     @Output() loadingEvent = new EventEmitter<boolean>()
+    options = Settings.toastOptions
 
-    constructor(private router: Router, private service: AuthService) {
+    constructor(private router: Router, private service: AuthService, private notify: NotificationsService) {
     }
 
     emitLoading(value: boolean) {
@@ -46,20 +50,14 @@ export class RegisterComponent {
 
         this.service.register(user)
         .takeWhile(() => this.alive)
+        .catch( (errMsg) => {
+            this.notify.error('Error', errMsg)     
+            return Observable.of(null)
+        })
         .subscribe(data => {
-
             this.response = data
-            this.errorMessage = data.hasOwnProperty('error') ? data.error : "There has been an error attempting to register you."            
-
-            if(data.hasOwnProperty("id")) {
-                this.error = false
-            } else {
-                this.error = true
-            }
-
-            this.emitLoading(false)
-            
-        });  
+            this.emitLoading(false)            
+        })
     }
 
     switchTab() {

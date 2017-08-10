@@ -162,6 +162,9 @@
 .avatar-sm {
     height: 25px;
     width: 25px;
+    margin: 0px;
+    padding: 0px;
+    margin-top: -5px;
 }
 
 .mat-tab-body {
@@ -227,6 +230,12 @@
     margin-bottom: 5px;
     flex: 0, 0, auto;
     border: 1px solid transparent;
+}
+
+.navbar-item {
+    align-items: center;
+    color: white;
+    margin-top: 8px;
 }
 
 .spacer {
@@ -304,6 +313,13 @@
     font-weight: 400;
 }
 
+.question {
+    font-size: 1.3em;
+    border-bottom: 1px solid #DCDCDC;
+    padding: 5px;
+    font-weight: 400;
+}
+
 .selectedItem {
     border: 1px solid #263238;
     background: #263238;
@@ -327,4 +343,21 @@
     color: #B71C1C;
     font-size: 75%;
     margin-top: 5px;
+}
+
+.bg-faded {
+    background-color: #263238;
+}
+
+#spacer {
+    height: 60px;
+}
+
+.navbar-brand {
+    height: 40px;
+    vertical-align: middle;
+}
+
+.mat-radio-label>.mat-radio-label-content {
+    white-space: normal;
 }

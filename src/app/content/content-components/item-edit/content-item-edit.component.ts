@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'
 import { FileUploadModule } from 'primeng/primeng'
-import { ContentItemModel } from "app/_models/content-item.model";
+import { ContentItemModel } from "app/_models/content-item.model"
 
 interface Window {
     webkitURL?: any;

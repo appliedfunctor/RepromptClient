@@ -12,6 +12,7 @@ import { UserModel } from "../_models/user.model"
 import { ErrorMessage } from "../_models/error.model"
 import { Paths } from "../app.paths"
 import { AuthHttp, AuthConfig, JwtHelper } from 'angular2-jwt';
+import { CommonLibsService } from "app/_services/common.libs.service";
 
 //import 'rxjs/add/operator/map'
 
@@ -35,7 +36,7 @@ export class AuthService {
     }
 
     startAuthChecks() {          
-        let subscription = Observable.interval(30000)
+        let subscription = Observable.interval(CommonLibsService.authInterval)
             .subscribe((count) => {
               if(!this.isAuthenticated()) {
                 subscription.unsubscribe()
@@ -64,48 +65,47 @@ export class AuthService {
 
         //send request to endpoint
         let response = this.http.post(this.path.getUrl(this.registerPath), sendData, options)
+                        .timeout(CommonLibsService.timeout)
                         .map(this.handleData)
-                        .catch(this.handleError)
+                        .catch(CommonLibsService.handleError)
                         .share()
 
-        response.subscribe(res => {
+        response.share()
+        .catch( err => Observable.of('') )
+        .subscribe(res => {
+            this.handleUser(res)
+        })
+        
+        return response.share()
+    }
 
-            //handle token
+    handleUser(res) {
+        //handle token
             this.loadDataFromStorage()
 
             //handle user
             if(res.hasOwnProperty("id")) {
                 this.user = new UserModel(res)
                 this.onUserChange()
-            }
-        })
-        
-        return response
+                this.startAuthChecks()
+            }        
     }
 
     login(email: String, password: String): Observable<any> {
-        //console.log(this.path.getUrl(this.loginPath))
 		let options = new RequestOptions({ headers: this.headers });
         let sendData = JSON.stringify({email: email, password: password });
         
         //send request to endpoint
         let response = this.http.post(this.path.getUrl(this.loginPath), sendData, options)
+                        .timeout(CommonLibsService.timeout)
                         .map(this.handleData)
-                        .catch(this.handleError)
+                        .catch(CommonLibsService.handleError)
                         .share()
 
-        response.share().subscribe(res => {
-
-            //handle token
-            this.loadDataFromStorage()
-
-            //handle user
-            if(res.hasOwnProperty("id")) {
-                this.user = new UserModel(res)
-                this.onUserChange()
-
-                this.startAuthChecks()
-            }
+        response.share()
+        .catch( err => Observable.of('') )
+        .subscribe(res => {
+            this.handleUser(res)
         })
         
         return response.share()
@@ -119,7 +119,6 @@ export class AuthService {
     }
 
     isAuthenticated(): boolean {
-        //console.log("token valid: " + (this.isTokenValid()))
         return this.isTokenValid() ? true : false   
     }
 
@@ -130,9 +129,7 @@ export class AuthService {
     }
 
     isTokenValid() {
-        //console.log("token null: " + (this.jwtToken == null))
         if(this.jwtToken != null) {
-        //console.log("token expired: " + this.jwtHelper.isTokenExpired(this.jwtToken))
         }
         return (this.jwtToken != null && !this.jwtHelper.isTokenExpired(this.jwtToken))
     }
@@ -154,18 +151,6 @@ export class AuthService {
         }
 
         return body;
-    }
-
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-        errMsg = error.message ? error.message : error.toString();
-        }
-        return Observable.throw(errMsg);
     }
 
     onUserChange() {

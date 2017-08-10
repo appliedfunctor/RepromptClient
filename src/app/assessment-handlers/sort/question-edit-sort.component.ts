@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core"
-import { QuestionHandler } from "app/_models/question-handler.type";
+import { QuestionEditor } from "app/_models/question-editor.type"
 import { ContentItemModel } from "app/_models/content-item.model";
 import { QuestionModel } from "app/_models/question.model";
 import { DragulaService } from "ng2-dragula";
@@ -11,7 +11,7 @@ import { ContentPackageService } from "app/_services/content-package.service";
     selector: 'question-edit-sort',
     templateUrl: 'question-edit-sort.component.html'
 })
-export class QuestionEditSort implements QuestionHandler {
+export class QuestionEditSort implements QuestionEditor {
     @Input() contentItem: ContentItemModel
     @Input() question: QuestionModel
     @Output() saved = new EventEmitter<QuestionModel>()

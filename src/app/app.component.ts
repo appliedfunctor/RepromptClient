@@ -43,6 +43,10 @@ export class AppComponent {
     this.router.navigate(['/auth']);
   }
 
+  redirect(destination: string) {
+      this.router.navigate([destination])
+  }
+
   onUserChange() {
     this.firstName = this.user.firstName
     this.surName = this.user.surName
@@ -53,7 +57,6 @@ export class AppComponent {
     } else {
       this.router.navigate(['/auth'])
     }
-    console.log("Auth "+ this.authenticated + " User: " + this.user)
   }
 
 }

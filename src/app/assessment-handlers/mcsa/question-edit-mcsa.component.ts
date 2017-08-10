@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from "@angular/core"
 import { ContentPackageService } from "app/_services/content-package.service"
 import { ContentItemModel } from "app/_models/content-item.model"
-import { QuestionHandler } from "app/_models/question-handler.type"
+import { QuestionEditor } from "app/_models/question-editor.type"
 import { AnswerModel } from "app/_models/answer.model"
 import { QuestionModel } from "app/_models/question.model"
 import { FormBuilder, FormGroup, FormControl, Form, Validators } from "@angular/forms"
@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, FormControl, Form, Validators } from "@angular/
     selector: 'question-edit-mcsa',
     templateUrl: 'question-edit-mcsa.component.html'
 })
-export class QuestionEditMCSA implements QuestionHandler {
+export class QuestionEditMCSA implements QuestionEditor {
     @Input() contentItem: ContentItemModel
     @Input() question: QuestionModel = new QuestionModel({})
     @Output() saved = new EventEmitter<QuestionModel>()

@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core"
 import { Response, RequestOptions, Headers } from "@angular/http"
-import { AuthHttp } from "angular2-jwt/angular2-jwt";
-import { Paths } from "app/app.paths";
-import { ContentPackageModel } from "app/_models/content-package.model";
-import { Observable } from "rxjs/Rx";
-import { CohortModel } from "app/_models/cohort.model";
-import { ExamModel } from "app/_models/exam.model";
+import { AuthHttp } from "angular2-jwt/angular2-jwt"
+import { Paths } from "app/app.paths"
+import { ContentPackageModel } from "app/_models/content-package.model"
+import { Observable } from "rxjs/Rx"
+import { CohortModel } from "app/_models/cohort.model"
+import { ExamModel } from "app/_models/exam.model"
+import { CommonLibsService } from "app/_services/common.libs.service"
 
 @Injectable()
 export class PublishService {
@@ -30,8 +31,9 @@ export class PublishService {
      */
     getAllCohorts(): Observable<CohortModel[]> {
         return this.authHttp.get(this.path.getUrl(this.cohortGetPath))
-                            .map(this.handleCohorts)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleCohorts)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -43,88 +45,67 @@ export class PublishService {
      */
     getAllPackages(): Observable<ContentPackageModel[]> {
         return this.authHttp.get(this.path.getUrl(this.packageGetPath))
-                            .map(this.handlePackages)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handlePackages)
+                            .catch(CommonLibsService.handleError)
     }
 
     delete(examId: number): Observable<number> {
         return this.authHttp.delete(this.path.getUrl(this.publishGetPath) + examId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     get(examId: number): Observable<ExamModel> {
         return this.authHttp.get(this.path.getUrl(this.publishGetPath) + examId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => new ExamModel(res.json()))
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     getAll(): Observable<ExamModel[]> {
         return this.authHttp.get(this.path.getUrl(this.publishGetAllPath))
-                            .map(this.handleExams)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleExams)
+                            .catch(CommonLibsService.handleError)
     }
 
     save(exam: ExamModel): Observable<ExamModel> {
         return this.authHttp.post(this.path.getUrl(this.publishGetPath), exam)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => new ExamModel(res.json()))
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     attachCohort(cohortId: number, assignedId: number) {
         return this.authHttp.post(this.path.getUrl(this.publishCohortAttachPath), {cohortId: cohortId, assignedId: assignedId})
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     detachCohort(cohortId: number, assignedId: number) {
         return this.authHttp.delete(this.path.getUrl(this.publishCohortAttachPath) +  cohortId + '/' + assignedId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     attachPackage(packageId: number, assignedId: number) {
         return this.authHttp.post(this.path.getUrl(this.publishGetPath), {packageId: packageId, assignedId: assignedId})
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     detachPackage(packageId: number, assignedId: number) {
         return this.authHttp.delete(this.path.getUrl(this.publishGetPath)  + packageId + '/' + assignedId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
-    private handleCohorts(res: Response) {   
-        let cohorts: CohortModel[] = []
-        res.json().forEach(data => cohorts.push(new CohortModel(data)))
-        return cohorts
-    }
-
-    private handlePackages(res: Response) {   
-        let packages: ContentPackageModel[] = []
-        res.json().forEach(data => packages.push(new ContentPackageModel(data)))
-        return packages
-    }
-
-    private handleExams(res: Response) {   
-        let exams: ExamModel[] = []
-        res.json().forEach(data => {
-            exams.push(new ExamModel(data))
-        })
-        return exams
-    }
-
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-        errMsg = error.message ? error.message : error.toString();
-        }
-        return Observable.throw(errMsg);
-    }
+    
 
 }

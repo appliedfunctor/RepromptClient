@@ -1,6 +1,6 @@
 <div class="file-container">
     <div class="file-item file-heading">
-        <md-icon class="mr-2 pointer" (click)="navigateBack()" (keyup.enter)="navigateBack()">assessment</md-icon> Questions
+        <md-icon class="mr-2 pointer">assessment</md-icon> Questions
         <div class="spacer"></div>   
         <div tabindex=0 class="file-item pointer" (keyup.enter)="newQuestionCreation()" (click)="newQuestionCreation()" alt="Add Assessment" >
             <md-icon >add</md-icon>
@@ -16,7 +16,7 @@
     [ngClass]="{ 'selectedItem': currentQuestion.id === question.id}"
     *ngFor="let question of currentData.questions">
     <div class="spacer" (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">
-        <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question}}       
+        <i class="fa fa-lg fa-question-circle mr-2 ml-1"></i> {{question.question | summary:'12'}}       
     </div>
         <div class="file-stack">
             <md-icon class="ml-2" class="pointer" tabindex=0 (click)="selectQuestion(question)" (keyup.enter)="selectQuestion(question)">edit</md-icon>
@@ -24,6 +24,8 @@
         </div>
     </div>
 </div>
+
+<simple-notifications [options]="options"></simple-notifications>
 
 <div class="dead-container" *ngIf="loading">
   <md-spinner class="dead-center"></md-spinner>

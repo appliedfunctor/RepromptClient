@@ -23,5 +23,6 @@ export class AuthComponent {
 
     setLoading(value: boolean) {
         this.loading = value
+        console.log('loading received: ' + value)
     }
 }

@@ -4,6 +4,8 @@ import { ContentPackageService } from "app/_services/content-package.service"
 import { QuestionModel } from "app/_models/question.model"
 import { MdDialog } from "@angular/material"
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
+import { Observable } from "rxjs/Rx"
+import { NotificationsService } from "angular2-notifications"
 
 @Component({
     selector: 'content-item-questions',
@@ -17,7 +19,7 @@ export class ContentItemQuestionsComponent {
     loading = false
     active: boolean = true
 
-    constructor(private service: ContentPackageService, public dialog: MdDialog) {
+    constructor(private service: ContentPackageService, public dialog: MdDialog, private notify: NotificationsService) {
 
     }
     
@@ -34,8 +36,12 @@ export class ContentItemQuestionsComponent {
             this.loading = true
             this.service.getItem(this.currentData.id)
             .takeWhile(() => this.active)
+            .catch( (errMsg) => {
+                this.notify.error('Error', errMsg)     
+                return Observable.of(null)
+            })
             .subscribe( res => {
-                this.currentData = res
+                if(res) { this.currentData = res }
                 this.loading = false
             })
         }
@@ -63,6 +69,10 @@ export class ContentItemQuestionsComponent {
                     //perform deletion
                     this.service.deleteQuestion(question.id)
                     .takeWhile(() => this.active)
+                    .catch( (errMsg) => {
+                        this.notify.error('Error', errMsg)     
+                        return Observable.of(0)
+                    })
                     .subscribe(res => {
                         if(res > 0) {
                             this.currentData.questions = this.currentData.questions.filter(q => q.id != question.id)

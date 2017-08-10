@@ -1,6 +1,23 @@
 <div class="title">Study</div>
 
+<div class="panel-container">
+    <div class="file-container">
+        <content-item-card *ngIf="currentContent && !currentQuestion" 
+            [contentItem]="currentContent" 
+            [active]="active" 
+            (test)="test($event)"></content-item-card>
 
+        <test-question *ngIf="currentQuestion"
+        (marked)="marked($event)"
+        [currentQuestion]="currentQuestion"></test-question>
+    </div>
+
+    <div>
+        
+    </div>
+</div>
+
+<simple-notifications [options]="options"></simple-notifications>
 
 <div class="dead-container" *ngIf="loading">
   <md-spinner class="dead-center"></md-spinner>

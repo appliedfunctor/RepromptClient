@@ -13,6 +13,7 @@ import { ContentPackageModel } from "app/_models/content-package.model"
 import { ContentItemModel } from "app/_models/content-item.model"
 import { AuthService } from "app/_services/auth.service"
 import { QuestionModel } from "app/_models/question.model";
+import { CommonLibsService } from "app/_services/common.libs.service";
 
 @Injectable()
 export class ContentPackageService {    
@@ -36,11 +37,10 @@ export class ContentPackageService {
      */
     get(packageId: number): Observable<any> {
         return this.authHttp.get(this.path.getUrl(this.packageGetPath) + packageId)
-                            .map(this.handlePackage)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handlePackage)
+                            .catch(CommonLibsService.handleError)
     }
-
-
 
     /**
      * Get all items for the current content package
@@ -50,8 +50,9 @@ export class ContentPackageService {
      */
     getItem(itemId: number): Observable<any> {
         return this.authHttp.get(this.path.getUrl(this.itemGetPath) + itemId)
-                            .map(this.handleItem)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleItem)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -63,8 +64,9 @@ export class ContentPackageService {
      */
     save(pkg: ContentItemModel) {
         return this.authHttp.post(this.path.getUrl(this.packageGetPath), pkg)
-                            .map(this.handlePackage)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handlePackage)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -107,8 +109,9 @@ export class ContentPackageService {
 
     saveQuestion(question: QuestionModel) {
         return this.authHttp.post(this.path.getUrl(this.questionGetPath), question)
-                            .map(this.handleQuestion)
-                            .catch(this.handleError)
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleQuestion)
+                            .catch(CommonLibsService.handleError)
     }
 
     /**
@@ -120,62 +123,31 @@ export class ContentPackageService {
      */
     delete(packageId: number) {
         return this.authHttp.delete(this.path.getUrl(this.packageGetPath) + packageId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }     
 
 
     deleteItem(itemId: number) {
         return this.authHttp.delete(this.path.getUrl(this.itemGetPath) + itemId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     deleteQuestion(questionId: number){
         return this.authHttp.delete(this.path.getUrl(this.questionGetPath) + questionId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
+                            .catch(CommonLibsService.handleError)
     }
 
     deleteAnswer(answerId: number){
         return this.authHttp.delete(this.path.getUrl(this.answerGetPath) + answerId)
+                            .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
-                            .catch(this.handleError)
-    }
-
-    private handlePackage(res: Response) {   
-        //parse response data into Folders
-        return new ContentPackageModel(res.json())
-    }
-    
-    private handleItem(res: Response) {   
-        //parse response data into Item
-        let newItem = new ContentItemModel(res.json())
-        //console.log("Response: " + JSON.stringify(res.json()))
-        return newItem
-    }
-
-    private handleQuestion(res: Response) {
-        return new QuestionModel(res.json())
-    }
-
-    private handleItems(res: Response) {   
-        //parse response data into Elements
-        // let users: UserModel[] = []
-        // res.json().forEach(data => users.push(new UserModel(data)))
-        // return users;
-    }
-
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-        const body = error.json() || '';
-        const err = body.error || JSON.stringify(body);
-        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-        errMsg = error.message ? error.message : error.toString();
-        }
-        return Observable.throw(errMsg);
-    }
+                            .catch(CommonLibsService.handleError)
+    }    
 
 }

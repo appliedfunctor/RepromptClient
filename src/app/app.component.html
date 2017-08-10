@@ -1,20 +1,61 @@
-<md-toolbar color="primary">
+<!-- <md-toolbar color="primary"> -->
 
-  <span>>Reprompt</span>
-  <span class="spacer"></span>
-  <button *ngIf="authenticated" md-button [mdMenuTriggerFor]="userMenu"><img src="{{ user.avatarUrl }}" class="avatar avatar-sm" alt="Avatar"> {{ user.firstName }} {{ user.surName }}</button>
-  <button md-button [mdMenuTriggerFor]="appMenu"> <md-icon>menu</md-icon> Menu</button>
-  
-</md-toolbar>
+  <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-brand">>Reprompt</div>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav mr-auto">
 
+      <li class="nav-item" [ngClass]="{ 'active': router.url === '/' }" *ngIf="authenticated">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('/')" (keyup.enter)="redirect('/')"><i class="fa fa-home"></i> Home</div>
+      </li>
+
+      <!-- students -->
+      <li class="nav-item" [ngClass]="{ 'active': router.url.startsWith('/manage') }" *ngIf="authenticated && !user.isEducator">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('manage/')" (keyup.enter)="redirect('manage/')"><i class="fa fa-clipboard"></i> Manage</div>
+      </li>
+
+      <li class="nav-item" [ngClass]="{ 'active': router.url.startsWith('/study') }" *ngIf="authenticated && !user.isEducator">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('study/')" (keyup.enter)="redirect('study/')"><i class="fa fa-check-square-o" ></i> Study</div>
+      </li>
+
+      <!-- educators -->
+      <li class="nav-item" [ngClass]="{ 'active': router.url.startsWith('/cohorts') }" *ngIf="authenticated && user.isEducator">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('cohorts/')" (keyup.enter)="redirect('cohorts/')"><i class="fa fa-university"></i> Cohorts</div>
+      </li>
+
+      <li class="nav-item" [ngClass]="{ 'active': router.url.startsWith('/content') }" *ngIf="authenticated && user.isEducator">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('content/')" (keyup.enter)="redirect('content/')"><i class="fa fa-file"></i> Content</div>
+      </li>
+
+      <li class="nav-item" [ngClass]="{ 'active': router.url.startsWith('/publish') }" *ngIf="authenticated && user.isEducator">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('publish/')" (keyup.enter)="redirect('publish/')"><i class="fa fa-check-square-o"></i> Publish</div>
+      </li>
+
+
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item" [ngClass]="{ 'active': router.url.startsWith('/auth') }" *ngIf="!authenticated">
+        <div class="nav-link pointer" tabindex=0 (click)="redirect('auth/')" (keyup.enter)="redirect('auth/')"><i class="fa fa-sign-in"></i> Authenticate</div>
+      </li>
+
+      <li class="nav-item" *ngIf="authenticated">
+        <div class="nav-link pointer" tabindex=0 (click)="logout()" (keyup.enter)="logout()"><i class="fa fa-sign-out"></i> Logout</div>
+      </li>
+
+      <li>
+        <div class="navbar-item"><img src="{{ user.avatarUrl }}" class="avatar avatar-sm" alt="Avatar"> {{ user.firstName }} {{ user.surName }}</div>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+ 
+<div id="spacer">&nbsp;</div>
 <router-outlet></router-outlet>
 
-<md-menu #userMenu="mdMenu" >
-    <button *ngIf="authenticated" md-menu-item (click)="logout()"><i class="fa fa-sign-out"></i> Logout </button>
-</md-menu> 
-
-<md-menu #appMenu="mdMenu">
-  <menu-content (logout)="logout()"></menu-content>
-</md-menu> 
  
 

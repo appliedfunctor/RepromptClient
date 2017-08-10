@@ -42,7 +42,14 @@
 
     <div class="col-md-4" *ngIf="itemCreating || itemEditing">
         <div class="panel-container">
-            <content-item-card [active]="itemCreating || itemEditing" [contentItem]="currentContentItem"></content-item-card>
+            <div class="file-container">
+                <div *ngIf="active">    
+                    <div class="file-item file-heading">
+                        Preview Content Item
+                    </div> 
+                </div>
+            </div>
+            <content-item-card [active]="itemCreating || itemEditing" [contentItem]="currentContentItem" [delivery]="delivery"></content-item-card>
         </div>
     </div>
 
@@ -67,7 +74,9 @@
 </div>
 </div>
 
+<simple-notifications [options]="options"></simple-notifications>
 
 <div class="dead-container" *ngIf="loading">
   <md-spinner class="dead-center"></md-spinner>
 </div>
+

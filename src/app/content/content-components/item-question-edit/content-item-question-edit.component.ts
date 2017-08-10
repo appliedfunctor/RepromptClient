@@ -1,16 +1,14 @@
 import { Component, ComponentFactoryResolver, ViewChild, Type, ViewContainerRef, Output, EventEmitter, Input } from "@angular/core"
-import { QuestionHandler } from "app/_models/question-handler.type";
-import { QuestionEditSort } from "app/content/question-handlers/question-edit-sort.component";
-import { QuestionEditMCSA } from "app/content/question-handlers/question-edit-mcsa.component";
-import { QuestionEditService } from "app/_services/question-edit.service";
-import { ContentItemModel } from "app/_models/content-item.model";
-import { QuestionModel } from "app/_models/question.model";
-import { Observable } from "rxjs/Rx";
+import { QuestionEditor } from "app/_models/question-editor.type"
+import { QuestionTypeService } from "app/_services/question-type.service"
+import { ContentItemModel } from "app/_models/content-item.model"
+import { QuestionModel } from "app/_models/question.model"
+import { Observable } from "rxjs/Rx"
 
 @Component({
     selector: 'content-item-question-edit',
     templateUrl: 'content-item-question-edit.component.html',
-    providers: [QuestionEditService]
+    providers: [QuestionTypeService]
 })
 export class ContentItemQuestionEditComponent {
     questionTypes: any[]
@@ -21,13 +19,13 @@ export class ContentItemQuestionEditComponent {
     mode = 'Create'
     subscribed
     @Output() saved = new EventEmitter<QuestionModel>()
-    currentEditModule: QuestionHandler
+    currentEditModule: QuestionEditor
 
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver, private service: QuestionEditService){}
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private service: QuestionTypeService){}
 
     ngOnInit() {
-        this.questionTypes = this.service.getQuestionHandlers()
+        this.questionTypes = this.service.getQuestionEditors()
         if(this.questionTypes.length > 0) {
             this.questionType = this.questionTypes[0].code
             this.loadComponent()
@@ -46,7 +44,7 @@ export class ContentItemQuestionEditComponent {
         this.host.clear()
         let componentRef = this.host.createComponent(factory)
 
-        this.currentEditModule = <QuestionHandler>componentRef.instance
+        this.currentEditModule = <QuestionEditor>componentRef.instance
         
         this.currentEditModule.contentItem = this.contentItem
         this.currentEditModule.question = this.question

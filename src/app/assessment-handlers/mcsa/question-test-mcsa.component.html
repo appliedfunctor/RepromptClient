@@ -1,0 +1,11 @@
+<form #mcsaForm="ngForm" ngControl="mcsaForm" (ngSubmit)="submit()">
+
+    <div class="question">{{question.question}}</div>
+
+    <md-radio-group name="answer" [(ngModel)]="selectedAnswer"  required>    
+            <md-radio-button class="md-radio-button" value="{{answer.id}}" *ngFor="let answer of question.answers">{{answer.answer}}</md-radio-button>            
+    </md-radio-group>
+    <br>
+    <button md-raised-button color="accent" type="submit" [disabled]="!mcsaForm.valid">Submit</button>
+        
+</form>
