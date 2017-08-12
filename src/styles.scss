@@ -360,4 +360,9 @@
 
 .mat-radio-label>.mat-radio-label-content {
     white-space: normal;
+    margin-left: 30px;
+}
+
+.mat-radio-label>.mat-radio-container {
+    position: absolute;
 }

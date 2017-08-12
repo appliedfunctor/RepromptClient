@@ -30,8 +30,9 @@ export class QuestionTestMCSA implements QuestionAssessor  {
         return 0
     }
 
-    submit() {
-        console.log('Score is ' + this.mark())
+    submit() {        
+        let score = this.mark()
+        this.marked.emit(score)
     }
 
 }

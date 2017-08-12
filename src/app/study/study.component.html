@@ -2,6 +2,11 @@
 
 <div class="panel-container">
     <div class="file-container">
+
+        <div *ngIf="pendingContent.length < 1 && pendingQuestions.length < 1 && !currentQuestion && !currentContent">
+            You do not have any pending content to review. You will be notified when it is time to review material.
+        </div>
+
         <content-item-card *ngIf="currentContent && !currentQuestion" 
             [contentItem]="currentContent" 
             [active]="active" 

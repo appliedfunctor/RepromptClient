@@ -9,7 +9,7 @@ import { ContentFolderModel } from "app/_models/content-folder.model";
 
 export class CommonLibsService {
 
-    static timeout = 3000
+    static timeout = 6000
     static authInterval = 30000
 
     static handleError (error: Response | any) {

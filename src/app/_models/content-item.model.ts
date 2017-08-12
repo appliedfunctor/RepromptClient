@@ -9,7 +9,7 @@ export class ContentItemModel {
     name: string
     content: string
     questions: QuestionModel[]
-    //score: ScoreModel //wrong, separate this out into separate results table
+    score: ScoreModel
 
     constructor(data) {
         this.id = data.id ? data.id : null
@@ -19,6 +19,7 @@ export class ContentItemModel {
         this.name = data.name ? data.name : ""
         this.content = data.content ? data.content : ""
         this.questions = data.questions ? data.questions : []
+        this.score = data.score ? data.score : null
     }
 
     static sortByName(a: ContentItemModel, b: ContentItemModel) {

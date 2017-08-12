@@ -1,7 +1,8 @@
 import { Component, ViewContainerRef, ViewChild, Input, ComponentFactoryResolver, Output, EventEmitter } from "@angular/core"
 import { QuestionModel } from "app/_models/question.model"
 import { QuestionTypeService } from "app/_services/question-type.service"
-import { QuestionAssessor } from "app/_models/question-assessor.type";
+import { QuestionAssessor } from "app/_models/question-assessor.type"
+import { AnswerModel } from "app/_models/answer.model"
 
 @Component({
     selector: 'test-question',
@@ -22,7 +23,7 @@ export class TestDeliveryComponent {
 
     ngOnInit() {
         this.questionTypes = this.service.getQuestionAssessors()
-        if(this.questionTypes.length > 0) {
+        if(this.questionTypes.length > 0 && this.questionType) {
             this.loadComponent()
         }
     }
@@ -42,6 +43,15 @@ export class TestDeliveryComponent {
     }
 
     ngOnChanges() {
-        this.questionType = this.currentQuestion.format
+        if(this.currentTestModule != null) {
+            if(this.questionType != this.currentQuestion.format) {
+                this.questionType = this.currentQuestion.format
+                this.loadComponent()
+            } else {
+                this.currentTestModule.question = this.currentQuestion
+            }   
+        } else {
+            this.questionType = this.currentQuestion.format
+        }
     }
 }
