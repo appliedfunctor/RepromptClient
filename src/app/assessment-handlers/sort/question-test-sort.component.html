@@ -1,0 +1,13 @@
+<form #sortForm="ngForm" ngControl="sortForm" (ngSubmit)="submit()">
+
+    <div class="question">{{question.question}}</div>
+
+    <div class='dragula' [dragula]='"first-bag"' [dragulaModel]='question.answers'>
+        <div *ngFor="let item of question.answers">{{item.answer}}</div>
+    </div>
+
+    <br><br>
+    
+    <button md-raised-button color="accent" type="submit" [disabled]="!sortForm.valid">Submit</button>
+
+</form>

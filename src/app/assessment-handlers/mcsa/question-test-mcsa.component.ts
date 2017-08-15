@@ -14,10 +14,6 @@ export class QuestionTestMCSA implements QuestionAssessor  {
 
     selectedAnswer: number
 
-    onDataChanged() {
-        console.log('onDataChanged not implemented')
-    }
-
     mark(): number {
         let answer = this.question.answers.find(ans => ans.id == this.selectedAnswer)
         return answer.correct ? 1 : this.getNegScore()

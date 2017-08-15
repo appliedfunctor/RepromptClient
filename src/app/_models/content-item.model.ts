@@ -8,6 +8,7 @@ export class ContentItemModel {
     image
     name: string
     content: string
+    enabled: boolean
     questions: QuestionModel[]
     score: ScoreModel
 
@@ -18,6 +19,7 @@ export class ContentItemModel {
         this.image = data.image ? data.image : null
         this.name = data.name ? data.name : ""
         this.content = data.content ? data.content : ""
+        this.enabled = data.enabled ? data.enabled : true
         this.questions = data.questions ? data.questions : []
         this.score = data.score ? data.score : null
     }

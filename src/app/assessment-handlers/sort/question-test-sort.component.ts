@@ -3,6 +3,7 @@ import { Component, EventEmitter, Output, Input } from "@angular/core"
 import { ContentItemModel } from "app/_models/content-item.model"
 import { QuestionModel } from "app/_models/question.model"
 import { QuestionAssessor } from "app/_models/question-assessor.type"
+import { DragulaService } from "ng2-dragula";
 
 @Component({
     selector: 'question-test-sort',
@@ -13,25 +14,34 @@ export class QuestionTestSort implements QuestionAssessor  {
     @Output() marked: EventEmitter<number> = new EventEmitter<number>()
 
     selectedAnswer: number
+    removeSubscription
+    active: boolean = true
 
-    onDataChanged() {
-        console.log('onDataChanged not implemented')
+    constructor(private dragulaService: DragulaService) {
+        let bag: any = this.dragulaService.find('first-bag')
+        if (bag !== undefined ) this.dragulaService.destroy('first-bag')
+        dragulaService.setOptions('first-bag', {
+            removeOnSpill: false
+        })
+    }
+
+    ngOnDestroy() {
+        this.active = false
     }
 
     mark(): number {
-        let answer = this.question.answers.find(ans => ans.id == this.selectedAnswer)
-        return answer.correct ? 1 : this.getNegScore()
+        if(this.question.answers.length < 1) { return 0 }
+        let correctlyPositioned: number[] = this.question.answers.map( (answer, index) => {
+            console.log(`answer.sequence: ${answer.sequence}, index: ${index}`)
+            return answer.sequence == index ? 1 : 0 
+        })
+        let total = correctlyPositioned.reduce( (acc, elem) => acc + elem )
+        return total / correctlyPositioned.length
     }
 
-    getNegScore() {
-        if(this.question.answers.length > 0) {
-            return -(1 / this.question.answers.length)
-        }
-        return 0
-    }
-
-    submit() {
-        console.log('Score is ' + this.mark())
+    submit() {        
+        let score = this.mark()
+        this.marked.emit(score)
     }
 
 }

@@ -11,6 +11,9 @@ export class StudyService {
     private path = new Paths
     studyAllPath = '/api/studies/'
     studyPath = '/api/study/score/'
+    manageGetAllPath = '/api/manages/'
+    managePath = '/api/manage/'
+
 
     constructor(private authHttp: AuthHttp) { }
 
@@ -25,6 +28,27 @@ export class StudyService {
         return this.authHttp.post(this.path.getUrl(this.studyPath), scoreData)
                             .timeout(CommonLibsService.timeout)
                             .map(CommonLibsService.handleQuestion)
+                            .catch(CommonLibsService.handleError)
+    }
+
+    getContentItemsStatus(): Observable<ContentItemModel> {
+        return this.authHttp.get(this.path.getUrl(this.manageGetAllPath))
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleItems)
+                            .catch(CommonLibsService.handleError)
+    }
+
+    enableContent(contentId: number): Observable<number> {
+        return this.authHttp.get(this.path.getUrl(this.managePath) + contentId)
+                            .timeout(CommonLibsService.timeout)
+                            .map(res => res.json())
+                            .catch(CommonLibsService.handleError)
+    }
+
+    disableContent(contentId: number): Observable<number> {
+        return this.authHttp.get(this.path.getUrl(this.managePath) + contentId)
+                            .timeout(CommonLibsService.timeout)
+                            .map(res => res.json())
                             .catch(CommonLibsService.handleError)
     }
 

@@ -361,6 +361,8 @@
 .mat-radio-label>.mat-radio-label-content {
     white-space: normal;
     margin-left: 30px;
+    width: 100%;
+    display: inline-block;
 }
 
 .mat-radio-label>.mat-radio-container {

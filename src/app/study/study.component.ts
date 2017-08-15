@@ -74,9 +74,11 @@ export class StudyComponent {
 
     persistScoreData(score: number) {
         let date = new Date().toISOString().slice(0, 10)
-        let scoreData = this.currentContent.score 
-                        ? this.currentContent.score
-                        : new ScoreModel({contentItemId: this.currentContent.id, score: score, scoreDate: date, streak: score >= 58 ? 1 : 0})
+        let scoreData = this.currentContent ? new ScoreModel(this.currentContent.score) : new ScoreModel({contentItemId: this.currentContent.id})                        
+        scoreData.score = score
+        scoreData.scoreDate = date
+        if(!scoreData.streak) scoreData.streak = 0
+
         console.log('ScoreData: ' + JSON.stringify(scoreData))
         this.service.saveScoreData(scoreData)
             .takeWhile( () => this.active)

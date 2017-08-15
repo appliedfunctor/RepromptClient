@@ -6,6 +6,7 @@ import { MdDialog } from "@angular/material"
 import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
 import { Observable } from "rxjs/Rx"
 import { NotificationsService } from "angular2-notifications"
+import { Settings } from "app/libs/Settings";
 
 @Component({
     selector: 'content-item-questions',
@@ -18,6 +19,7 @@ export class ContentItemQuestionsComponent {
 
     loading = false
     active: boolean = true
+    options = Settings.toastOptions
 
     constructor(private service: ContentPackageService, public dialog: MdDialog, private notify: NotificationsService) {
 

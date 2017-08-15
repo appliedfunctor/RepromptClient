@@ -21,7 +21,7 @@
         <input mdInput name="{{i}}" [(ngModel)]="distractors[i].answer" type="text" placeholder="Distractor" required>
         <md-error>Distractor is required. Remove if unwanted.</md-error>
     </md-input-container> 
-    <br>
+    <br><br>
     <button md-raised-button color="accent" type="submit" [disabled]="!mcsaForm.valid">Save</button>
         
 </form>

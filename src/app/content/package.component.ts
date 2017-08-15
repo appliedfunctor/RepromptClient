@@ -9,6 +9,7 @@ import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
 import { QuestionModel } from "app/_models/question.model"
 import { Observable } from "rxjs/Rx"
 import { NotificationsService } from "angular2-notifications"
+import { Settings } from "app/libs/Settings";
 
 
 @Component({
@@ -29,6 +30,7 @@ export class PackageComponent {
     currentQuestion: QuestionModel = new QuestionModel({})
     alive: boolean = true
     delivery: boolean = false
+    options = Settings.toastOptions
 
     constructor(private router: Router, private route: ActivatedRoute, private service: ContentPackageService, 
         private auth: AuthService, public dialog: MdDialog, private notify: NotificationsService) {
@@ -64,8 +66,7 @@ export class PackageComponent {
             }
         })        
         } else {
-            this.currentContentItem.questions.push(question)
-            
+            this.currentContentItem.questions.push(question)            
         }
         this.currentContentItem.questions.sort(QuestionModel.sortByQuestion)
         this.currentQuestion = question

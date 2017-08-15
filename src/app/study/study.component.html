@@ -7,10 +7,14 @@
             You do not have any pending content to review. You will be notified when it is time to review material.
         </div>
 
-        <content-item-card *ngIf="currentContent && !currentQuestion" 
-            [contentItem]="currentContent" 
-            [active]="active" 
-            (test)="test($event)"></content-item-card>
+        <div  *ngIf="currentContent && !currentQuestion">
+            <div class="error">[{{pendingContent?.length}} cards remaining]</div>
+            <content-item-card 
+                [contentItem]="currentContent" 
+                [active]="active" 
+                (test)="test($event)">
+            </content-item-card>
+        </div>
 
         <test-question *ngIf="currentQuestion"
         (marked)="marked($event)"
