@@ -11,7 +11,7 @@ export class StudyService {
     private path = new Paths
     studyAllPath = '/api/studies/'
     studyPath = '/api/study/score/'
-    manageGetAllPath = '/api/manages/'
+    manageGetAllPath = '/api/manage/status/'
     managePath = '/api/manage/'
 
 
@@ -31,10 +31,10 @@ export class StudyService {
                             .catch(CommonLibsService.handleError)
     }
 
-    getContentItemsStatus(): Observable<ContentItemModel> {
+    getContentAssignedStatus(): Observable<ContentItemModel> {
         return this.authHttp.get(this.path.getUrl(this.manageGetAllPath))
                             .timeout(CommonLibsService.timeout)
-                            .map(CommonLibsService.handleItems)
+                            .map(CommonLibsService.handleExams)
                             .catch(CommonLibsService.handleError)
     }
 

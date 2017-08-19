@@ -9,6 +9,7 @@ export class ExamModel {
     packages: ContentPackageModel[]
     active: boolean
     ownerId: number
+    enabled: boolean
 
     constructor(data) {
         this.id = data.id ? data.id : null
@@ -18,6 +19,7 @@ export class ExamModel {
         this.packages = data.packages ? data.packages : []
         this.active = data.active ? data.active: true
         this.ownerId = data.ownerId ? data.ownerId : null
+        this.enabled = data.enabled ? data.enabled: true
     }
 
     getSearchValues() {

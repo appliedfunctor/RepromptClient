@@ -1,9 +1,12 @@
 <div class="title">Manage Study Material</div>
 
 <div class="panel-container">
+  <div class="file-heading">Activate and deactivate exam content</div>
   <div class="file-container">
-    <div class="file-item" *ngFor="let item of items">
-      {{item.name}}
+    <div class="file-item" *ngFor="let item of items" [ngClass]="{'selected': item.enabled}">
+      <div class="mr-2">{{item.examDate | date: 'dd/MM/yyyy' }}</div>
+      <div class="spacer">{{item.name}}</div>
+      <i class="fa fa-power-off" aria-hidden="true" [ngClass]="{ 'enabled': item.enabled, 'disabled': !item.enabled }" (click)="toggleExamStatus(item)"></i>
     </div>
   </div>
 </div>
