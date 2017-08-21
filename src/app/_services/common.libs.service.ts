@@ -5,7 +5,9 @@ import { ContentPackageModel } from "app/_models/content-package.model"
 import { ExamModel } from "app/_models/exam.model"
 import { ContentItemModel } from "app/_models/content-item.model"
 import { QuestionModel } from "app/_models/question.model"
-import { ContentFolderModel } from "app/_models/content-folder.model";
+import { ContentFolderModel } from "app/_models/content-folder.model"
+import { ExamHistoryModel } from "app/_models/exam-history.model"
+import { ExamHistoricalPointModel } from "app/_models/exam-historical-point.model"
 
 export class CommonLibsService {
 
@@ -53,6 +55,13 @@ export class CommonLibsService {
     static handleExams(res: Response): ExamModel[] {
         let exams: ExamModel[] = []
         res.json().forEach(data => { exams.push(new ExamModel(data)) })
+        return exams
+    }
+
+    static handleExamHistories(res: Response): ExamHistoryModel[] {
+        let exams: ExamHistoryModel[] = []
+        res.json().forEach(data => { exams.push(new ExamHistoryModel(data)) })
+        exams.forEach(exam => exam.series = exam.series.map(point => new ExamHistoricalPointModel(point)))
         return exams
     }
 

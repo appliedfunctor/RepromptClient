@@ -13,6 +13,7 @@ export class StudyService {
     studyPath = '/api/study/score/'
     manageGetAllPath = '/api/manage/status/'
     managePath = '/api/manage/'
+    progressPath = '/api/study/progress/'
 
 
     constructor(private authHttp: AuthHttp) { }
@@ -49,6 +50,13 @@ export class StudyService {
         return this.authHttp.get(this.path.getUrl(this.managePath) + "disable/" + contentId)
                             .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
+                            .catch(CommonLibsService.handleError)
+    }
+
+    getHistoricalAssessmentDataByExam(): Observable<any> {
+        return this.authHttp.get(this.path.getUrl(this.progressPath))
+                            .timeout(CommonLibsService.timeout)
+                            .map(CommonLibsService.handleExamHistories)
                             .catch(CommonLibsService.handleError)
     }
 
