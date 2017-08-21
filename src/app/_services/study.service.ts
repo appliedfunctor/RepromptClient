@@ -39,14 +39,14 @@ export class StudyService {
     }
 
     enableContent(contentId: number): Observable<number> {
-        return this.authHttp.get(this.path.getUrl(this.managePath) + contentId)
+        return this.authHttp.get(this.path.getUrl(this.managePath) + "enable/" + contentId)
                             .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
                             .catch(CommonLibsService.handleError)
     }
 
     disableContent(contentId: number): Observable<number> {
-        return this.authHttp.get(this.path.getUrl(this.managePath) + contentId)
+        return this.authHttp.get(this.path.getUrl(this.managePath) + "disable/" + contentId)
                             .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
                             .catch(CommonLibsService.handleError)

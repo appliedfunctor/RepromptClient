@@ -19,7 +19,7 @@ export class ExamModel {
         this.packages = data.packages ? data.packages : []
         this.active = data.active ? data.active: true
         this.ownerId = data.ownerId ? data.ownerId : null
-        this.enabled = data.enabled ? data.enabled: true
+        this.enabled = data.enabled ? data.enabled: false
     }
 
     getSearchValues() {

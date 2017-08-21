@@ -58,7 +58,7 @@ export class StudyComponent {
         this.currentScoring.push(score)
         console.log('Score is ' + score)
         this.nextQuestion()
-        this.debugQs()
+        //this.debugQs()
     }
 
     nextQuestion() {
@@ -94,8 +94,16 @@ export class StudyComponent {
     }
 
     nextContent() {
+        //handle available pending content
         if(this.pendingContent.length > 0) { this.currentContent = this.pendingContent.pop() }
         else { this.currentContent = null }
+        this.handleExamMode()
+    }
+
+    handleExamMode() {
+        if(this.currentContent && this.currentContent.score.streak > 3) {
+            this.test(this.currentContent)
+        }
     }
 
     executeContentItemMarking(): number {
@@ -103,7 +111,7 @@ export class StudyComponent {
             this.contentAggregateScore = 0
         } else {
             this.contentAggregateScore = Math.round((this.currentScoring.reduce( (acc, score) => acc + score ) / this.currentScoring.length * 100) * 1E0) / 1E0
-            console.log('Aggregate Score: ' + this.contentAggregateScore)
+            //console.log('Aggregate Score: ' + this.contentAggregateScore)
         }
         return this.contentAggregateScore
     }

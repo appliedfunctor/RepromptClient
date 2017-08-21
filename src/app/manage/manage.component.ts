@@ -39,6 +39,8 @@ export class ManageComponent {
 
     toggleExamStatus(assignedExam: ExamModel) {
         if(assignedExam.enabled) {
+            this.disableExam(assignedExam.id)
+        } else {
             this.enableExam(assignedExam.id)
         }
     }
@@ -46,7 +48,7 @@ export class ManageComponent {
     enableExam(id: number) {
         this.loading = true
         this.service.enableContent(id)
-        .takeWhile( () => this.active)
+        .takeWhile( () => this.active )
         .catch(err => {
             this.notify.error("error", err)
             return Observable.of(null)
@@ -62,12 +64,12 @@ export class ManageComponent {
     disableExam(id: number) {
         this.loading = true
         this.service.disableContent(id)
-        .takeWhile( () => this.active)
+        .takeWhile( () => this.active )
         .catch(err => {
             this.notify.error("error", err)
             return Observable.of(null)
         })
-        .subscribe(res => {
+        .subscribe( res => {
             if(res) {
                 this.updateItemEnabledStatus(id, false)
             }
@@ -76,7 +78,8 @@ export class ManageComponent {
     }
 
     updateItemEnabledStatus(id: number, enabled: boolean) {
-        let selected = this.items.find( exam => exam.id == id)
+        let selected = this.items.find( exam => exam.id == id )
+        selected.enabled = enabled
     }
 
 }

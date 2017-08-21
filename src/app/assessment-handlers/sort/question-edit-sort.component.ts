@@ -1,15 +1,17 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core"
 import { QuestionEditor } from "app/_models/question-editor.type"
-import { ContentItemModel } from "app/_models/content-item.model";
-import { QuestionModel } from "app/_models/question.model";
-import { DragulaService } from "ng2-dragula";
-import { AnswerModel } from "app/_models/answer.model";
-import { ContentPackageService } from "app/_services/content-package.service";
+import { ContentItemModel } from "app/_models/content-item.model"
+import { QuestionModel } from "app/_models/question.model"
+import { DragulaService } from "ng2-dragula"
+import { AnswerModel } from "app/_models/answer.model"
+import { ContentPackageService } from "app/_services/content-package.service"
+import { Mobile } from "app/libs/Mobile";
 
 
 @Component({
     selector: 'question-edit-sort',
-    templateUrl: 'question-edit-sort.component.html'
+    templateUrl: 'question-edit-sort.component.html',
+    providers: [Mobile]
 })
 export class QuestionEditSort implements QuestionEditor {
     @Input() contentItem: ContentItemModel
@@ -23,26 +25,34 @@ export class QuestionEditSort implements QuestionEditor {
     items: string[] = []
     loading = false
     answerDeletions: AnswerModel[] = []
-    removeSubscription
 
-    constructor(private dragulaService: DragulaService, private service: ContentPackageService) {
+    constructor(private dragulaService: DragulaService, private service: ContentPackageService, private mobileLibs: Mobile) {
         let bag: any = this.dragulaService.find('first-bag')
         if (bag !== undefined ) this.dragulaService.destroy('first-bag')
         dragulaService.setOptions('first-bag', {
             removeOnSpill: true
         })
 
-        this.removeSubscription = dragulaService.removeModel.subscribe((value) => {
+        dragulaService.removeModel.takeWhile( () => this.active ).subscribe( value => {
             this.onRemoveItem(value.slice(1))
         })
+
+        dragulaService.drag.takeWhile( () => this.active ).subscribe( value => {
+            this.mobileLibs.preventMobileScreenDrag()
+        })
+
+        dragulaService.drop.takeWhile( () => this.active ).subscribe( value => {
+            this.mobileLibs.enableMobileScreenDrag()
+        })
     }
+
+    
 
     ngOnInit() {
         this.init()
     }
 
     ngOnDestroy() {
-        this.removeSubscription.unsubscribe()
         this.active = false
     }
 

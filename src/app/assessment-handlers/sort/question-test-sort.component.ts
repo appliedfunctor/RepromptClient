@@ -4,10 +4,12 @@ import { ContentItemModel } from "app/_models/content-item.model"
 import { QuestionModel } from "app/_models/question.model"
 import { QuestionAssessor } from "app/_models/question-assessor.type"
 import { DragulaService } from "ng2-dragula";
+import { Mobile } from "app/libs/Mobile";
 
 @Component({
     selector: 'question-test-sort',
-    templateUrl: 'question-test-sort.component.html'
+    templateUrl: 'question-test-sort.component.html',
+    providers: [Mobile]
 })
 export class QuestionTestSort implements QuestionAssessor  {
     @Input() question: QuestionModel
@@ -17,11 +19,19 @@ export class QuestionTestSort implements QuestionAssessor  {
     removeSubscription
     active: boolean = true
 
-    constructor(private dragulaService: DragulaService) {
+    constructor(private dragulaService: DragulaService, private mobileLibs: Mobile) {
         let bag: any = this.dragulaService.find('first-bag')
         if (bag !== undefined ) this.dragulaService.destroy('first-bag')
         dragulaService.setOptions('first-bag', {
             removeOnSpill: false
+        })
+
+        dragulaService.drag.takeWhile( () => this.active ).subscribe( value => {
+            this.mobileLibs.preventMobileScreenDrag()
+        })
+
+        dragulaService.drop.takeWhile( () => this.active ).subscribe( value => {
+            this.mobileLibs.enableMobileScreenDrag()
         })
     }
 

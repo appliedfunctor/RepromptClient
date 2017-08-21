@@ -56,6 +56,9 @@ import { TestDeliveryComponent } from "app/study/test-delivery.component"
 import { SimpleNotificationsModule } from 'angular2-notifications'
 import { QuestionTestMCSA } from "app/assessment-handlers/mcsa/question-test-mcsa.component"
 import { QuestionTestSort } from "app/assessment-handlers/sort/question-test-sort.component"
+import * as $ from "jquery"
+import { NgxChartsModule } from '@swimlane/ngx-charts'
+import { ProgressComponent } from "app/progress/progress.component"
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -99,7 +102,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     PublishComponent,
     ManageComponent,
     StudyComponent,
-    TestDeliveryComponent
+    TestDeliveryComponent,
+    ProgressComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,7 +134,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     JsonpModule,
     DragulaModule,
     routing,
-    SimpleNotificationsModule.forRoot(),    
+    SimpleNotificationsModule.forRoot(),  
+    NgxChartsModule,  
   ],
   providers: [
     AuthGuard,
