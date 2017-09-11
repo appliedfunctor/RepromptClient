@@ -5,6 +5,7 @@ import { AuthHttp } from "angular2-jwt/angular2-jwt";
 import { ContentItemModel } from "app/_models/content-item.model";
 import { Observable } from "rxjs/Rx";
 import { ScoreModel } from "app/_models/score.model";
+import { QuestionModel } from "app/_models/question.model";
 
 @Injectable()
 export class StudyService {
@@ -25,7 +26,7 @@ export class StudyService {
                             .catch(CommonLibsService.handleError)
     }
 
-    saveScoreData(scoreData: ScoreModel): Observable<any> {
+    saveScoreData(scoreData: ScoreModel): Observable<QuestionModel> {
         return this.authHttp.post(this.path.getUrl(this.studyPath), scoreData)
                             .timeout(CommonLibsService.timeout)
                             .map(CommonLibsService.handleQuestion)

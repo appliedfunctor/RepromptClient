@@ -31,5 +31,11 @@ export class ExamModel {
         if(a.name < b.name) { return -1 }
         return 0
     }
+    
+    static sortByDate(a: ExamModel, b: ExamModel) {
+        if(a.examDate > b.examDate) { return 1 }
+        if(a.examDate < b.examDate) { return -1 }
+        return ExamModel.sortByName(a, b)
+    }
 
 }

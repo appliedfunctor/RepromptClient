@@ -1,14 +1,14 @@
 <div class="title">Manage Study Material</div>
 
 <div class="panel-container">
-  <div class="file-heading">Activate and deactivate exam content</div>
-  <div class="file-container">
-    <div class="file-item" *ngFor="let item of items" [ngClass]="{'selected': item.enabled}">
-      <div class="mr-2">{{ item.examDate | date: 'dd/MM/yyyy' }}</div>
-      <div class="spacer">{{ item.name }}</div>
-      <i class="fa fa-power-off" aria-hidden="true" [ngClass]="{ 'enabled': item.enabled, 'disabled': !item.enabled }" (click)="toggleExamStatus(item)"></i>
-    </div>
-  </div>
+  <div class="file-container">    
+    <div class="file-heading">Activate and deactivate exam content</div>
+      <div class="file-item" *ngFor="let item of items">
+        <div class="mr-2" [ngClass]="{'selected': item.enabled, 'deselected': !item.enabled }">{{ item.examDate | date: 'dd/MM/yyyy' }}</div>
+        <div class="spacer" [ngClass]="{ 'selected': item.enabled, 'deselected': !item.enabled }">{{ item.name }}</div>
+        <i class="fa fa-power-off" aria-hidden="true" [ngClass]="{ 'enabled': item.enabled, 'disabled': !item.enabled }" (click)="toggleExamStatus(item)"></i>
+      </div>
+    </div>    
 </div>
 
 <div class="dead-container" *ngIf="loading">

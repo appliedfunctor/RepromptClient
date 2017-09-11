@@ -78,7 +78,7 @@ export class ContentItemQuestionsComponent {
                     .subscribe(res => {
                         if(res > 0) {
                             this.currentData.questions = this.currentData.questions.filter(q => q.id != question.id)
-                            console.log('delete: ' + res)
+                            this.newQuestionCreation()
                         }
                     })
                 }

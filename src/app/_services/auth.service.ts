@@ -35,14 +35,20 @@ export class AuthService {
         
     }
 
-    startAuthChecks() {          
-        let subscription = Observable.interval(CommonLibsService.authInterval)
+    startAuthChecks() {   
+        let subscription = Observable.interval(this.getTokenExpiryDuration())
             .subscribe((count) => {
-              if(!this.isAuthenticated()) {
-                subscription.unsubscribe()
-                this.logout()
-              }            
+                if(!this.isAuthenticated()) {
+                    subscription.unsubscribe()
+                    this.logout()
+                }            
           })
+    }
+
+    getTokenExpiryDuration() {
+        let expiryTime = this.jwtHelper.getTokenExpirationDate(this.jwtToken)  
+        let difference = expiryTime.getTime() - Date.now() + 5
+        return difference   
     }
 
     loadDataFromStorage() {
@@ -55,6 +61,8 @@ export class AuthService {
         }
         if(this.isAuthenticated()) {
             this.startAuthChecks()
+        } else { 
+            this.logout()
         }
         //this.onUserChange()
     }
@@ -112,14 +120,18 @@ export class AuthService {
     }
 
     logout(): void {
-        this.jwtToken = null
-        this.user = new UserModel({})
-        localStorage.removeItem('loginInfo')
+        this.clearUserData()
         this.onUserChange()
     }
 
+    clearUserData() {
+        this.jwtToken = null
+        this.user = new UserModel({})
+        localStorage.removeItem('loginInfo')
+    }
+
     isAuthenticated(): boolean {
-        return this.isTokenValid() ? true : false   
+        return this.isTokenValid()  
     }
 
     getToken() {
@@ -129,9 +141,11 @@ export class AuthService {
     }
 
     isTokenValid() {
-        if(this.jwtToken != null) {
+        let valid = this.jwtToken != null && !this.jwtHelper.isTokenExpired(this.jwtToken)
+        if(!valid) {
+            this.clearUserData()
         }
-        return (this.jwtToken != null && !this.jwtHelper.isTokenExpired(this.jwtToken))
+        return valid
     }
 
     getCurrentUser(): UserModel {

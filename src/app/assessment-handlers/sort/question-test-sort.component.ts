@@ -41,10 +41,8 @@ export class QuestionTestSort implements QuestionAssessor  {
 
     mark(): number {
         if(this.question.answers.length < 1) { return 0 }
-        let correctlyPositioned: number[] = this.question.answers.map( (answer, index) => {
-            console.log(`answer.sequence: ${answer.sequence}, index: ${index}`)
-            return answer.sequence == index ? 1 : 0 
-        })
+        let correctlyPositioned: number[] = this.question.answers
+            .map( (answer, index) => answer.sequence == index ? 1 : 0 )
         let total = correctlyPositioned.reduce( (acc, elem) => acc + elem )
         return total / correctlyPositioned.length
     }

@@ -172,12 +172,14 @@ export class FileNavigationComponent {
         }
     }
 
-    createElement<element extends FileElement>(element:{ new(...args: any[]): element }, data): element
+    createElement<element extends FileElement>
+    (element:{ new(...args: any[]): element }, data): element
     {
         return new element(data)
     }
 
-    createContainer<container extends FileContainer>(container:{ new(...args: any[]): container }, data): container
+    createContainer<container extends FileContainer>
+    (container:{ new(...args: any[]): container }, data): container
     {
         return new container(data)
     }
@@ -190,25 +192,24 @@ export class FileNavigationComponent {
      * @returns 
      * @memberof ContainersComponent
      */
-    filterPopulationItems(restrictTerm: string): FileElement[] {
+    filterPopulationItems(restrictTerm: string): FileElement[] {   
         if(restrictTerm && restrictTerm != null) {
-            let terms = restrictTerm.split(" ")
-            return this.allItems.filter(item => {
-                    let concreteItem = this.createElement(this.elementType, item)
-                    return this.checkTerms(terms, concreteItem.getSearchValues()) 
-                    && this.currentParent.members.filter(m => m.id === item.id).length === 0
-                }
-            )         
+            return this.restrictByTerm(restrictTerm)
         }
-
         if(this.currentParent.members && this.currentParent.members.length > 0) {
             return this.allItems.filter(user => this.currentParent.members.filter(m => m.id === user.id).length === 0)
         }
-
         return this.allItems
     }
 
-    
+    restrictByTerm(restrictTerm: string): FileElement[] {
+        let terms = restrictTerm.split(" ")
+        return this.allItems.filter(item => {
+                let concreteItem = this.createElement(this.elementType, item)
+                return this.checkTerms(terms, concreteItem.getSearchValues()) 
+                && this.currentParent.members.filter(m => m.id === item.id).length === 0
+                })
+    }
 
     toggleSave() {
         this.editText = 'Save'
@@ -416,7 +417,7 @@ export class FileNavigationComponent {
                         if(res && res > 0) {
                             selectedContainer.members = selectedContainer.members.filter(item => item.id != selectedItem.id)
                         }
-                        this.loading = true
+                        this.loading = false
                     })
                 }
             })

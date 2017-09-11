@@ -44,7 +44,7 @@ export class StudyComponent {
             })
     }
 
-    ngOnDestory() {
+    ngOnDestroy() {
         this.active = false
     }
 
@@ -79,7 +79,7 @@ export class StudyComponent {
         scoreData.scoreDate = date
         if(!scoreData.streak) scoreData.streak = 0
 
-        console.log('ScoreData: ' + JSON.stringify(scoreData))
+        
         this.service.saveScoreData(scoreData)
             .takeWhile( () => this.active)
             .catch( errMsg => {

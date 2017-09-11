@@ -1,31 +1,35 @@
 <div class="title">View Study Progress</div>
 
 <div class="panel-container">
-    <div class="file-item"  *ngIf="multi && multi.length > 0">
-        <div class="spacer">Historical Performance</div>
-        <div class="ml-2 pointer"><i class="fa fa-area-chart" aria-hidden="true" (click)="toggleSmoothing()"></i></div>
-    </div>
+    <div class="file-container">
+        <div class="file-item"  *ngIf="multi && multi.length > 0">
+            <div class="spacer">Historical Performance (%)</div>
+            <div class="ml-2 pointer"><i class="fa fa-area-chart" aria-hidden="true" (click)="toggleSmoothing()"></i></div>
+        </div>
 
-    <div *ngIf="!multi || multi.length == 0">
-        There is currently no historical data. Please return when you have generated an assessment history.
-    </div>
+        <div *ngIf="!multi || multi.length == 0">
+            There is currently no historical data. Please return when you have generated an assessment history.
+        </div>
 
-    <ngx-charts-line-chart *ngIf="multi && multi.length > 0"
-    [view]="view"
-    [scheme]="colorScheme"
-    [results]="multi"
-    [gradient]="gradient"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [autoScale]="autoScale"
-    [curve]="curve"
-    (select)="onSelect($event)">
-    </ngx-charts-line-chart>
+        <div *ngIf="multi && multi.length > 0">
+            <ngx-charts-line-chart
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="multi"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [autoScale]="autoScale"
+            [curve]="curve"
+            (select)="onSelect($event)">
+            </ngx-charts-line-chart>
+        </div>
+    </div>
 </div>
 
 <div class="dead-container" *ngIf="loading">

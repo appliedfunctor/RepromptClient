@@ -20,10 +20,7 @@ export class QuestionTestMCSA implements QuestionAssessor  {
     }
 
     getNegScore() {
-        if(this.question.answers.length > 0) {
-            return -(1 / this.question.answers.length)
-        }
-        return 0
+        return -(1 / this.question.answers.length)
     }
 
     submit() {        

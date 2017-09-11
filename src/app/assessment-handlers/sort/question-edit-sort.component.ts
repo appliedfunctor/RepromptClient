@@ -6,6 +6,8 @@ import { DragulaService } from "ng2-dragula"
 import { AnswerModel } from "app/_models/answer.model"
 import { ContentPackageService } from "app/_services/content-package.service"
 import { Mobile } from "app/libs/Mobile";
+import { NotificationsService } from "angular2-notifications";
+import { Observable } from "rxjs/Rx";
 
 
 @Component({
@@ -26,7 +28,7 @@ export class QuestionEditSort implements QuestionEditor {
     loading = false
     answerDeletions: AnswerModel[] = []
 
-    constructor(private dragulaService: DragulaService, private service: ContentPackageService, private mobileLibs: Mobile) {
+    constructor(private dragulaService: DragulaService, private service: ContentPackageService, private mobileLibs: Mobile, private notify: NotificationsService) {
         let bag: any = this.dragulaService.find('first-bag')
         if (bag !== undefined ) this.dragulaService.destroy('first-bag')
         dragulaService.setOptions('first-bag', {
@@ -45,8 +47,6 @@ export class QuestionEditSort implements QuestionEditor {
             this.mobileLibs.enableMobileScreenDrag()
         })
     }
-
-    
 
     ngOnInit() {
         this.init()
@@ -96,9 +96,6 @@ export class QuestionEditSort implements QuestionEditor {
             this.errorMessage = 'You need at least two items to order'
             this.error = true
         } else {
-            this.items.forEach((element, index) => {
-                console.log(`[${index}] ${element}`)                
-            })
             this.saveQuestion()
         }
     }
@@ -117,6 +114,10 @@ export class QuestionEditSort implements QuestionEditor {
 
             this.service.deleteAnswer(ans.id)
             .takeWhile(() => this.active)
+            .catch(err => {
+                this.notify.error("error", err)
+                return Observable.of(null)
+            })
             .subscribe(res => {
                 //do nothing
                 this.answerDeletions = []
@@ -128,6 +129,10 @@ export class QuestionEditSort implements QuestionEditor {
         //send model to write
         this.service.saveQuestion(this.question)
         .takeWhile(() => this.active)
+        .catch(err => {
+            this.notify.error("error", err)
+            return Observable.of(null)
+        })
         .subscribe(res => {
             this.loading = false
             this.saved.emit(res)

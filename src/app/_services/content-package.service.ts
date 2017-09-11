@@ -12,8 +12,8 @@ import { ContentFolderModel } from "app/_models/content-folder.model"
 import { ContentPackageModel } from "app/_models/content-package.model"
 import { ContentItemModel } from "app/_models/content-item.model"
 import { AuthService } from "app/_services/auth.service"
-import { QuestionModel } from "app/_models/question.model";
-import { CommonLibsService } from "app/_services/common.libs.service";
+import { QuestionModel } from "app/_models/question.model"
+import { CommonLibsService } from "app/_services/common.libs.service"
 
 @Injectable()
 export class ContentPackageService {    

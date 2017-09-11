@@ -16,7 +16,11 @@ export class ProgressComponent {
     single: any[] = []
     multi: any[] = []
 
-    view: any[] = [400]
+    
+    windowWidth: number
+    windowHeight: number
+
+    view: any[] = [370, 400]
 
     // options
     showXAxis = true
@@ -26,7 +30,7 @@ export class ProgressComponent {
     showGridLines = true
     showXAxisLabel = true
     xAxisLabel = 'Date'
-    showYAxisLabel = true
+    showYAxisLabel = false
     yAxisLabel = 'Assessment %'
 
     colorScheme = {
@@ -41,7 +45,8 @@ export class ProgressComponent {
     autoScale = false
 
     constructor(private service: StudyService, private notify: NotificationsService) {
-        //Object.assign(this, {single, multi})   
+        this.windowWidth = window.screen.height
+        this.windowHeight = window.screen.width
     }
 
     toggleSmoothing() {
@@ -76,132 +81,5 @@ export class ProgressComponent {
         })
 
 
-        // this.multi = [
-        // {
-        //     "name": "SDP",
-        //     "series": [
-        //     {
-        //         "name": new Date("2017-05-02"),
-        //         "value": 51
-        //     },
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 66
-        //     },
-        //     {
-        //         "name": new Date("2017-05-05"),
-        //         "value": 74
-        //     },
-        //     {
-        //         "name": new Date("2017-05-08"),
-        //         "value": 92
-        //     }
-        //     ]
-        // },
-
-        // {
-        //     "name": "IS",
-        //     "series": [
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 48
-        //     },
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 51
-        //     },
-        //     {
-        //         "name": new Date("2017-05-04"),
-        //         "value": 77
-        //     },
-        //     {
-        //         "name": new Date("2017-05-06"),
-        //         "value": 89
-        //     },
-        //     {
-        //         "name": new Date("2017-05-09"),
-        //         "value": 100
-        //     }
-        //     ]
-        // },
-
-        // {
-        //     "name": "CS",
-        //     "series": [
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 24
-        //     },
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 36
-        //     },
-        //     {
-        //         "name": new Date("2017-05-04"),
-        //         "value": 88
-        //     },
-        //     {
-        //         "name": new Date("2017-05-06"),
-        //         "value": 60
-        //     },
-        //     {
-        //         "name": new Date("2017-05-09"),
-        //         "value": 72
-        //     }
-        //     ]
-        // },
-
-        // {
-        //     "name": "FOC",
-        //     "series": [
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 40
-        //     },
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 45
-        //     },
-        //     {
-        //         "name": new Date("2017-05-04"),
-        //         "value": 50
-        //     },
-        //     {
-        //         "name": new Date("2017-05-06"),
-        //         "value": 58
-        //     },
-        //     {
-        //         "name": new Date("2017-05-09"),
-        //         "value": 54
-        //     }
-        //     ]
-        // },
-
-        // {
-        //     "name": "PIJ",
-        //     "series": [
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 60
-        //     },
-        //     {
-        //         "name": new Date("2017-05-03"),
-        //         "value": 72
-        //     },
-        //     {
-        //         "name": new Date("2017-05-04"),
-        //         "value": 54
-        //     },
-        //     {
-        //         "name": new Date("2017-05-06"),
-        //         "value": 80
-        //     },
-        //     {
-        //         "name": new Date("2017-05-09"),
-        //         "value": 78
-        //     }
-        //     ]
-        // }
-        // ]
     }
 }

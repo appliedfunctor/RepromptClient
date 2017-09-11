@@ -327,6 +327,10 @@
     color: white;
 }
 
+.deselected {
+    text-decoration: line-through;
+}
+
 .ml--2{
     margin-left: -.5rem!important;
 }
@@ -351,6 +355,9 @@
 
 .disabled {
     color: #B71C1C;
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
 }
 
 .bg-faded {

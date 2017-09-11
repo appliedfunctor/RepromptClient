@@ -5,6 +5,8 @@ import { QuestionEditor } from "app/_models/question-editor.type"
 import { AnswerModel } from "app/_models/answer.model"
 import { QuestionModel } from "app/_models/question.model"
 import { FormBuilder, FormGroup, FormControl, Form, Validators } from "@angular/forms"
+import { Observable } from "rxjs/Rx";
+import { NotificationsService } from "angular2-notifications";
 
 
 @Component({
@@ -27,7 +29,7 @@ export class QuestionEditMCSA implements QuestionEditor {
     frmQuestion: FormControl
     frmCorrectAnswer: FormControl
 
-    constructor(private service: ContentPackageService) { }
+    constructor(private service: ContentPackageService, private notify: NotificationsService) { }
 
     ngOnInit() {
         this.init()
@@ -39,8 +41,7 @@ export class QuestionEditMCSA implements QuestionEditor {
     }
 
     initialiseQuestion() {
-        //if(this.question.format == null) this.question.format = 'MCSA'
-        if(this.question.itemId == null) this.question.itemId = this.contentItem.id
+        this.question.itemId = this.question.itemId ? this.question.itemId : this.contentItem.id
     }
 
     initialiseAnswers() {
@@ -116,18 +117,25 @@ export class QuestionEditMCSA implements QuestionEditor {
 
             this.service.deleteAnswer(ans.id)
             .takeWhile(() => this.active)
+            .catch(err => {
+                this.notify.error("error", err)
+                return Observable.of(null)
+            })
             .subscribe(res => {
-                console.log(res)
-                this.answerDeletions = []
+                console.log(res)                
             })
         })
-
+        this.answerDeletions = []
         this.question.answers = [this.correctAnswer]
         this.distractors.forEach(d => this.question.answers.push(d))
 
         //send model to write
         this.service.saveQuestion(this.question)
         .takeWhile(() => this.active)
+        .catch(err => {
+            this.notify.error("error", err)
+            return Observable.of(null)
+        })
         .subscribe(res => {
             this.loading = false
             this.saved.emit(res)

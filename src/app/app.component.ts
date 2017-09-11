@@ -26,9 +26,9 @@ export class AppComponent {
   ngOnInit() {
     this.sub = this.service.userChange
         .subscribe(user => {
-      this.user = user
-      this.onUserChange()
-    })
+          this.user = user
+          this.onUserChange()
+        })
     this.user = this.service.getCurrentUser()
     this.authenticated = this.service.isAuthenticated()
   }
