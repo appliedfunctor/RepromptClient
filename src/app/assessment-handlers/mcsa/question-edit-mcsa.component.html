@@ -1,11 +1,11 @@
-<form #mcsaForm="ngForm" ngControl="mcsaForm" (ngSubmit)="submit()">
+<form #mcsaForm="ngForm" ngControl="mcsaForm" (ngSubmit)="submit()" *ngIf="formVisible">
 
-    <md-input-container class="full-width" *ngIf="formVisible">
+    <md-input-container class="full-width">
         <input mdInput id="question" name="question" [(ngModel)]="question.question" type="text" placeholder="Question" required>
         <md-error>Question is required</md-error>
     </md-input-container> 
         
-    <md-input-container class="full-width" *ngIf="formVisible">
+    <md-input-container class="full-width">
         <input mdInput id="correctAnswer" name="correctAnswer" [(ngModel)]="correctAnswer.answer" type="text" placeholder="Correct Answer" required>
         <md-error>Correct Answer is required</md-error>
     </md-input-container> 

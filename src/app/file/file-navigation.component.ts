@@ -309,6 +309,7 @@ export class FileNavigationComponent {
         this.saving = false
         this.updating = false
         this.populating = false
+        this.popCreateControl.reset()
     }
 
     updateRootallContainers(parent: FileContainer) {

@@ -27,14 +27,7 @@ export class CohortsComponent{
      * @param {AuthService} auth 
      * @memberof CohortsComponent
      */
-    constructor(public service: CohortService) {
-              
-    }
-
-    ngOnInit() {
-
-    }
-
-    
+    constructor(public service: CohortService) {          
+    }   
 
 }

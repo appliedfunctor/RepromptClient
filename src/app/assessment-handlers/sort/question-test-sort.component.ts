@@ -26,13 +26,13 @@ export class QuestionTestSort implements QuestionAssessor  {
             removeOnSpill: false
         })
 
-        dragulaService.drag.takeWhile( () => this.active ).subscribe( value => {
-            this.mobileLibs.preventMobileScreenDrag()
-        })
+        // dragulaService.drag.takeWhile( () => this.active ).subscribe( value => {
+        //     this.mobileLibs.preventMobileScreenDrag()
+        // })
 
-        dragulaService.drop.takeWhile( () => this.active ).subscribe( value => {
-            this.mobileLibs.enableMobileScreenDrag()
-        })
+        // dragulaService.drop.takeWhile( () => this.active ).subscribe( value => {
+        //     this.mobileLibs.enableMobileScreenDrag()
+        // })
     }
 
     ngOnDestroy() {

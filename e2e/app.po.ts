@@ -1,8 +1,8 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element } from 'protractor'
 
 export class ClientPage {
   navigateTo(uri) {
-    return browser.get(uri);
+    return browser.get(uri)
   }
 
   getParagraphText() {
@@ -12,4 +12,5 @@ export class ClientPage {
   getCurrentUrl() {
     return browser.driver.getCurrentUrl();
   }
+
 }

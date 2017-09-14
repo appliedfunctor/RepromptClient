@@ -1,7 +1,7 @@
 import { QuestionTestSort } from "app/assessment-handlers/sort/question-test-sort.component";
 import { QuestionModel } from "app/_models/question.model";
 import { AnswerModel } from "app/_models/answer.model";
-import { Test } from "app/_test.libs/Test";
+import { TestHelper } from "app/_test.libs/test-helper";
 import { DragulaService } from "ng2-dragula";
 import { Mobile } from "app/libs/Mobile";
 import { fakeAsync } from "@angular/core/testing";
@@ -39,10 +39,10 @@ describe('QuestionTestSort', () => {
     ]
 
     beforeEach(() => { 
-        mockDragService = Test.mock(DragulaService, 'DragulaService')
+        mockDragService = TestHelper.mock(DragulaService, 'DragulaService')
         mockDragService.drag = emitter
         mockDragService.drop = emitter
-        mockMobile = Test.mock(Mobile, 'mobile')
+        mockMobile = TestHelper.mock(Mobile, 'mobile')
         component = new QuestionTestSort(mockDragService, mockMobile)
         component.question = testQuestion
         component.question.answers = correctAnswers

@@ -9,7 +9,7 @@ import { QuestionEditMCSA } from "app/assessment-handlers/mcsa/question-edit-mcs
 import { ContentItemModel } from "app/_models/content-item.model"
 import { Paths } from "app/app.paths"
 import { AnswerModel } from "app/_models/answer.model"
-import { Test } from "app/_test.libs/test"
+import { TestHelper } from "app/_test.libs/test-helper"
 import { QuestionModel } from "app/_models/question.model";
 import { async } from "@angular/core/testing";
 import { NotificationsService } from "angular2-notifications";
@@ -22,8 +22,8 @@ describe('QuestionEditMCSA', () => {
     let mockToast: NotificationsService
 
     beforeEach(() => { 
-        service = Test.mock(ContentPackageService, 'ContentPackageService')
-        mockToast = Test.mock(NotificationsService, 'NotificationsService')
+        service = TestHelper.mock(ContentPackageService, 'ContentPackageService')
+        mockToast = TestHelper.mock(NotificationsService, 'NotificationsService')
         component = new QuestionEditMCSA(service, mockToast)
         component.contentItem = new ContentItemModel({})
       })

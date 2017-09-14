@@ -53,6 +53,7 @@ export class ContentItemQuestionsComponent {
     selectQuestion(question: QuestionModel) {
         if(this.currentQuestion.id == question.id) {
             this.newQuestionCreation()
+            this.emitQuestion()
         } else {
             this.currentQuestion = question
             this.emitQuestion()

@@ -146,7 +146,7 @@ export class QuestionEditMCSA implements QuestionEditor {
     onDataChanged() {
         if(this.question.question == '' && this.question.answers.length < 1) this.formVisible = false
         setTimeout(() => {
-            if(this.question.question == '' && this.question.answers.length < 1) this.formVisible = true
+            this.formVisible = true
             this.initialiseAnswers()
         })     
     }

@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-3"> 
                     <span class="spacer"></span >
-                    <button md-raised-button class="mt-2" color="accent" type="button" (click)="submitData()" [disabled]="!createCohortForm.valid">{{ editText }}</button> 
+                    <button md-raised-button class="mt-2" color="accent" type="button" (click)="submitData()" (keyup.enter)="submitData()" tabindex=0 [disabled]="!createCohortForm.valid">{{ editText }}</button> 
                 </div>
             </div>       
             <br>

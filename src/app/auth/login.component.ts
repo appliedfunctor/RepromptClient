@@ -20,7 +20,7 @@ export class LoginComponent {
     email: String = ""
     password: String = ""
     response    
-    alive: boolean = true
+    active: boolean = true
     @Output() tab = new EventEmitter<number>()    
     @Output() loadingEvent = new EventEmitter<boolean>()
     public options = Settings.toastOptions
@@ -47,7 +47,7 @@ export class LoginComponent {
     //application lifecycle preventing memory leaks http://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
     //accessed 31/07/2017
     ngOnDestroy() {
-        this.alive = false
+        this.active = false
     }
 
     emitLoading(value: boolean) {
@@ -57,9 +57,9 @@ export class LoginComponent {
     submit() {
         this.emitLoading(true)
         this.service.login(this.email, this.password)
-        .takeWhile(() => this.alive)
-        .catch( (errMsg) => {
-            this.notify.error('Error', errMsg)          
+        .takeWhile(() => this.active)
+        .catch( (errMsg: string) => {
+            this.notify.error('Error', errMsg.toString())          
             return Observable.of(null)
         })
         .subscribe((response) => {

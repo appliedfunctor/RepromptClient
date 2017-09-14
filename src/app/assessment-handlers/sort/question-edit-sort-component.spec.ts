@@ -1,6 +1,6 @@
 import { QuestionModel } from "app/_models/question.model";
 import { AnswerModel } from "app/_models/answer.model";
-import { Test } from "app/_test.libs/Test";
+import { TestHelper } from "app/_test.libs/test-helper";
 import { DragulaService } from "ng2-dragula";
 import { Mobile } from "app/libs/Mobile";
 import { fakeAsync } from "@angular/core/testing";
@@ -32,13 +32,13 @@ describe('QuestionTestSort', () => {
     ]
 
     beforeEach(() => {         
-        mockDragService = Test.mock(DragulaService, 'DragulaService')
+        mockDragService = TestHelper.mock(DragulaService, 'DragulaService')
         mockDragService.drag = emitter
         mockDragService.drop = emitter
         mockDragService.removeModel = emitter
-        mockService = Test.mock(ContentPackageService, 'ContentPackageService')
-        mockMobile = Test.mock(Mobile, 'mobile')
-        mockToast = Test.mock(NotificationsService, 'NotificationsService')
+        mockService = TestHelper.mock(ContentPackageService, 'ContentPackageService')
+        mockMobile = TestHelper.mock(Mobile, 'mobile')
+        mockToast = TestHelper.mock(NotificationsService, 'NotificationsService')
         component = new QuestionEditSort(mockDragService, mockService, mockMobile, mockToast)
         component.question = testQuestion
         component.contentItem = contentItem

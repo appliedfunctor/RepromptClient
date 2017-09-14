@@ -93,14 +93,14 @@ export class PublishService {
     }
 
     attachPackage(packageId: number, assignedId: number) {
-        return this.authHttp.post(this.path.getUrl(this.publishGetPath), {packageId: packageId, assignedId: assignedId})
+        return this.authHttp.post(this.path.getUrl(this.publishPackageAttachPath), {packageId: packageId, assignedId: assignedId})
                             .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
                             .catch(CommonLibsService.handleError)
     }
 
     detachPackage(packageId: number, assignedId: number) {
-        return this.authHttp.delete(this.path.getUrl(this.publishGetPath)  + packageId + '/' + assignedId)
+        return this.authHttp.delete(this.path.getUrl(this.publishPackageAttachPath)  + packageId + '/' + assignedId)
                             .timeout(CommonLibsService.timeout)
                             .map(res => res.json())
                             .catch(CommonLibsService.handleError)

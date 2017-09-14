@@ -1,4 +1,4 @@
-export class Test {
+export class TestHelper {
     //https://eclipsesource.com/blogs/2014/03/27/mocks-in-jasmine-tests/ accessed 8/9/17
     static mock = function( constr, name ) {
         var keys = []

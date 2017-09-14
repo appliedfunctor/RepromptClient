@@ -23,7 +23,6 @@ export class StudyComponent {
     currentQuestion: QuestionModel = null
     currentScoring: number[] = []
     options = Settings.toastOptions
-    contentAggregateScore: number
 
     constructor(private service: StudyService, private notify: NotificationsService) { }
 
@@ -38,6 +37,7 @@ export class StudyComponent {
             .subscribe( res => {
                 if(res) {
                     this.pendingContent = res
+                    Arrays.shuffleInPlace(this.pendingContent)
                     this.nextContent()
                 }
                 this.loading = false
@@ -49,16 +49,15 @@ export class StudyComponent {
     }
 
     test(item: ContentItemModel) {
-        this.pendingQuestions = Arrays.shuffleInPlace(this.currentContent.questions)
+        this.pendingQuestions = Arrays.shuffleInPlace(this.currentContent.questions.slice())
         this.pendingQuestions.forEach(q => q.answers = Arrays.shuffleInPlace(q.answers))
         this.nextQuestion()
     }
 
     marked(score: number) {        
         this.currentScoring.push(score)
-        console.log('Score is ' + score)
+        //console.log('Score is ' + score)
         this.nextQuestion()
-        //this.debugQs()
     }
 
     nextQuestion() {
@@ -72,15 +71,22 @@ export class StudyComponent {
         }
     }
 
+    rescheduleContent(content: ContentItemModel) {
+        if(content != null) {
+            this.pendingContent.push(content)
+            Arrays.shuffleInPlace(this.pendingContent)
+        }
+    }
+
     persistScoreData(score: number) {
         let date = new Date().toISOString().slice(0, 10)
-        let scoreData = this.currentContent ? new ScoreModel(this.currentContent.score) : new ScoreModel({contentItemId: this.currentContent.id})                        
-        scoreData.score = score
-        scoreData.scoreDate = date
-        if(!scoreData.streak) scoreData.streak = 0
-
+        this.currentContent.score = this.currentContent ? new ScoreModel(this.currentContent.score) : new ScoreModel({contentItemId: this.currentContent.id})                        
+        this.currentContent.score.score = score
+        this.currentContent.score.scoreDate = date
+        if(!this.currentContent.score.streak) { this.currentContent.score.streak = 0 }
+        if(score < 50) { this.rescheduleContent(this.currentContent) }
         
-        this.service.saveScoreData(scoreData)
+        this.service.saveScoreData(this.currentContent.score)
             .takeWhile( () => this.active)
             .catch( errMsg => {
                 this.notify.error('Error', errMsg)
@@ -107,13 +113,12 @@ export class StudyComponent {
     }
 
     executeContentItemMarking(): number {
-        if(this.currentScoring.length < 1) {
-            this.contentAggregateScore = 0
-        } else {
-            this.contentAggregateScore = Math.round((this.currentScoring.reduce( (acc, score) => acc + score ) / this.currentScoring.length * 100) * 1E0) / 1E0
-            //console.log('Aggregate Score: ' + this.contentAggregateScore)
+        let contentAggregateScore = 0
+        if(this.currentScoring.length > 0) {
+            contentAggregateScore = Math.round((this.currentScoring.reduce( (acc, score) => acc + score ) / this.currentScoring.length * 100) * 1E0) / 1E0
         }
-        return this.contentAggregateScore
+        this.currentScoring = []
+        return contentAggregateScore
     }
 
     debugQs() {

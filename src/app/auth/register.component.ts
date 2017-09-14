@@ -4,8 +4,8 @@ import { Router } from "@angular/router"
 import { UserModel } from "app/_models/user.model"
 import { EqualValidator } from "app/_directives/equal-validator.directive"
 import { Observable } from "rxjs/Rx"
-import { NotificationsService } from "angular2-notifications";
-import { Settings } from "app/libs/Settings";
+import { NotificationsService } from "angular2-notifications"
+import { Settings } from "app/libs/Settings"
 
 
 @Component({

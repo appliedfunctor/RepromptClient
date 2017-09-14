@@ -17,7 +17,7 @@ export class AuthComponent {
         this.selectedTab = Math.abs(1 - this.selectedTab)
     }
 
-    onSelectChange = (event: any): void => {
+    onSelectChange(event: any): void {
         this.selectedTab = event.index
     }
 
