@@ -42,6 +42,7 @@ describe('PackageComponent', () => {
         mockService = TestHelper.mock(ContentPackageService, 'ContentPackageService')
         mockService.get = jasmine.createSpy('get').and.returnValue(Observable.of('Sux'))
         mockService.saveItem = jasmine.createSpy('get').and.returnValue(Observable.of('Saved'))
+        mockService.deleteItem = jasmine.createSpy('get').and.returnValue(Observable.of('Deleted'))
         mockActivatedRoute = TestHelper.mock(ActivatedRoute, 'ActivatedRoute')
         mockActivatedRoute.params = Observable.of({id: "5"}, {id: "5"})
         toasterMock = TestHelper.mock(NotificationsService, 'NotificationsService')
@@ -50,6 +51,10 @@ describe('PackageComponent', () => {
         mockRouter = RouterTestingModule.withRoutes(routes)
         mockRouter.navigate = jasmine.createSpy('navigate')
         mockDialog = TestHelper.mock(MdDialog, 'MdDialog')
+        mockDialog.open = jasmine.createSpy('open').and.returnValue({
+            componentInstance: {item: "", container: "", action: ""},
+            afterClosed: jasmine.createSpy('afterClosed').and.returnValue(Observable.of(true))
+        })
 
 
         TestBed.configureTestingModule({
@@ -139,7 +144,19 @@ describe('PackageComponent', () => {
         expect(component.currentPackage.content.find(e => e.id === 3).image).toBe(component.currentContentItem.image)
         expect(component.currentPackage.content.find(e => e.id === 3).imageUrl).toBe(component.currentContentItem.imageUrl)
         expect(component.currentPackage.content.find(e => e.id === 3).name).toBe(component.currentContentItem.name)
+    }))
+
+    it('should update the package Item from postUpdateUiUpdate', fakeAsync(() => {   
+        component.currentPackage = new ContentPackageModel({content: [new ContentItemModel({id: 3}), new ContentItemModel({id: 9})]})
+        component.currentContentItem = new ContentItemModel({id: 3, content: "c", image: "i", imageUrl: "u", name: "name"})
+        let newItem = new ContentItemModel({id: 3, content: "cx", image: "ix", imageUrl: "ux", name: "namex"})
         
+        component.postUpdateUiUpdate(newItem)
+        
+        expect(component.currentPackage.content.find(e => e.id === 3).content).toBe(newItem.content)
+        expect(component.currentPackage.content.find(e => e.id === 3).questions).toBe(newItem.questions)
+        expect(component.currentPackage.content.find(e => e.id === 3).imageUrl).toBe(newItem.imageUrl)
+        expect(component.currentPackage.content.find(e => e.id === 3).name).toBe(newItem.name)
     }))
     
     it('should update the assessment item from toggleAssessment if item is different', fakeAsync(() => {   
@@ -254,6 +271,14 @@ describe('PackageComponent', () => {
         component.currentContentItem = new ContentItemModel({id: null, content: "c", image: "i", imageUrl: "u", name: "name"})
         component.saveItem()
         expect(mockService.saveItem).toHaveBeenCalledTimes(1)
+    })
+
+    it('should open a dialog to confirm Item Delete', () => {
+        component.currentPackage = new ContentPackageModel({id: 99, content: [new ContentItemModel({id: 3}), new ContentItemModel({id: 9})]})
+        component.currentContentItem = new ContentItemModel({id: null, content: "c", image: "i", imageUrl: "u", name: "name"})
+        
+        component.confirmItemDelete(component.currentContentItem)
+        expect(mockService.deleteItem).toHaveBeenCalledTimes(1)
     })
 
     // it('should subscribe to route params on creation', fakeAsync(() => {        
