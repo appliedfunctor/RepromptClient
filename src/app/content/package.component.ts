@@ -15,7 +15,6 @@ import { Settings } from "app/libs/Settings";
 @Component({
     selector: 'content-package',
     templateUrl: 'package.component.html',
-    providers: [ContentPackageService]
 })
 export class PackageComponent {
 
@@ -58,20 +57,16 @@ export class PackageComponent {
         let found = this.currentContentItem.questions.find(q => q.id == question.id)
         
         if(found && found.id === question.id) {
-            this.currentContentItem.questions.map(q => { 
-            if(q.id == this.currentQuestion.id) {
-                q.question = this.currentQuestion.question
-                q.answers = this.currentQuestion.answers
-                q.format = this.currentQuestion.format
-            }
-        })        
+            found.question = question.question
+            found.answers = question.answers
+            found.format = question.format
+            found.itemId = question.itemId     
         } else {
             this.currentContentItem.questions.push(question)            
         }
         this.currentContentItem.questions.sort(QuestionModel.sortByQuestion)
         this.currentQuestion = question
-        this.updatePackageItem()        
-        
+        this.updatePackageItem()
     }
 
     updatePackageItem() {

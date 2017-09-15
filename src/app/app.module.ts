@@ -59,6 +59,7 @@ import { QuestionTestSort } from "app/assessment-handlers/sort/question-test-sor
 import * as $ from "jquery"
 import { NgxChartsModule } from '@swimlane/ngx-charts'
 import { ProgressComponent } from "app/progress/progress.component"
+import { ContentPackageService } from "app/_services/content-package.service";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -146,6 +147,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HomeComponent,
     AuthService,
     AuthHttp,
+    ContentPackageService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
