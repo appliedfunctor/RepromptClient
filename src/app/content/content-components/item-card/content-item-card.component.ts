@@ -11,8 +11,10 @@ export class ContentItemCardComponent {
     @Input() active: boolean = false
     @Input() delivery: boolean = true
     @Output() test = new EventEmitter<ContentItemModel>()
-    private path = new Paths
     base: string
+
+    
+    constructor(private path: Paths) {}
 
     ngOnChanges(changes) {
         if(changes.hasOwnProperty('contentItem')) {

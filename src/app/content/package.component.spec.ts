@@ -278,6 +278,7 @@ describe('PackageComponent', () => {
         component.currentContentItem = new ContentItemModel({id: null, content: "c", image: "i", imageUrl: "u", name: "name"})
         
         component.confirmItemDelete(component.currentContentItem)
+        expect(mockDialog.open).toHaveBeenCalledTimes(1)
         expect(mockService.deleteItem).toHaveBeenCalledTimes(1)
     })
 

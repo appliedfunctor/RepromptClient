@@ -7,8 +7,7 @@ import { Observable } from "rxjs/Rx"
 
 @Component({
     selector: 'content-item-question-edit',
-    templateUrl: 'content-item-question-edit.component.html',
-    providers: [QuestionTypeService]
+    templateUrl: 'content-item-question-edit.component.html'
 })
 export class ContentItemQuestionEditComponent {
     questionTypes: any[]
@@ -24,23 +23,25 @@ export class ContentItemQuestionEditComponent {
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private service: QuestionTypeService){}
 
+
     ngOnInit() {
         this.questionTypes = this.service.getQuestionEditors()
         if(this.questionTypes.length > 0) {
             this.questionType = this.questionTypes[0].code
             this.loadComponent()
         }
-
         this.setMode()
     }
 
     ngOnDestroy() {
-        this.subscribed.unsubscribe()
+        if(this.subscribed) {
+            this.subscribed.unsubscribe()
+        }
     }
 
     loadComponent() {        
         let selected = this.questionTypes.find(qc => qc.code == this.questionType)
-        let factory = this.componentFactoryResolver.resolveComponentFactory(selected.component)        
+        let factory = this.componentFactoryResolver.resolveComponentFactory(selected.component)    
         this.host.clear()
         let componentRef = this.host.createComponent(factory)
 

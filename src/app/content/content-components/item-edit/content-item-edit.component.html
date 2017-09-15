@@ -31,7 +31,7 @@
         
         <ng-template pTemplate="content">
             <div *ngIf="file?.name == null">Drop an image here to upload
-                <br>{{currentData.imageUrl}}
+                <br>{{currentData.imageUrl | shorten:"32"}}
             </div>
             <div *ngIf="file?.name != null">
                 Current File: {{file.name}}

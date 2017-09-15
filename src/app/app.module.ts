@@ -42,6 +42,7 @@ import { NameEditComponent } from 'app/widgets/name-edit.component'
 import { FileUploadModule, EditorModule, TabViewModule, CalendarModule } from 'primeng/primeng'
 import { DragulaModule } from 'ng2-dragula'
 import { SummaryPipe } from 'app/_pipes/summary.pipe'
+import { ShortenPipe } from 'app/_pipes/shorten.pipe'
 import { PublishComponent } from "app/publish/publish.component"
 import { stringToDatePipe } from "app/_pipes/string-to-date.pipe"
 import { ManageComponent } from "app/manage/manage.component"
@@ -60,6 +61,8 @@ import * as $ from "jquery"
 import { NgxChartsModule } from '@swimlane/ngx-charts'
 import { ProgressComponent } from "app/progress/progress.component"
 import { ContentPackageService } from "app/_services/content-package.service";
+import { QuestionTypeService } from "app/_services/question-type.service";
+import { Paths } from "app/app.paths";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -99,6 +102,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     QuestionEditSort,
     QuestionTestSort,
     SummaryPipe,
+    ShortenPipe,
     stringToDatePipe,
     PublishComponent,
     ManageComponent,
@@ -117,7 +121,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TabViewModule,
     MdButtonModule,
     MdCheckboxModule,
-    FormsModule,
     MdSidenavModule,
     MdInputModule,
     MdListModule,
@@ -148,6 +151,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthService,
     AuthHttp,
     ContentPackageService,
+    QuestionTypeService,
+    Paths,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
