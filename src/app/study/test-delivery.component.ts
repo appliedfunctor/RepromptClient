@@ -7,7 +7,6 @@ import { AnswerModel } from "app/_models/answer.model"
 @Component({
     selector: 'test-question',
     templateUrl: 'test-delivery.component.html',
-    providers: [QuestionTypeService]
 })
 export class TestDeliveryComponent {
 

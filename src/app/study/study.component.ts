@@ -48,7 +48,7 @@ export class StudyComponent {
         this.active = false
     }
 
-    test(item: ContentItemModel) {
+    test() {
         this.pendingQuestions = Arrays.shuffleInPlace(this.currentContent.questions.slice())
         this.pendingQuestions.forEach(q => q.answers = Arrays.shuffleInPlace(q.answers))
         this.nextQuestion()
@@ -108,7 +108,7 @@ export class StudyComponent {
 
     handleExamMode() {
         if(this.currentContent && this.currentContent.score.streak > 3) {
-            this.test(this.currentContent)
+            this.test()
         }
     }
 
@@ -119,12 +119,5 @@ export class StudyComponent {
         }
         this.currentScoring = []
         return contentAggregateScore
-    }
-
-    debugQs() {
-        if (!this.currentQuestion) { console.log('Current Question: null') }
-        else { console.log('Current Question: ' + this.currentQuestion.question) }
-        console.log('Pending Questions')
-        this.pendingQuestions.forEach(q => console.log(q.question))
     }
 }
