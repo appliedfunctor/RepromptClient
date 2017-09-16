@@ -61,10 +61,6 @@ export class ProgressComponent {
         this.loadData()
     }
 
-    onSelect(event) {
-        console.log(event)
-    }
-
     loadData() {
         this.loading = true
         this.service.getHistoricalAssessmentDataByExam()

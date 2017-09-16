@@ -46,7 +46,7 @@ export class FileNavigationComponent {
     filteredContainers: FileContainer[] = []
     path: string = "/"
     currentParent: FileContainer = null
-    breadcumbs: FileContainer[] = []
+    breadcrumbs: FileContainer[] = []
     saving: boolean = false;
     updating: boolean = false;
     editText: string = 'Save'
@@ -293,14 +293,14 @@ export class FileNavigationComponent {
     }
 
     getCurrentContainer(): FileContainer {
-        let current = this.breadcumbs.pop()
-        this.breadcumbs.push(current)
+        let current = this.breadcrumbs.pop()
+        this.breadcrumbs.push(current)
         return current
     }
 
     getCurrentName(): string {
-        let current = this.breadcumbs.pop()
-        this.breadcumbs.push(current)
+        let current = this.breadcrumbs.pop()
+        this.breadcrumbs.push(current)
         return current.name
     }
 
@@ -323,7 +323,7 @@ export class FileNavigationComponent {
     navigate(container: FileContainer) {
         if(container != null && container.hasOwnProperty('id')) {
             this.toggleOff()
-            this.breadcumbs.push(container)      
+            this.breadcrumbs.push(container)      
             this.currentParent = container
             this.updateNavigation()
         }
@@ -335,35 +335,34 @@ export class FileNavigationComponent {
     }
 
     navigateBack() {
-
         this.toggleOff()
 
-        this.breadcumbs.pop()
-        if( this.breadcumbs.length < 1) {
+        this.breadcrumbs.pop()
+        if( this.breadcrumbs.length < 1) {
             this.resetNavigation()          
         } else {
-            let last = this.breadcumbs.pop()
+            let last = this.breadcrumbs.pop()
             this.currentParent = last
-            this.breadcumbs.push(last)
+            this.breadcrumbs.push(last)
             this.updateNavigation()
         }
         
     }
 
     resetNavigation() {
-        this.breadcumbs = []
+        this.breadcrumbs = []
         this.currentParent = null
         this.updateNavigation()
-        this.buildPath()
+        //this.buildPath()
     }
 
     buildPath() {
         let showDepth = 5
         this.path = '/'
-        if(this.breadcumbs.length > showDepth) {
+        if(this.breadcrumbs.length > showDepth) {
             this.path = '.../'
         }
-        this.breadcumbs.slice(-showDepth).forEach(c => this.path += c.name + '/')
+        this.breadcrumbs.slice(-showDepth).forEach(c => this.path += c.name + '/')
     }
 
     itemSelected(member: FileElement) {
