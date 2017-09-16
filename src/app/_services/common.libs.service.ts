@@ -35,6 +35,10 @@ export class CommonLibsService {
         return cohorts
     }
 
+    static handleContainer(res: Response): ContentFolderModel {  
+        return new ContentFolderModel(res.json())
+    }
+
     static handleContainers(res: Response): ContentFolderModel[] {  
         let folders: ContentFolderModel[] = []
         res.json().forEach(data => folders.push(new ContentFolderModel(data)))

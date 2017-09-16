@@ -31,7 +31,7 @@ import { UnauthGuard } from './_guards/unauth.guard'
 import { routing } from './app.routing'
 import { AuthService } from "./_services/auth.service"
 import { EqualValidator } from "./_directives/equal-validator.directive"
-import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth } from 'angular2-jwt'
+import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth, JwtHelper } from 'angular2-jwt'
 import { Http, RequestOptions } from '@angular/http'
 import { ContentComponent } from "app/content/content.component"
 import { FileNavigationComponent } from 'app/file/file-navigation.component'
@@ -153,6 +153,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ContentPackageService,
     QuestionTypeService,
     Paths,
+    JwtHelper,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

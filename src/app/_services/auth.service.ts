@@ -7,7 +7,7 @@
  */
 import { Injectable, Output, EventEmitter } from "@angular/core"
 import { Http, Response, RequestOptions, Headers } from "@angular/http"
-import { Observable } from 'rxjs/Rx'
+import { Observable, Subscription } from 'rxjs/Rx'
 import { UserModel } from "../_models/user.model"
 import { ErrorMessage } from "../_models/error.model"
 import { Paths } from "../app.paths"
@@ -24,30 +24,29 @@ export class AuthService {
     private loginPath = "/api/auth/login"
     private path = new Paths
     private headers = new Headers({ 'Content-Type': 'application/json' })
+    subscription: Subscription
     @Output() userChange = new EventEmitter<UserModel>()
-    private jwtHelper: JwtHelper = new JwtHelper();
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private jwtHelper: JwtHelper) {
         this.loadDataFromStorage()
     }
 
-    ngOnInit() {
-        
-    }
-
     startAuthChecks() {   
-        let subscription = Observable.interval(this.getTokenExpiryDuration())
+        this.subscription = Observable.interval(this.getTokenExpiryDuration(Date.now()))
             .subscribe((count) => {
                 if(!this.isAuthenticated()) {
-                    subscription.unsubscribe()
+                    this.subscription.unsubscribe()
                     this.logout()
-                }            
+                } else {
+                    this.subscription.unsubscribe()
+                    this.startAuthChecks()
+                }        
           })
     }
 
-    getTokenExpiryDuration() {
-        let expiryTime = this.jwtHelper.getTokenExpirationDate(this.jwtToken)  
-        let difference = expiryTime.getTime() - Date.now() + 5
+    getTokenExpiryDuration(currentTime: number) {
+        let expiryTime: Date = this.jwtHelper.getTokenExpirationDate(this.jwtToken)  
+        let difference = expiryTime.getTime() - currentTime + 5
         return difference   
     }
 
@@ -60,11 +59,11 @@ export class AuthService {
             this.user = new UserModel(loginInfo.user)
         }
         if(this.isAuthenticated()) {
+            let sub: Subscription
             this.startAuthChecks()
         } else { 
             this.logout()
         }
-        //this.onUserChange()
     }
 
     register(user: UserModel): Observable<any> {        
@@ -111,9 +110,11 @@ export class AuthService {
                         .share()
 
         response.share()
-        .catch( err => Observable.of('') )
+        .catch( err => Observable.of(null) )
         .subscribe(res => {
-            this.handleUser(res)
+            if(res) {
+                this.handleUser(res)
+            }
         })
         
         return response.share()
