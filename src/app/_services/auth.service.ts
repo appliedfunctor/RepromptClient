@@ -33,21 +33,16 @@ export class AuthService {
 
     startAuthChecks() {   
         this.subscription = Observable.interval(this.getTokenExpiryDuration(Date.now()))
-            .subscribe((count) => {
-                if(!this.isAuthenticated()) {
-                    this.subscription.unsubscribe()
-                    this.logout()
-                } else {
-                    this.subscription.unsubscribe()
-                    this.startAuthChecks()
-                }        
+            .subscribe((count) => {                
+                this.subscription.unsubscribe()
+                if(!this.isAuthenticated()) { this.logout() } 
+                else { this.startAuthChecks() }        
           })
     }
 
     getTokenExpiryDuration(currentTime: number) {
         let expiryTime: Date = this.jwtHelper.getTokenExpirationDate(this.jwtToken)  
-        let difference = expiryTime.getTime() - currentTime + 5
-        return difference   
+        return expiryTime.getTime() - currentTime + 5 
     }
 
     loadDataFromStorage() {
