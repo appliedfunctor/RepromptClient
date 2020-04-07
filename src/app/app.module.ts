@@ -6,8 +6,8 @@ import { HttpModule, JsonpModule } from '@angular/http'
 //md imports
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import 'hammerjs';
-import {  MdButtonModule, MdCheckboxModule, MdSidenavModule, MdInputModule, MdListModule, 
-          MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule, 
+import {  MdButtonModule, MdCheckboxModule, MdSidenavModule, MdInputModule, MdListModule,
+          MdMenuModule, MdToolbarModule, MdIconModule, MdTabsModule, MdRadioModule,
           MdProgressSpinnerModule, MdDialogModule, MdAutocompleteModule, MdCardModule,
           MdSelectModule,
           MdDatepickerModule,
@@ -29,40 +29,40 @@ import { EducatorGuard } from './_guards/educator.guard'
 import { StudentGuard } from './_guards/student.guard'
 import { UnauthGuard } from './_guards/unauth.guard'
 import { routing } from './app.routing'
-import { AuthService } from "./_services/auth.service"
-import { EqualValidator } from "./_directives/equal-validator.directive"
+import { AuthService } from './_services/auth.service'
+import { EqualValidator } from './_directives/equal-validator.directive'
 import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth, JwtHelper } from 'angular2-jwt'
 import { Http, RequestOptions } from '@angular/http'
-import { ContentComponent } from "app/content/content.component"
+import { ContentComponent } from 'app/content/content.component'
 import { FileNavigationComponent } from 'app/file/file-navigation.component'
-import { PackageComponent } from "app/content/package.component"
-import { DeleteConfirmDialog } from "app/dialogs/delete-confirm.dialog"
-import { UnlinkConfirmDialog } from "app/dialogs/unlink-confirm.dialog"
+import { PackageComponent } from 'app/content/package.component'
+import { DeleteConfirmDialog } from 'app/dialogs/delete-confirm.dialog'
+import { UnlinkConfirmDialog } from 'app/dialogs/unlink-confirm.dialog'
 import { NameEditComponent } from 'app/widgets/name-edit.component'
 import { FileUploadModule, EditorModule, TabViewModule, CalendarModule } from 'primeng/primeng'
 import { DragulaModule } from 'ng2-dragula'
 import { SummaryPipe } from 'app/_pipes/summary.pipe'
 import { ShortenPipe } from 'app/_pipes/shorten.pipe'
-import { PublishComponent } from "app/publish/publish.component"
-import { stringToDatePipe } from "app/_pipes/string-to-date.pipe"
-import { ManageComponent } from "app/manage/manage.component"
-import { StudyComponent } from "app/study/study.component"
-import { ContentItemEditComponent } from "app/content/content-components/item-edit/content-item-edit.component"
-import { ContentItemCardComponent } from "app/content/content-components/item-card/content-item-card.component"
-import { ContentItemQuestionEditComponent } from "app/content/content-components/item-question-edit/content-item-question-edit.component"
-import { ContentItemQuestionsComponent } from "app/content/content-components/content-item-questions.component"
-import { QuestionEditMCSA } from "app/assessment-handlers/mcsa/question-edit-mcsa.component"
-import { QuestionEditSort } from "app/assessment-handlers/sort/question-edit-sort.component"
-import { TestDeliveryComponent } from "app/study/test-delivery.component"
+// import { PublishComponent } from "app/publish/publish.component"
+import { stringToDatePipe } from 'app/_pipes/string-to-date.pipe'
+import { ManageComponent } from 'app/manage/manage.component'
+import { StudyComponent } from 'app/study/study.component'
+import { ContentItemEditComponent } from 'app/content/content-components/item-edit/content-item-edit.component'
+import { ContentItemCardComponent } from 'app/content/content-components/item-card/content-item-card.component'
+import { ContentItemQuestionEditComponent } from 'app/content/content-components/item-question-edit/content-item-question-edit.component'
+import { ContentItemQuestionsComponent } from 'app/content/content-components/content-item-questions.component'
+import { QuestionEditMCSA } from 'app/assessment-handlers/mcsa/question-edit-mcsa.component'
+import { QuestionEditSort } from 'app/assessment-handlers/sort/question-edit-sort.component'
+import { TestDeliveryComponent } from 'app/study/test-delivery.component'
 import { SimpleNotificationsModule } from 'angular2-notifications'
-import { QuestionTestMCSA } from "app/assessment-handlers/mcsa/question-test-mcsa.component"
-import { QuestionTestSort } from "app/assessment-handlers/sort/question-test-sort.component"
-import * as $ from "jquery"
+import { QuestionTestMCSA } from 'app/assessment-handlers/mcsa/question-test-mcsa.component'
+import { QuestionTestSort } from 'app/assessment-handlers/sort/question-test-sort.component'
+import * as $ from 'jquery'
 import { NgxChartsModule } from '@swimlane/ngx-charts'
-import { ProgressComponent } from "app/progress/progress.component"
-import { ContentPackageService } from "app/_services/content-package.service";
-import { QuestionTypeService } from "app/_services/question-type.service";
-import { Paths } from "app/app.paths";
+import { ProgressComponent } from 'app/progress/progress.component'
+import { ContentPackageService } from 'app/_services/content-package.service';
+import { QuestionTypeService } from 'app/_services/question-type.service';
+import { Paths } from 'app/app.paths';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -70,11 +70,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     headerPrefix: ' ',
     tokenName: 'token',
 		tokenGetter: (() => {
-            let loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
-            let jwtToken = loginInfo && loginInfo.token
+            const loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
+            const jwtToken = loginInfo && loginInfo.token
             return jwtToken
         }),
-		globalHeaders: [{'Content-Type':'application/json'}],
+		globalHeaders: [{'Content-Type': 'application/json'}],
 	}), http, options);
 }
 
@@ -104,7 +104,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SummaryPipe,
     ShortenPipe,
     stringToDatePipe,
-    PublishComponent,
+    // PublishComponent,
     ManageComponent,
     StudyComponent,
     TestDeliveryComponent,
@@ -138,8 +138,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     JsonpModule,
     DragulaModule,
     routing,
-    SimpleNotificationsModule.forRoot(),  
-    NgxChartsModule,  
+    SimpleNotificationsModule.forRoot(),
+    NgxChartsModule,
   ],
   providers: [
     AuthGuard,

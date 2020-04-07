@@ -1,32 +1,32 @@
-import { Injectable } from "@angular/core"
-import { Response, RequestOptions, Headers } from "@angular/http"
-import { AuthHttp } from "angular2-jwt/angular2-jwt"
-import { Paths } from "app/app.paths"
-import { ContentPackageModel } from "app/_models/content-package.model"
-import { Observable } from "rxjs/Rx"
-import { CohortModel } from "app/_models/cohort.model"
-import { ExamModel } from "app/_models/exam.model"
-import { CommonLibsService } from "app/_services/common.libs.service"
+import { Injectable } from '@angular/core'
+import { Response, RequestOptions, Headers } from '@angular/http'
+import { AuthHttp } from 'angular2-jwt/angular2-jwt'
+import { Paths } from 'app/app.paths'
+import { ContentPackageModel } from 'app/_models/content-package.model'
+import { Observable } from 'rxjs/Rx'
+import { CohortModel } from 'app/_models/cohort.model'
+import { ExamModel } from 'app/_models/exam.model'
+import { CommonLibsService } from 'app/_services/common.libs.service'
 
 @Injectable()
 export class PublishService {
 
-    private path = new Paths
-    cohortGetPath = '/api/cohorts/owned'
-    packageGetPath = '/api/content/packages/owned'
-    publishGetPath = '/api/published/exam/'
-    publishGetAllPath = '/api/published/exams/owned'
-    publishCohortAttachPath = '/api/published/cohort/'
-    publishPackageAttachPath = '/api/published/package/'
+    private path = new Paths;
+    cohortGetPath = '/api/cohorts/owned';
+    packageGetPath = '/api/content/packages/owned';
+    publishGetPath = '/api/published/exam/';
+    publishGetAllPath = '/api/published/exams/owned';
+    publishCohortAttachPath = '/api/published/cohort/';
+    publishPackageAttachPath = '/api/published/package/';
 
     constructor(private authHttp: AuthHttp) {
     }
 
     /**
      * Get a specific content package by Id
-     * 
-     * @param {number} contentId 
-     * @returns {Observable<any>} 
+     *
+     * @param {number} contentId
+     * @returns {Observable<any>}
      * @memberof ContentPackageService
      */
     getAllCohorts(): Observable<CohortModel[]> {
@@ -38,9 +38,9 @@ export class PublishService {
 
     /**
      * Get a specific content package by Id
-     * 
-     * @param {number} contentId 
-     * @returns {Observable<any>} 
+     *
+     * @param {number} contentId
+     * @returns {Observable<any>}
      * @memberof ContentPackageService
      */
     getAllPackages(): Observable<ContentPackageModel[]> {
@@ -105,7 +105,5 @@ export class PublishService {
                             .map(res => res.json())
                             .catch(CommonLibsService.handleError)
     }
-
-    
 
 }
